@@ -4,15 +4,22 @@ import plotly.graph_objects as go
 
 st.set_page_config(page_title="Calculadora do Trecho", layout="centered")
 
-# CSS PARA DESTAQUE DO GRÁFICO E NITIDEZ
+# CSS PARA NITIDEZ DO BALÃO, GRÁFICO E SÍNTESE
 st.markdown("""
     <style>
     [data-testid="stAppViewContainer"], .stApp { background-color: #000000 !important; }
     
+    /* NITIDEZ DO SINAL DE INTERROGAÇÃO (?) */
+    .stTooltipIcon {
+        filter: invert(1) brightness(2); /* Torna o ícone branco e brilhante */
+        transform: scale(1.2);
+        margin-left: 5px;
+    }
+
     .chamada-impacto {
         background-color: #E63946; color: white; text-align: center;
         padding: 10px; font-weight: 900; text-transform: uppercase;
-        letter-spacing: 1px; margin-bottom: 15px; border: 2px solid #FFCC00;
+        border: 2px solid #FFCC00; margin-bottom: 20px;
     }
 
     .propisito-app { 
@@ -24,25 +31,24 @@ st.markdown("""
     .secao-titulo {
         color: #FFCC00 !important; font-size: 1.1rem !important;
         font-weight: 800; text-transform: uppercase;
-        margin-top: 25px; margin-bottom: 15px;
-        border-bottom: 2px solid #FFCC00; padding-bottom: 5px;
+        margin-top: 25px; border-bottom: 2px solid #FFCC00; padding-bottom: 5px;
     }
 
     label { color: #FFCC00 !important; font-weight: 700 !important; font-size: 0.9rem !important; }
     
     .card-res { background-color: #111; border: 2px solid #FFCC00; padding: 20px 10px; text-align: center; border-radius: 5px; }
-    .val-res { color: #FFCC00 !important; font-size: 1.8rem !important; font-weight: 900 !important; }
-    .label-card { color: #FFFFFF !important; font-size: 0.7rem !important; font-weight: bold; text-transform: uppercase; }
+    .val-res { color: #FFCC00 !important; font-size: 2rem !important; font-weight: 900 !important; }
+    .label-card { color: #FFFFFF !important; font-size: 0.75rem !important; font-weight: bold; text-transform: uppercase; }
     
     .sintese-box {
         background-color: #111; border-left: 10px solid #E63946;
-        padding: 20px; margin-top: 30px; color: #FFFFFF;
-        font-size: 1rem; line-height: 1.6;
+        padding: 25px; margin-top: 30px; color: #FFFFFF;
+        font-size: 1.1rem; line-height: 1.6;
     }
     </style>
     """, unsafe_allow_html=True)
 
-lista_geo = sorted(["São Paulo (Capital)", "Guarulhos", "São Bernardo", "Santo André", "Osasco", "Mogi das Cruzes", "Mauá", "Diadema", "Carapicuíba", "Itaquaquecetuba", "Barueri", "Taboão da Serra", "Suzano", "Cotia", "Itapevi", "Franco da Rocha", "Caieiras", "Aricanduva", "Butantã", "Lapa", "Itaquera", "Capão Redondo", "Grajaú", "Pirituba", "Jaraguá", "Perus", "Santana", "Tucuruvi"])
+lista_geo = sorted(["São Paulo (Capital)", "Guarulhos", "São Bernardo", "Santo André", "Osasco", "Mogi das Cruzes", "Mauá", "Diadema", "Carapicuíba", "Itaquaquecetuba", "Barueri", "Taboão da Serra", "Suzano", "Cotia", "Itapevi", "Ferraz de Vasconcelos", "Franco da Rocha", "Itapecerica", "Ribeirão Pires", "Santana de Parnaíba", "Cajamar", "Embu das Artes", "Caieiras"])
 
 st.markdown('<div class="chamada-impacto">ALERTA DE EXPROPRIAÇÃO MENSAL</div>', unsafe_allow_html=True)
 st.markdown('<div class="propisito-app">QTO DO SEU SALÁRIO FICA NO TRANSPORTE?</div>', unsafe_allow_html=True)
@@ -55,9 +61,8 @@ with st.form("main_calc"):
     with c1:
         sal = st.number_input("💵 SALÁRIO BRUTO (R$):", min_value=0.0, step=100.0)
     with c2:
-        # BALÃO DE AJUDA COM TEXTO SOLICITADO
         vida = st.number_input("🏠 CUSTO VIDA:", min_value=0.0, 
-                               help="Preenchimento Opcional: Informe gastos com moradia, alimentação, contas fixas, etc. Isso ajuda a calcular o que sobra de fato após o trabalho.")
+                               help="Preenchimento Opcional: Informe gastos com moradia, alimentação e contas fixas para apurar o que sobra de fato após o custo do trabalho.")
     
     st.markdown('<div class="secao-titulo">🚌 GASTOS DIÁRIOS (IDA+VOLTA)</div>', unsafe_allow_html=True)
     g1, g2, g3 = st.columns(3)
@@ -67,7 +72,6 @@ with st.form("main_calc"):
     
     st.markdown('<div class="secao-titulo">⏱️ TEMPO DE DESLOCAMENTO</div>', unsafe_allow_html=True)
     h_trecho = st.slider("HORAS NO TRECHO POR DIA (IDA+VOLTA):", 0.5, 12.0, 2.0, step=0.5)
-    
     btn = st.form_submit_button("EFETUAR CÁLCULO DE IMPACTO")
 
 if btn and sal > 0:
@@ -83,28 +87,35 @@ if btn and sal > 0:
     with r2: st.markdown(f'<div class="card-res"><div class="label-card">SALÁRIO REAL<br>CONFISCADO</div><div class="val-res">{max(0, perda):.1f}%</div></div>', unsafe_allow_html=True)
     with r3: st.markdown(f'<div class="card-res"><div class="label-card">TRABALHO NÃO PAGO<br>(HORAS/MÊS)</div><div class="val-res">{h_total:.0f}H</div></div>', unsafe_allow_html=True)
 
-    st.markdown('<div class="secao-titulo">📊 ANÁLISE DO TEMPO DE VIDA</div>', unsafe_allow_html=True)
+    st.markdown('<div class="secao-titulo">📊 ANÁLISE DO TEMPO DE VIDA MENSAL</div>', unsafe_allow_html=True)
     
-    # GRÁFICO MAIOR E EM DESTAQUE
-    fig = go.Figure(data=[go.Pie(labels=['Tempo Remunerado', 'Tempo de Trajeto (Expropriado)'], 
-                                 values=[h_paga, h_total], hole=.4,
-                                 marker_colors=['#FFCC00', '#E63946'],
-                                 textinfo='percent+label')])
-    fig.update_layout(paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(0,0,0,0)', 
-                      font_color='white', showlegend=True, height=500,
-                      legend=dict(orientation="h", yanchor="bottom", y=-0.2, xanchor="center", x=0.5))
+    # GRÁFICO COM LEGENDAS INTERNAS PARA MAIOR CLAREZA
+    fig = go.Figure(data=[go.Pie(
+        labels=['Tempo Remunerado', 'Tempo de Trajeto (Trabalho Grátis)'], 
+        values=[h_paga, h_total], 
+        hole=.4,
+        marker_colors=['#FFCC00', '#E63946'],
+        textinfo='percent+label', # Mostra o nome e a porcentagem dentro do gráfico
+        insidetextorientation='radial'
+    )])
+    fig.update_layout(
+        paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(0,0,0,0)', 
+        font_color='white', height=550, showlegend=False # Legenda interna dispensa a externa
+    )
     st.plotly_chart(fig, use_container_width=True)
 
-    
+    # SÍNTESE DINÂMICA QUE REAGE AO CUSTO DE VIDA
+    if vida > 0:
+        analise_financeira = f"Além do custo do transporte (R$ {custo_t:,.2f}), seu custo de vida (R$ {vida:,.2f}) consome a maior parte do que resta."
+    else:
+        analise_financeira = f"O custo direto do seu transporte é de R$ {custo_t:,.2f} mensais."
 
-    # SÍNTESE DINÂMICA
-    txt_vida = f" e o custo de vida (R$ {vida:,.2f})" if vida > 0 else ""
     st.markdown(f"""
         <div class="sintese-box">
             <b>SÍNTESE DO IMPACTO:</b><br>
             Ao se deslocar entre <b>{moradia}</b> e <b>{trabalho}</b>, você dedica <span style="color:#FFCC00">{h_total:.0f} horas</span> mensais apenas ao trajeto. 
-            Este tempo, somado ao custo do transporte (R$ {custo_t:,.2f}){txt_vida}, reduz o valor líquido da sua hora para 
+            {analise_financeira} Isso reduz o valor da sua hora real para 
             <span style="color:#FFCC00">R$ {max(0, v_hora_real):.2f}</span>. 
-            Isso revela que a precariedade da mobilidade urbana atua como um redutor direto do seu salário real.
+            Este cálculo revela que a precariedade urbana atua como um mecanismo silencioso de redução do rendimento real.
         </div>
     """, unsafe_allow_html=True)

@@ -2,19 +2,28 @@ import streamlit as st
 import pandas as pd
 from geodata import GEO_SPO 
 
-# 1. IDENTIDADE VISUAL: TERMINAL DE DADOS
+# 1. IDENTIDADE VISUAL E FORÇAMENTO DE INTERFACE
 st.set_page_config(page_title="Beta II - Calculadora do Trecho", layout="centered")
 
 st.markdown("""
     <style>
     [data-testid="stAppViewContainer"], .stApp { background-color: #000000 !important; }
     
+    /* TITULOS E LABELS */
     label, .stSelectbox label, .stNumberInput label { 
         color: #FFCC00 !important; font-weight: 800 !important; 
-        text-transform: uppercase !important; font-size: 0.8rem !important;
+        text-transform: uppercase !important; font-size: 0.85rem !important;
     }
 
-    .stTooltipIcon { color: #E63946 !important; visibility: visible !important; }
+    /* FORÇAR VISIBILIDADE DO ÍCONE DE AJUDA (?) */
+    /* Aumentamos o tamanho e mudamos a cor para Amarelo para destacar no preto */
+    .stTooltipIcon {
+        color: #FFCC00 !important; 
+        font-size: 1.4rem !important;
+        background-color: #E63946 !important; /* Fundo vermelho para virar um 'botão' */
+        border-radius: 50% !important;
+        padding: 2px !important;
+    }
 
     .chamada-alerta { 
         background-color: #E63946; color: white; text-align: center; 
@@ -22,12 +31,6 @@ st.markdown("""
         margin-bottom: 8px; text-transform: uppercase; font-size: 1.1rem;
     }
     
-    .titulo-pergunta { 
-        color: #FFCC00 !important; font-family: 'Arial Black', sans-serif; 
-        font-size: 1rem !important; text-align: center; 
-        text-transform: uppercase; margin-bottom: 25px;
-    }
-
     .stNumberInput input { background-color: #111 !important; color: #FFFFFF !important; font-size: 1.1rem !important; border: 1px solid #444 !important; }
 
     .sintese-box { 
@@ -49,21 +52,21 @@ st.markdown("""
 lista_geo = sorted(list(GEO_SPO.keys()))
 
 st.markdown('<div class="chamada-alerta">ALERTA DE EXPROPRIAÇÃO MENSAL</div>', unsafe_allow_html=True)
-st.markdown('<div class="titulo-pergunta">Quanto de tempo e de dinheiro são consumidos no seu deslocamento diário?</div>', unsafe_allow_html=True)
 
-with st.form("form_beta_ii_versao_final"):
-    st.markdown('<h4 style="color:#FFCC00; font-size:0.9rem;">📍 GEOGRAFIA DO FLUXO PENDULAR</h4>', unsafe_allow_html=True)
-    c_geo1, c_geo2 = st.columns(2)
-    with c_geo1: moradia = st.selectbox("MORADIA (ORIGEM):", lista_geo, index=0)
-    with c_geo2: trabalho = st.selectbox("TRABALHO (DESTINO):", lista_geo, index=1)
+with st.form("form_beta_ii_visual_help"):
+    st.markdown('<h4 style="color:#FFCC00; font-size:0.9rem;">📍 GEOGRAFIA E FLUXO</h4>', unsafe_allow_html=True)
+    c1, c2 = st.columns(2)
+    with c1: moradia = st.selectbox("MORADIA (ORIGEM):", lista_geo, index=0)
+    with c2: trabalho = st.selectbox("TRABALHO (DESTINO):", lista_geo, index=1)
     
     st.markdown('<h4 style="color:#FFCC00; font-size:0.9rem;">💵 ECONOMIA PESSOAL</h4>', unsafe_allow_html=True)
     r1, r2 = st.columns(2)
     with r1: sal_bruto = st.number_input("SALÁRIO BRUTO (R$):", min_value=0.0, step=100.0, value=3000.0)
+    # AQUI ESTÁ O CAMPO COM O ÍCONE DESTACADO
     with r2: custo_vida = st.number_input("CUSTO DE VIDA FIXO (R$):", min_value=0.0, step=50.0, value=0.0, 
-                                         help="OPCIONAL. Aluguel, comida e contas. Se zero, a sobra foca apenas no impacto do transporte.")
+                                         help="ESTE CAMPO É OPCIONAL. Digite aqui gastos com Aluguel, Comida e Contas. Ele serve para mostrar sua SOBRA FINAL após a expropriação do sistema.")
     
-    st.markdown('<h4 style="color:#FFCC00; font-size:0.9rem;">🚌 CUSTOS DIÁRIOS NO TRECHO (IDA+VOLTA)</h4>', unsafe_allow_html=True)
+    st.markdown('<h4 style="color:#FFCC00; font-size:0.9rem;">🚌 CUSTOS DIÁRIOS (ÔNIBUS/METRÔ/TREM/APP/CARRO)</h4>', unsafe_allow_html=True)
     g1, g2, g3 = st.columns(3)
     with g1: p_bus = st.number_input("🚌 ÔNIBUS (R$):", value=4.40)
     with g2: p_trem = st.number_input("🚆 METRÔ/TREM (R$):", value=5.00)
@@ -88,7 +91,7 @@ if submit:
     custo_transp_mensal = custo_transp_diario * dias_m
     h_trecho_mensal = h_dia * dias_m
     
-    # VALOR DO CONFISCO: TARIFA TOTAL + VALOR DO TEMPO EXPROPRIADO
+    # CONFISCO: TARIFA + VALOR DO TEMPO EXPROPRIADO
     valor_tempo_expro = h_trecho_mensal * v_hora_nom
     confisco_total = custo_transp_mensal + valor_tempo_expro
     
@@ -102,7 +105,7 @@ if submit:
         <div style="background: #111; padding: 25px; border: 1px solid #E63946; text-align: center;">
             <div style="display: flex; justify-content: space-around; align-items: center;">
                 <div style="color: #FFCC00; font-weight: bold;">🏠 {moradia}</div>
-                <div style="color: #E63946; font-size: 1.5rem;">⚡――――▶</div>
+                <div style="color: #E63946; font-size: 1.5rem; margin: 0 15px;">⚡――――▶</div>
                 <div style="color: #FFCC00; font-weight: bold;">💼 {trabalho}</div>
             </div>
             <p style="color:#E63946; font-size:0.85rem; margin-top:15px; font-weight:bold; border-top: 1px solid #333; padding-top:10px;">
@@ -117,7 +120,7 @@ if submit:
     
     st.markdown(f"""
         <div class="sintese-box">
-            • <span class="valor-amarelo">VALOR DA HORA:</span> De R$ {v_hora_nom:.2f} para <span class="expro-destaque">R$ {v_hora_real:.2f}</span><br>
+            • <span class="valor-amarelo">VALOR DA HORA TRABALHADA:</span> De R$ {v_hora_nom:.2f} para <span class="expro-destaque">R$ {v_hora_real:.2f}</span><br>
             • <span class="expro-destaque">TEMPO DE VIDA NO TRECHO:</span> {h_trecho_mensal:.1f}h/mês<br>
             • <span class="valor-amarelo">VALOR DO CONFISCO (TARIFA + TEMPO DE TRABALHO NÃO PAGO):</span> R$ {confisco_total:,.2f}<br>
             • <span class="valor-amarelo">{label_sobra}</span> R$ {sobra_residual:,.2f}<br>
@@ -125,12 +128,11 @@ if submit:
         </div>
     """, unsafe_allow_html=True)
 
-    # NOTA EXPLICATIVA TÉCNICA
+    # NOTA EXPLICATIVA
     st.markdown(f"""
         <div class="nota-tecnica">
-            <b>NOTA TÉCNICA:</b> O "Confisco" representa a transferência de riqueza do trabalhador para o sistema urbano. 
-            Ele soma o gasto direto em tarifas ao valor monetizado do tempo de deslocamento (calculado sobre o valor da hora nominal). 
-            Consideramos o trecho como "trabalho não pago" pois é um tempo obrigatório para a venda da força de trabalho, mas não remunerado, 
-            o que reduz o seu rendimento real e deprecia sua qualidade de vida.
+            <b>NOTA TÉCNICA:</b> O valor do "Confisco" reflete o que o sistema retira de você. Ele soma o dinheiro gasto com tarifas 
+            ao valor monetário do seu tempo (que consideramos trabalho não remunerado). 
+            Se você morasse ao lado do trabalho, este valor estaria no seu bolso ou seria tempo de descanso.
         </div>
     """, unsafe_allow_html=True)

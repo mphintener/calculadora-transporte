@@ -2,8 +2,17 @@ import streamlit as st
 import pandas as pd
 from geodata import GEO_SPO 
 
-# 1. IDENTIDADE VISUAL: TERMINAL DE DADOS (PRETO/AMARELO/VERMELHO)
-st.set_page_config(page_title="Beta II - Calculadora do Trecho", layout="centered")
+# 1. IDENTIDADE VISUAL E CONFIGURAÇÃO
+st.set_page_config(
+    page_title="Beta II - Calculadora do Trecho", 
+    page_icon="logo.png", 
+    layout="centered"
+)
+
+# 2. LOGO NO TOPO (CENTRALIZADO)
+c1, c2, c3 = st.columns([1, 1, 1])
+with c2:
+    st.image("logo.png", width=150)
 
 st.markdown("""
     <style>

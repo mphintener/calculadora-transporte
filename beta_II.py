@@ -3,113 +3,133 @@ import pandas as pd
 import pydeck as pdk
 from geodata import GEO_SPO 
 
-# 1. ESTILO TERMINAL URBANO
+# 1. ESTILO TERMINAL URBANO (PRETO, AMARELO, VERMELHO)
 st.set_page_config(page_title="Beta II - Calculadora do Trecho", layout="centered")
 
 st.markdown("""
     <style>
+    /* FUNDO PRINCIPAL */
     [data-testid="stAppViewContainer"], .stApp { background-color: #000000 !important; }
     
-    /* LABELS EM AMARELO */
-    label, p, span { 
-        color: #FFCC00 !important; 
-        font-weight: 800 !important; 
-        text-transform: uppercase !important;
-    }
-
+    /* CHAMADA ALERTA DE EXPROPRIAÇÃO MENSAL */
     .chamada-alerta { 
         background-color: #E63946; color: white; text-align: center; 
         padding: 15px; font-weight: 900; border: 4px solid #FFCC00; 
         margin-bottom: 10px; text-transform: uppercase; font-size: 1.6rem;
     }
     
+    /* TÍTULO PRINCIPAL SOLICITADO */
     .titulo-pergunta { 
         color: #FFCC00 !important; font-family: 'Arial Black', sans-serif; 
         font-size: 1.4rem !important; text-align: center; 
-        text-transform: uppercase; margin-bottom: 30px;
+        text-transform: uppercase; margin-bottom: 30px; line-height: 1.2;
+    }
+
+    /* LABELS EM AMARELO ALTO CONTRASTE */
+    label, p, span, .stSelectbox label { 
+        color: #FFCC00 !important; 
+        font-weight: 800 !important; 
+        text-transform: uppercase !important;
+        font-size: 1rem !important;
+        display: block;
+        margin-bottom: 5px;
     }
 
     .secao-titulo { 
-        color: #FFCC00 !important; font-size: 1.1rem !important; font-weight: 800; 
-        text-transform: uppercase; margin-top: 25px; border-bottom: 2px solid #FFCC00; padding-bottom: 5px; 
+        color: #FFCC00 !important; font-size: 1.2rem !important; font-weight: 800; 
+        text-transform: uppercase; margin-top: 30px; border-bottom: 2px solid #FFCC00; padding-bottom: 5px; 
     }
 
-    /* LIMPEZA DOS INPUTS */
-    .stNumberInput div[data-baseweb="input"] { background-color: #111 !important; border: 1px solid #FFCC00 !cite: 2 !important; }
-    .stNumberInput input { color: #FFFFFF !important; font-size: 1.2rem !important; }
+    /* AJUSTE DOS INPUTS PARA CLAREZA E ACESSO */
+    .stNumberInput input {
+        background-color: #111 !important;
+        color: #FFFFFF !important;
+        font-size: 1.2rem !important;
+        border: 2px solid #FFCC00 !important;
+        border-radius: 4px;
+        padding: 10px;
+    }
 
     .sintese-box { 
         background-color: #111; border: 2px solid #FFCC00; 
         padding: 20px; margin-top: 20px; color: #FFFFFF; 
-        font-family: 'Courier New', monospace;
+        font-family: 'Courier New', monospace; line-height: 1.6; 
     }
+    .destaque-amarelo { color: #FFCC00; font-weight: bold; }
     </style>
     """, unsafe_allow_html=True)
 
 lista_geo = sorted(list(GEO_SPO.keys()))
 
+# 2. CABEÇALHO COM AS CHAMADAS SOLICITADAS
 st.markdown('<div class="chamada-alerta">ALERTA DE EXPROPRIAÇÃO MENSAL</div>', unsafe_allow_html=True)
 st.markdown('<div class="titulo-pergunta">Quanto de tempo e de dinheiro são consumidos no seu deslocamento diário?</div>', unsafe_allow_html=True)
 
-with st.form("beta_ii_v10"):
-    c1, c2 = st.columns(2)
-    with c1: moradia = st.selectbox("🏠 ORIGEM:", lista_geo, index=0)
-    with c2: trabalho = st.selectbox("💼 DESTINO:", lista_geo, index=1)
+# INÍCIO DO FORMULÁRIO (ESTRUTURA SIMPLIFICADA PARA EVITAR TRAVAMENTOS)
+with st.form("form_beta_ii"):
+    st.markdown('<div class="secao-titulo">🏠 LOCALIZAÇÃO</div>', unsafe_allow_html=True)
+    moradia = st.selectbox("ONDE VOCÊ MORA?", lista_geo, index=0)
+    trabalho = st.selectbox("ONDE VOCÊ TRABALHA?", lista_geo, index=1)
     
     st.markdown('<div class="secao-titulo">💵 RENDIMENTOS E SOBREVIVÊNCIA</div>', unsafe_allow_html=True)
-    r1, r2 = st.columns(2)
-    with r1: sal = st.number_input("SALÁRIO BRUTO:", min_value=1.0, value=3000.0)
-    with r2: vida = st.number_input("CUSTO DE VIDA (OPCIONAL):", min_value=0.0, value=1500.0)
+    sal_bruto = st.number_input("SALÁRIO BRUTO MENSAL (R$):", min_value=1.0, value=3000.0, step=100.0)
+    custo_vida = st.number_input("CUSTO DE VIDA FIXO (R$):", min_value=0.0, value=1500.0, step=50.0, 
+                                 help="OPCIONAL: Aluguel, contas e alimentação. Este valor não altera o valor da hora, apenas a sobra final.") #
     
-    st.markdown('<div class="secao-titulo">🚌 CUSTOS E TEMPO NO TRECHO</div>', unsafe_allow_html=True)
-    g1, g2, g3 = st.columns(3)
-    with g1: p_pub = st.number_input("🚆 TRANSP. PÚBLICO", min_value=0.0, value=8.80)
-    with g2: p_app = st.number_input("📱 APP/TÁXI", min_value=0.0)
-    with g3: p_car = st.number_input("🚗 CARRO/MOTO", min_value=0.0)
+    st.markdown('<div class="secao-titulo">🚌 CUSTOS NO TRECHO (DIÁRIO IDA+VOLTA)</div>', unsafe_allow_html=True)
+    p_pub = st.number_input("🚆 ÔNIBUS / METRÔ / TREM (R$):", min_value=0.0, value=8.80)
+    p_app = st.number_input("📱 APP / TÁXI (R$):", min_value=0.0, value=0.0)
+    p_car = st.number_input("🚗 CARRO / MOTO (R$):", min_value=0.0, value=0.0)
     
-    col_d, col_h = st.columns(2)
-    with col_d: dias = st.number_input("DIAS NO TRECHO/MÊS:", 1, 31, 22)
-    with col_h: h_trecho = st.slider("HORAS NO TRECHO (DIA):", 0.5, 12.0, 3.0, step=0.5)
+    st.write("")
+    dias_mes = st.number_input("DIAS DE DESLOCAMENTO POR MÊS:", 1, 31, 22)
     
-    btn = st.form_submit_button("PROCESSAR DADOS DE IMPACTO")
+    st.markdown('<div class="secao-titulo">⏱️ TEMPO DE EXPROPRIAÇÃO</div>', unsafe_allow_html=True)
+    h_trecho_dia = st.slider("TOTAL DE HORAS NO TRECHO POR DIA (IDA+VOLTA):", 0.5, 12.0, 3.0, step=0.5)
+    
+    # BOTÃO DE SUBMISSÃO (MUITO IMPORTANTE)
+    btn = st.form_submit_button("EFETUAR CÁLCULO DE IMPACTO")
 
 if btn:
-    # LÓGICA TÉCNICA
+    # LÓGICA TÉCNICA DINÂMICA
     h_pagas_mes = 176
-    custo_transp_mes = (p_pub + p_app + p_car) * dias
-    h_exprop_mes = h_trecho * dias
+    custo_transp_mes = (p_pub + p_app + p_car) * dias_mes
+    h_exprop_mes = h_trecho_dia * dias_mes
     
-    # Rendimento Real por Hora: (Salário - Tarifas) / (Horas Pagas + Horas Trecho)
-    v_hora_real = (sal - custo_transp_mes) / (h_pagas_mes + h_exprop_mes)
-    perda_pct = (1 - (v_hora_real / (sal/h_pagas_mes))) * 100
-    sobra_final = sal - custo_transp_mes - vida
-    dias_ano = (h_exprop_mes * 12) / 24
+    # Rendimento Real: (Salário - Custo Transp) / (Horas Pagas + Horas Trecho)
+    v_hora_nominal = sal_bruto / h_pagas_mes
+    v_hora_real = (sal_bruto - custo_transp_mes) / (h_pagas_mes + h_exprop_mes)
+    
+    depreciacao_pct = (1 - (v_hora_real / v_hora_nominal)) * 100
+    salario_confiscado = sal_bruto * (depreciacao_pct / 100)
+    
+    # Custo de vida afeta apenas a Sobra Final (Rendimento Residual)
+    rendimento_residual = sal_bruto - custo_transp_mes - custo_vida
+    dias_vida_ano = (h_exprop_mes * 12) / 24
 
-    # MAPA VETORIAL
+    # MAPA (VETOR PENDULAR ROAD STYLE)
     st.markdown('<div class="secao-titulo">🗺️ VETOR DE FLUXO PENDULAR</div>', unsafe_allow_html=True)
     m_lat, m_lon = GEO_SPO[moradia]
     t_lat, t_lon = GEO_SPO[trabalho]
+    
     st.pydeck_chart(pdk.Deck(
-        map_style=pdk.map_styles.DARK,
+        map_style=pdk.map_styles.ROAD,
         initial_view_state=pdk.ViewState(latitude=(m_lat+t_lat)/2, longitude=(m_lon+t_lon)/2, zoom=10, pitch=45),
         layers=[pdk.Layer("ArcLayer", data=[{"s": [m_lon, m_lat], "t": [t_lon, t_lat]}], 
                 get_source_position="s", get_target_position="t", 
                 get_color=[230, 57, 70, 200], get_width=12)]
     ))
 
-    # SÍNTESE JORNALÍSTICA
+    # SÍNTESE E RELATÓRIO
     st.markdown('<div class="secao-titulo">📝 SÍNTESE PARA COMUNICAÇÃO PÚBLICA</div>', unsafe_allow_html=True)
-    sintese = (f"MOBILIDADE GSP: O trecho {moradia}-{trabalho} confisca {perda_pct:.1f}% do salário real. "
-               f"O valor da hora cai para R$ {v_hora_real:.2f}, resultando em {dias_ano:.1f} dias perdidos/ano.")
-    st.code(sintese, language="text")
+    sintese_txt = (f"MOBILIDADE GSP: O trajeto {moradia}-{trabalho} confisca {depreciacao_pct:.1f}% do rendimento real. "
+                   f"O valor da hora cai para R$ {v_hora_real:.2f}, resultando em {dias_vida_ano:.1f} dias perdidos/ano.")
+    st.code(sintese_txt, language="text")
 
-    # RELATÓRIO TÉCNICO
     st.markdown('<div class="secao-titulo">🔬 MÉTRICAS CONSOLIDADAS DE EXPROPRIAÇÃO</div>', unsafe_allow_html=True)
     st.markdown(f"""
         <div class="sintese-box">
-            • TEMPO MENSAL EXPROPRIADO: {h_exprop_mes:.1f}h<br>
-            • CUSTO DE REPRODUÇÃO (TARIFAS): R$ {custo_transp_mes:,.2f}<br>
-            • RENDIMENTO RESIDUAL (SOBRA FINAL): R$ {sobra_final:,.2f}<br>
-            • SALÁRIO REAL CONFISCADO: {perda_pct:.1f}%
-        </div>
-    """, unsafe_allow_html=True)
+            • <span class="destaque-amarelo">TEMPO MENSAL EXPROPRIADO:</span> {h_exprop_mes:.1f}h<br>
+            • <span class="destaque-amarelo">CUSTO DE REPRODUÇÃO (TARIFAS):</span> R$ {custo_transp_mes:,.2f}<br>
+            • <span class="destaque-amarelo">VALOR NOMINAL DO CONFISCO:</span> R$ {salario_confiscado:,.2f}<br>
+            • <span class="

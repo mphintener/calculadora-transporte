@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 from geodata import GEO_SPO 
 
-# 1. IDENTIDADE VISUAL: TERMINAL DE DADOS (PRETO/AMARELO/VERMELHO) [cite: 2026-02-11]
+# 1. IDENTIDADE VISUAL: TERMINAL DE DADOS (PRETO/AMARELO/VERMELHO)
 st.set_page_config(page_title="Beta II - Calculadora do Trecho", layout="centered")
 
 st.markdown("""
@@ -17,11 +17,11 @@ st.markdown("""
     .chamada-alerta { 
         background-color: #E63946; color: white; text-align: center; 
         padding: 10px; font-weight: 900; border: 2px solid #FFCC00; 
-        margin-bottom: 8px; text-transform: uppercase; font-size: 1.1rem;
+        margin-bottom: 8px; text-transform: uppercase; font-size: 1.2rem;
     }
     
     .titulo-pergunta { 
-        color: #FFCC00 !important; font-family: 'Arial Black', sans-serif; 
+        color: #FFCC00 !important; font-family: 'Arial', sans-serif; 
         font-size: 1rem !important; text-align: center; 
         text-transform: uppercase; margin-bottom: 25px;
     }
@@ -36,7 +36,6 @@ st.markdown("""
     
     .expro-destaque { color: #E63946; font-weight: 900; }
     .valor-amarelo { color: #FFCC00; font-weight: bold; }
-    .stTooltipIcon { color: #E63946 !important; font-weight: bold; }
     </style>
     """, unsafe_allow_html=True)
 
@@ -45,7 +44,7 @@ lista_geo = sorted(list(GEO_SPO.keys()))
 st.markdown('<div class="chamada-alerta">ALERTA DE EXPROPRIAÇÃO MENSAL</div>', unsafe_allow_html=True)
 st.markdown('<div class="titulo-pergunta">Quanto de tempo e de dinheiro são consumidos no seu deslocamento diário?</div>', unsafe_allow_html=True)
 
-with st.form("beta_ii_final_v4"):
+with st.form("form_beta_ii_v_final"):
     st.markdown('<h4 style="color:#FFCC00; font-size:1rem;">📍 GEOGRAFIA DO FLUXO PENDULAR</h4>', unsafe_allow_html=True)
     c1, c2 = st.columns(2)
     with c1: moradia = st.selectbox("MORADIA (ORIGEM):", lista_geo, index=0)
@@ -54,37 +53,37 @@ with st.form("beta_ii_final_v4"):
     st.markdown('<h4 style="color:#FFCC00; font-size:1rem;">💵 ECONOMIA PESSOAL</h4>', unsafe_allow_html=True)
     r1, r2 = st.columns(2)
     with r1: sal_bruto = st.number_input("SALÁRIO BRUTO (R$):", min_value=0.0, step=100.0, value=3000.0)
-    with r2: custo_vida = st.number_input("CUSTO DE VIDA FIXO (R$):", min_value=0.0, step=50.0, value=1500.0, 
-                                         help="OPCIONAL: Aluguel, mercado e contas básicas. Este valor NÃO altera o cálculo técnico da sua hora, apenas mostra o que sobra para você no fim do mês.")
+    with r2: custo_vida = st.number_input("CUSTO DE VIDA FIXO (R$):", min_value=0.0, step=50.0, value=0.0, 
+                                         help="OPCIONAL. Se deixar 0, a sobra final mostrará o rendimento antes dos gastos básicos.")
     
-    st.markdown('<h4 style="color:#FFCC00; font-size:1rem;">🚌 LOGÍSTICA (ÔNIBUS/METRÔ/TREM/APP/CARRO)</h4>', unsafe_allow_html=True)
-    g1, g2, g3 = st.columns(3)
-    with g1: p_pub = st.number_input("🚆 TRANSP. PÚBLICO", min_value=0.0, value=8.80)
-    with g2: p_app = st.number_input("📱 APP/TÁXI", min_value=0.0)
-    with g3: p_car = st.number_input("🚗 CARRO/MOTO", min_value=0.0)
+    st.markdown('<h4 style="color:#FFCC00; font-size:1rem;">🚌 CUSTOS NO TRECHO (DIÁRIO IDA+VOLTA)</h4>', unsafe_allow_html=True)
+    p_pub = st.number_input("🚆 ÔNIBUS / METRÔ / TREM (R$):", min_value=0.0, value=8.80)
     
     col_d, col_h = st.columns(2)
-    with col_d: dias_m = st.number_input("DIAS NO TRECHO / MÊS:", 1, 31, 22)
-    with col_h: h_dia = st.slider("HORAS NO TRECHO / DIA (TOTAL):", 0.5, 12.0, 3.0, step=0.5)
+    with col_d: dias_m = st.number_input("DIAS DE TRECHO NO MÊS:", 1, 31, 22)
+    with col_h: h_dia = st.slider("TOTAL DE HORAS NO TRECHO / DIA:", 0.5, 12.0, 3.0, step=0.5)
     
-    submit = st.form_submit_button("PROCESSAR IMPACTO REAL")
+    submit = st.form_submit_button("PROCESSAR DADOS DE IMPACTO")
 
 if submit:
-    # LÓGICA TÉCNICA (EXPROPRIAÇÃO DO TEMPO) [cite: 2026-02-11]
+    # LÓGICA TÉCNICA
     h_pagas = 176
     v_hora_nom = sal_bruto / h_pagas if sal_bruto > 0 else 0
-    custo_transp_mensal = (p_pub + p_app + p_car) * dias_m
+    custo_transp_mensal = p_pub * dias_m
     h_trecho_mensal = h_dia * dias_m
     
-    # Rendimento Real: (Salário - Tarifas) / (Horas Pagas + Horas Trecho)
+    # VALOR DO CONFISCO: TARIFA + (VALOR DO TEMPO EXPROPRIADO)
+    valor_tempo_expro = h_trecho_mensal * v_hora_nom
+    confisco_nominal = custo_transp_mensal + valor_tempo_expro
+    
+    # VALOR REAL DA HORA
     v_hora_real = (sal_bruto - custo_transp_mensal) / (h_pagas + h_trecho_mensal) if sal_bruto > 0 else 0
     depreciacao_p = (1 - (v_hora_real / v_hora_nom)) * 100 if v_hora_nom > 0 else 0
     
-    # Confisco: Tarifa + Valor do Tempo (Horas no Trecho * Valor da Hora Bruta)
-    confisco_total = custo_transp_mensal + (h_trecho_mensal * v_hora_nom)
+    # SOBRA FINAL
     sobra_residual = sal_bruto - custo_transp_mensal - custo_vida
 
-    # VETOR DE FLUXO PENDULAR (MELHORADO)
+    # VETOR DE FLUXO
     st.markdown('<h4 style="color:#FFCC00; font-size:1rem;">🗺️ FLUXO DE DESLOCAMENTO</h4>', unsafe_allow_html=True)
     st.markdown(f"""
         <div style="background: #111; padding: 25px; border: 1px solid #E63946; text-align: center;">
@@ -99,20 +98,14 @@ if submit:
         </div>
     """, unsafe_allow_html=True)
 
-    # SÍNTESE
-    st.markdown('<h4 style="color:#FFCC00; font-size:1rem;">📝 SÍNTESE DA EXPROPRIAÇÃO</h4>', unsafe_allow_html=True)
-    sintese_txt = (f"MOBILIDADE GSP: O trajeto {moradia}-{trabalho} rouba {h_trecho_mensal:.1f}h de vida por mês. "
-                   f"Seu rendimento real cai para R$ {v_hora_real:.2f}/h, uma perda de {depreciacao_p:.1f}%.")
-    st.markdown(f'<div class="sintese-box">{sintese_txt}</div>', unsafe_allow_html=True)
-
     # MÉTRICAS CONSOLIDADAS
     st.markdown('<h4 style="color:#FFCC00; font-size:1rem;">🔬 MÉTRICAS CONSOLIDADAS</h4>', unsafe_allow_html=True)
     st.markdown(f"""
         <div class="sintese-box">
             • <span class="valor-amarelo">VALOR DA HORA:</span> De R$ {v_hora_nom:.2f} para <span class="expro-destaque">R$ {v_hora_real:.2f}</span><br>
             • <span class="expro-destaque">TEMPO DE VIDA NO TRECHO:</span> {h_trecho_mensal:.1f}h/mês<br>
-            • <span class="valor-amarelo">VALOR DO CONFISCO (TARIFA+TEMPO):</span> R$ {confisco_total:,.2f}<br>
-            • <span class="valor-amarelo">SOBRA FINAL (APÓS CUSTO DE VIDA):</span> R$ {sobra_residual:,.2f}<br>
+            • <span class="valor-amarelo">VALOR DO CONFISCO (TARIFA + TEMPO):</span> R$ {confisco_nominal:.2f}<br>
+            • <span class="valor-amarelo">SOBRA FINAL (APÓS GASTOS):</span> R$ {sobra_residual:.2f}<br>
             • <span class="expro-destaque">DEPRECIAÇÃO DA FORÇA DE TRABALHO:</span> {depreciacao_p:.1f}%
         </div>
     """, unsafe_allow_html=True)

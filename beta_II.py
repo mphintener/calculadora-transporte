@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 from geodata import GEO_SPO 
 
-# 1. IDENTIDADE VISUAL: TERMINAL DE DADOS (ALTO CONTRASTE)
+# 1. IDENTIDADE VISUAL: TERMINAL DE DADOS (PRETO/AMARELO/VERMELHO)
 st.set_page_config(page_title="Beta II - Calculadora do Trecho", layout="centered")
 
 st.markdown("""
@@ -59,7 +59,7 @@ lista_geo = sorted(list(GEO_SPO.keys()))
 st.markdown('<div class="chamada-alerta">ALERTA DE EXPROPRIAÇÃO MENSAL</div>', unsafe_allow_html=True)
 st.markdown('<div class="titulo-pergunta">Quanto de tempo e de dinheiro são consumidos no seu deslocamento diário?</div>', unsafe_allow_html=True)
 
-with st.form("form_beta_ii_final_v11"):
+with st.form("form_beta_ii_final_v12"):
     st.markdown('<h4 style="color:#FFCC00; font-size:0.9rem;">📍 GEOGRAFIA DO FLUXO PENDULAR</h4>', unsafe_allow_html=True)
     c1, c2 = st.columns(2)
     with c1: moradia = st.selectbox("MORADIA (ORIGEM):", lista_geo, index=0)
@@ -67,14 +67,14 @@ with st.form("form_beta_ii_final_v11"):
     
     st.markdown('<h4 style="color:#FFCC00; font-size:0.9rem;">💵 ECONOMIA PESSOAL</h4>', unsafe_allow_html=True)
     r1, r2 = st.columns(2)
-    with r1: sal_bruto = st.number_input("SALÁRIO BRUTO (R$):", min_value=0.0, step=100.0, value=3000.0)
+    with r1: sal_bruto = st.number_input("SALÁRIO BRUTO (R$):", min_value=0.0, step=100.0, value=0.0)
     with r2: custo_vida = st.number_input("CUSTO DE VIDA FIXO (R$):", min_value=0.0, step=50.0, value=0.0, 
                                          help="OPCIONAL. Gastos de sobrevivência (Aluguel, Comida, Contas). Este valor NÃO entra no cálculo do Confisco, ele apenas define sua sobra final.")
     
     st.markdown('<h4 style="color:#FFCC00; font-size:0.9rem;">🚌 CUSTOS DIÁRIOS (IDA+VOLTA)</h4>', unsafe_allow_html=True)
     g1, g2, g3 = st.columns(3)
-    with g1: p_bus = st.number_input("🚌 ÔNIBUS (R$)", value=4.40)
-    with g2: p_trem = st.number_input("🚆 METRÔ/TREM (R$)", value=5.00)
+    with g1: p_bus = st.number_input("🚌 ÔNIBUS (R$)", value=0.0)
+    with g2: p_trem = st.number_input("🚆 METRÔ/TREM (R$)", value=0.0)
     with g3: p_integra = st.number_input("🔄 INTEGRAÇÃO (R$)", value=0.0)
     
     g4, g5 = st.columns(2)
@@ -84,28 +84,29 @@ with st.form("form_beta_ii_final_v11"):
     st.write("")
     col_d, col_h = st.columns(2)
     with col_d: dias_m = st.number_input("DIAS DE TRECHO NO MÊS:", 1, 31, 22)
-    with col_h: h_dia = st.slider("TOTAL DE HORAS NO TRECHO / DIA:", 0.5, 12.0, 3.0, step=0.5)
+    with col_h: h_dia = st.slider("TOTAL DE HORAS NO TRECHO / DIA:", 0.0, 12.0, 0.0, step=0.5)
     
     submit = st.form_submit_button("PROCESSAR IMPACTO REAL")
 
 if submit:
-    # LÓGICA TÉCNICA (EXPROPRIAÇÃO DO TEMPO)
+    # LÓGICA TÉCNICA
     h_pagas = 176
     v_hora_nom = sal_bruto / h_pagas if sal_bruto > 0 else 0
     custo_transp_diario = p_bus + p_trem + p_integra + p_app + p_car
     custo_transp_mensal = custo_transp_diario * dias_m
     h_trecho_mensal = h_dia * dias_m
     
-    # CONFISCO: TARIFA TOTAL + VALOR DO TEMPO EXPROPRIADO (Trabalho não pago)
+    # CONFISCO NOMINAL (TARIFA + VALOR DO TEMPO)
     valor_tempo_expro = h_trecho_mensal * v_hora_nom
     confisco_total = custo_transp_mensal + valor_tempo_expro
     
+    # VALOR REAL DA HORA
     v_hora_real = (sal_bruto - custo_transp_mensal) / (h_pagas + h_trecho_mensal) if sal_bruto > 0 else 0
     depreciacao_p = (1 - (v_hora_real / v_hora_nom)) * 100 if v_hora_nom > 0 else 0
     sobra_residual = sal_bruto - custo_transp_mensal - custo_vida
 
     # VETOR DE FLUXO
-    st.markdown('<h4 style="color:#FFCC00; font-size:0.9rem;">🗺️ FLUXO DE DESLOCAMENTO</h4>', unsafe_allow_html=True)
+    st.markdown('<h4 style="color:#FFCC00; font-size:0.9rem;">🗺️ VETOR DE DESLOCAMENTO PENDULAR</h4>', unsafe_allow_html=True)
     st.markdown(f"""
         <div style="background: #111; padding: 25px; border: 1px solid #E63946; text-align: center;">
             <div style="display: flex; justify-content: space-around; align-items: center;">
@@ -133,7 +134,7 @@ if submit:
         </div>
     """, unsafe_allow_html=True)
 
-    # NOTA TÉCNICA RESTAURADA
+    # NOTA TÉCNICA
     st.markdown(f"""
         <div class="nota-tecnica">
             <b>NOTA TÉCNICA:</b> O "Confisco" reflete o valor total subtraído do rendimento real do trabalhador. 

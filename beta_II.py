@@ -132,4 +132,7 @@ if btn:
             • <span class="destaque-amarelo">TEMPO MENSAL EXPROPRIADO:</span> {h_exprop_mes:.1f}h<br>
             • <span class="destaque-amarelo">CUSTO DE REPRODUÇÃO (TARIFAS):</span> R$ {custo_transp_mes:,.2f}<br>
             • <span class="destaque-amarelo">VALOR NOMINAL DO CONFISCO:</span> R$ {salario_confiscado:,.2f}<br>
-            • <span class="
+            • <span class="destaque-amarelo">RENDIMENTO RESIDUAL (SOBRA FINAL):</span> R$ {rendimento_residual:,.2f}<br>
+            • <span class="destaque-amarelo">DEPRECIAÇÃO DA HORA DE TRABALHO:</span> {depreciacao_pct:.1f}%
+        </div>
+    """, unsafe_allow_html=True)

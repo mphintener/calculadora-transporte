@@ -11,13 +11,13 @@ st.markdown("""
     
     label, .stSelectbox label, .stNumberInput label { 
         color: #FFCC00 !important; font-weight: 800 !important; 
-        text-transform: uppercase !important; font-size: 0.85rem !important;
+        text-transform: uppercase !important; font-size: 0.8rem !important;
     }
 
     .chamada-alerta { 
         background-color: #E63946; color: white; text-align: center; 
         padding: 10px; font-weight: 900; border: 2px solid #FFCC00; 
-        margin-bottom: 8px; text-transform: uppercase; font-size: 1.2rem;
+        margin-bottom: 8px; text-transform: uppercase; font-size: 1.1rem;
     }
     
     .titulo-pergunta { 
@@ -44,43 +44,46 @@ lista_geo = sorted(list(GEO_SPO.keys()))
 st.markdown('<div class="chamada-alerta">ALERTA DE EXPROPRIAÇÃO MENSAL</div>', unsafe_allow_html=True)
 st.markdown('<div class="titulo-pergunta">Quanto de tempo e de dinheiro são consumidos no seu deslocamento diário?</div>', unsafe_allow_html=True)
 
-with st.form("form_beta_ii_v_final"):
+with st.form("form_beta_ii_v_detalhada"):
     st.markdown('<h4 style="color:#FFCC00; font-size:1rem;">📍 GEOGRAFIA DO FLUXO PENDULAR</h4>', unsafe_allow_html=True)
-    c1, c2 = st.columns(2)
-    with c1: moradia = st.selectbox("MORADIA (ORIGEM):", lista_geo, index=0)
-    with c2: trabalho = st.selectbox("TRABALHO (DESTINO):", lista_geo, index=1)
+    c_geo1, c_geo2 = st.columns(2)
+    with c_geo1: moradia = st.selectbox("MORADIA (ORIGEM):", lista_geo, index=0)
+    with c_geo2: trabalho = st.selectbox("TRABALHO (DESTINO):", lista_geo, index=1)
     
     st.markdown('<h4 style="color:#FFCC00; font-size:1rem;">💵 ECONOMIA PESSOAL</h4>', unsafe_allow_html=True)
     r1, r2 = st.columns(2)
     with r1: sal_bruto = st.number_input("SALÁRIO BRUTO (R$):", min_value=0.0, step=100.0, value=3000.0)
     with r2: custo_vida = st.number_input("CUSTO DE VIDA FIXO (R$):", min_value=0.0, step=50.0, value=0.0, 
-                                         help="OPCIONAL. Se deixar 0, a sobra final mostrará o rendimento antes dos gastos básicos.")
+                                         help="OPCIONAL. Aluguel, comida, contas. Se zero, a sobra foca no impacto do transporte.")
     
-    st.markdown('<h4 style="color:#FFCC00; font-size:1rem;">🚌 CUSTOS NO TRECHO (DIÁRIO IDA+VOLTA)</h4>', unsafe_allow_html=True)
-    p_pub = st.number_input("🚆 ÔNIBUS / METRÔ / TREM (R$):", min_value=0.0, value=8.80)
+    st.markdown('<h4 style="color:#FFCC00; font-size:1rem;">🚌 CUSTOS DIÁRIOS NO TRECHO (IDA+VOLTA)</h4>', unsafe_allow_html=True)
+    g1, g2, g3 = st.columns(3)
+    with g1: p_bus = st.number_input("🚌 ÔNIBUS (R$):", min_value=0.0, value=4.40)
+    with g2: p_trem = st.number_input("🚆 METRÔ/TREM (R$):", min_value=0.0, value=5.00)
+    with g3: p_integra = st.number_input("🔄 INTEGRAÇÃO (R$):", min_value=0.0, value=0.0)
     
+    st.write("")
     col_d, col_h = st.columns(2)
     with col_d: dias_m = st.number_input("DIAS DE TRECHO NO MÊS:", 1, 31, 22)
     with col_h: h_dia = st.slider("TOTAL DE HORAS NO TRECHO / DIA:", 0.5, 12.0, 3.0, step=0.5)
     
-    submit = st.form_submit_button("PROCESSAR DADOS DE IMPACTO")
+    submit = st.form_submit_button("PROCESSAR IMPACTO REAL")
 
 if submit:
     # LÓGICA TÉCNICA
     h_pagas = 176
     v_hora_nom = sal_bruto / h_pagas if sal_bruto > 0 else 0
-    custo_transp_mensal = p_pub * dias_m
+    custo_transp_diario = p_bus + p_trem + p_integra
+    custo_transp_mensal = custo_transp_diario * dias_m
     h_trecho_mensal = h_dia * dias_m
     
-    # VALOR DO CONFISCO: TARIFA + (VALOR DO TEMPO EXPROPRIADO)
+    # CONFISCO: TARIFA TOTAL + VALOR DO TEMPO EXPROPRIADO
     valor_tempo_expro = h_trecho_mensal * v_hora_nom
-    confisco_nominal = custo_transp_mensal + valor_tempo_expro
+    confisco_total = custo_transp_mensal + valor_tempo_expro
     
-    # VALOR REAL DA HORA
+    # RENDIMENTO REAL
     v_hora_real = (sal_bruto - custo_transp_mensal) / (h_pagas + h_trecho_mensal) if sal_bruto > 0 else 0
     depreciacao_p = (1 - (v_hora_real / v_hora_nom)) * 100 if v_hora_nom > 0 else 0
-    
-    # SOBRA FINAL
     sobra_residual = sal_bruto - custo_transp_mensal - custo_vida
 
     # VETOR DE FLUXO
@@ -93,19 +96,22 @@ if submit:
                 <div style="color: #FFCC00; font-size: 1.1rem; font-family: 'Arial Black';">💼 {trabalho}</div>
             </div>
             <p style="color:#E63946; font-size:0.85rem; margin-top:15px; font-weight:bold; border-top: 1px solid #333; padding-top:10px;">
-                O DESLOCAMENTO É TEMPO DE TRABALHO NÃO PAGO
+                CASA-TRABALHO-CASA É TEMPO DE TRABALHO NÃO PAGO
             </p>
         </div>
     """, unsafe_allow_html=True)
 
     # MÉTRICAS CONSOLIDADAS
     st.markdown('<h4 style="color:#FFCC00; font-size:1rem;">🔬 MÉTRICAS CONSOLIDADAS</h4>', unsafe_allow_html=True)
+    
+    label_sobra = "SOBRA FINAL (APÓS CUSTO DE VIDA):" if custo_vida > 0 else "SALÁRIO LÍQUIDO DO TRANSPORTE:"
+    
     st.markdown(f"""
         <div class="sintese-box">
             • <span class="valor-amarelo">VALOR DA HORA:</span> De R$ {v_hora_nom:.2f} para <span class="expro-destaque">R$ {v_hora_real:.2f}</span><br>
             • <span class="expro-destaque">TEMPO DE VIDA NO TRECHO:</span> {h_trecho_mensal:.1f}h/mês<br>
-            • <span class="valor-amarelo">VALOR DO CONFISCO (TARIFA + TEMPO):</span> R$ {confisco_nominal:.2f}<br>
-            • <span class="valor-amarelo">SOBRA FINAL (APÓS GASTOS):</span> R$ {sobra_residual:.2f}<br>
+            • <span class="valor-amarelo">VALOR DO CONFISCO (TARIFA + TEMPO):</span> R$ {confisco_total:,.2f}<br>
+            • <span class="valor-amarelo">{label_sobra}</span> R$ {sobra_residual:,.2f}<br>
             • <span class="expro-destaque">DEPRECIAÇÃO DA FORÇA DE TRABALHO:</span> {depreciacao_p:.1f}%
         </div>
     """, unsafe_allow_html=True)

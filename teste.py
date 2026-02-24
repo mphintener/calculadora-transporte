@@ -40,23 +40,31 @@ with st.form("diagnostico_mestre"):
         ])
 
     st.markdown("---")
-    st.markdown("### 📍 LOCALIDADE E TEMPO")
-    c4, c5, c6 = st.columns(3)
-    with c4: 
-        moradia = st.text_input("🏠 MORADIA", "Ex: Caieiras")
-    with c5: 
-        trabalho = st.text_input("🏢 TRABALHO", "Ex: São Paulo")
-    with c6: 
-        h_dia = st.number_input("⏳ HORAS NO TRECHO/DIA (Total Ida/Volta)", value=2.0, step=0.5)
+    st.markdown("### 🏠 LOCAL DE MORADIA")
+    m1, m2 = st.columns(2)
+    with m1: 
+        municipio_moradia = st.text_input("MUNICÍPIO (Moradia)", "Ex: Caieiras")
+    with m2: 
+        distrito_moradia = st.text_input("DISTRITO/BAIRRO (Moradia)", "Ex: Laranjeiras")
+
+    st.markdown("---")
+    st.markdown("### 🏢 LOCAL DE TRABALHO")
+    t1, t2, t3 = st.columns(3)
+    with t1: 
+        municipio_trabalho = st.text_input("MUNICÍPIO (Trabalho)", "Ex: São Paulo")
+    with t2: 
+        distrito_trabalho = st.text_input("DISTRITO/BAIRRO (Trabalho)", "Ex: Centro")
+    with t3:
+        h_dia = st.number_input("⏳ HORAS NO TRECHO (Total Ida/Volta)", value=2.0, step=0.5)
 
     st.markdown("---")
     st.markdown("### 🚌 CUSTOS DIÁRIOS DE TRANSPORTE (Ida/Volta)")
-    t1, t2, t3, t4, t5 = st.columns(5)
-    with t1: g_onibus = st.number_input("🚍 ÔNIBUS (R$)", min_value=0.0)
-    with t2: g_metro = st.number_input("🚇 METRÔ (R$)", min_value=0.0)
-    with t3: g_trem = st.number_input("🚆 TREM (R$)", min_value=0.0)
-    with t4: g_app = st.number_input("🚗 APP (R$)", min_value=0.0)
-    with t5: g_carro = st.number_input("⛽ COMBUSTÍVEL (R$)", min_value=0.0)
+    tr1, tr2, tr3, tr4, tr5 = st.columns(5)
+    with tr1: g_onibus = st.number_input("🚍 ÔNIBUS (R$)", min_value=0.0)
+    with tr2: g_metro = st.number_input("🚇 METRÔ (R$)", min_value=0.0)
+    with tr3: g_trem = st.number_input("🚆 TREM (R$)", min_value=0.0)
+    with tr4: g_app = st.number_input("🚗 APP (R$)", min_value=0.0)
+    with tr5: g_carro = st.number_input("⛽ COMBUSTÍVEL (R$)", min_value=0.0)
 
     st.markdown("---")
     st.markdown("### 💰 RENDIMENTOS E CUSTO DE VIDA")
@@ -86,7 +94,9 @@ if submit:
     st.markdown(f"""
     <div style="background:#000; padding:25px; border:2px solid #E63946; text-align:center; margin: 20px 0;">
         <div style="color:#FFCC00; font-weight:bold; font-size:1.6rem;">
-            🏠 {moradia.upper()} <span style="color:#E63946;">—————▶</span> 💼 {trabalho.upper()}
+            🏠 {municipio_moradia.upper()} ({distrito_moradia.upper()}) <br>
+            <span style="color:#E63946;">—————▶</span> <br>
+            💼 {municipio_trabalho.upper()} ({distrito_trabalho.upper()})
         </div>
         <div style="margin-top:15px; color:#FFCC00; font-size:1.1rem;">
             <b>TEMPO EXPROPRIADO:</b> {h_mensal:.1f}h por mês<br>
@@ -115,6 +125,6 @@ if submit:
     st.markdown(f"""
     <div style="background-color: #111; padding: 20px; border-left: 5px solid #FFCC00; margin-top: 25px; font-size: 1rem;">
         <b style="color: #FFCC00;">NOTA TÉCNICA:</b><br>
-        O deslocamento entre {moradia} e {trabalho} é tempo de trabalho não pago que corrói seu salário real.
+        O deslocamento entre {municipio_moradia} e {municipio_trabalho} é tempo de trabalho não pago que corrói seu salário real.
     </div>
     """, unsafe_allow_html=True)

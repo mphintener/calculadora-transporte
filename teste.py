@@ -64,7 +64,7 @@ with st.form("diagnostico_mestre"):
     with r1: 
         sal_bruto = st.number_input("💰 SALÁRIO BRUTO (R$)", min_value=0.0)
     with r2: 
-        custo_vida = st.number_input("🏠 CUSTO DE VIDA (ALUGUEL/COMIDA) (R$)", min_value=0.0)
+        custo_vida = st.number_input("🏠 CUSTO DE VIDA (ALUGUEL/COMIDA) (R$) ? (Opcional)", min_value=0.0, value=0.0)
     with r3: 
         dias_m = st.number_input("📅 DIAS TRABALHADOS/MÊS", value=22)
 
@@ -99,7 +99,7 @@ if submit:
         🚨 ALERTA DE EXPROPRIAÇÃO MENSAL
     </div>""", unsafe_allow_html=True)
 
-    # Resultados Consolidados (Legibilidade aumentada)
+    # Resultados Consolidados
     st.markdown(f"""
     <div class="report-box">
         <h3 style="margin-top:0; color:#FFCC00;">📋 RESULTADOS</h3>

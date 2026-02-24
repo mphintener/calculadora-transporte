@@ -17,15 +17,20 @@ st.markdown("""
     </style>
     """, unsafe_allow_html=True)
 
-# 2. DEFINIÇÃO DAS LISTAS (Macrorregião e Capital)
-lista_municipios = ["Caieiras", "Franco da Rocha", "Francisco Morato", "Mairiporã", "Cajamar", "São Paulo", "Outros"]
+# 2. BANCO DE DADOS GEOGRÁFICO (RMSP e Distritos SP)
+municipios_rmsp = sorted([
+    "Arujá", "Barueri", "Biritiba-Mirim", "Caieiras", "Cajamar", "Carapicuíba", "Cotia", 
+    "Diadema", "Embu das Artes", "Embu-Guaçu", "Ferraz de Vasconcelos", "Francisco Morato", 
+    "Franco da Rocha", "Guararema", "Guarulhos", "Itapecerica da Serra", "Itapevi", 
+    "Itaquaquecetuba", "Jandira", "Juquitiba", "Mairiporã", "Mauá", "Mogi das Cruzes", 
+    "Osasco", "Pirapora do Bom Jesus", "Poá", "Ribeirão Pires", "Rio Grande da Serra", 
+    "Salesópolis", "Santa Isabel", "Santana de Parnaíba", "Santo André", "São Bernardo do Campo", 
+    "São Caetano do Sul", "São Lourenço da Serra", "São Paulo", "Suzano", "Taboão da Serra", "Vargem Grande Paulista"
+])
 
-# Distritos principais da região e exemplos da capital para padronização
-lista_distritos = [
-    "Laranjeiras", "Centro", "Portal das Laranjeiras", "Vila Rosina", "Serpa", "Eucaliptos", # Caieiras
-    "Parque Vitória", "Jardim dos Reis", "Pouso Alegre", # Franco
-    "Bacia do Juquery", "Pirituba", "Perus", "Jaraguá", "Anhanguera", "Lapa", "Barra Funda", "Pinheiros", "Itaim Bibi", "Santo Amaro", "Itaquera", "Tatuapé", "Outros"
-]
+distritos_sp = sorted([
+    "Água Rasa", "Alto de Pinheiros", "Anhanguera", "Aricanduva", "Artur Alvim", "Barra Funda", "Bela Vista", "Belém", "Bom Retiro", "Brasilândia", "Butantã", "Cachoeirinha", "Cambuci", "Campo Belo", "Campo Grande", "Campo Limpo", "Cangaíba", "Capão Redondo", "Carrão", "Casa Verde", "Cidade Ademar", "Cidade Dutra", "Cidade Líder", "Cidade Tiradentes", "Consolação", "Cursino", "Ermelino Matarazzo", "Freguesia do Ó", "Grajaú", "Guaianases", "Iguatemi", "Ipiranga", "Itaim Bibi", "Itaim Paulista", "Itaquera", "Jabaquara", "Jaçanã", "Jaguara", "Jaguaré", "Jaraguá", "Jardim Ângela", "Jardim Helena", "Jardim Paulista", "Jardim São Luís", "Lapa", "Liberdade", "Limão", "Mandaqui", "Marsilac", "Moema", "Mooca", "Morumbi", "Parelheiros", "Pari", "Parque do Carmo", "Pedreira", "Penha", "Perdizes", "Perus", "Pinheiros", "Pirituba", "Ponte Rasa", "Raposo Tavares", "República", "Rio Pequeno", "Sacomã", "Santa Cecília", "Santana", "Santo Amaro", "São Domingos", "São Lucas", "São Mateus", "São Miguel", "São Rafael", "Sapopemba", "Saúde", "Sé", "Socorro", "Tatuapé", "Tremembé", "Tucuruvi", "Vila Andrade", "Vila Curuçá", "Vila Formosa", "Vila Guilherme", "Vila Jacuí", "Vila Leopoldina", "Vila Maria", "Vila Mariana", "Vila Matilde", "Vila Medeiros", "Vila Prudente", "Vila Sônia"
+])
 
 # 3. TÍTULO E CHAMADA
 st.title("📊 CALCULADORA DO TRECHO")
@@ -35,93 +40,85 @@ st.subheader("Quanto de tempo e de dinheiro são consumidos no seu deslocamento 
 with st.form("diagnostico_mestre"):
     st.markdown("### 👤 PERFIL")
     c1, c2, c3 = st.columns(3)
-    with c1: 
-        idade = st.number_input("👤 IDADE", min_value=14, value=30)
-    with c2: 
-        escolaridade = st.selectbox("🎓 ESCOLARIDADE", [
-            "Fundamental Incompleto", "Fundamental Completo", "Médio Incompleto", "Médio Completo", 
-            "Técnico", "Superior Incompleto", "Superior Completo", "Pós-Graduação", "Mestrado", "Doutorado"
-        ])
-    with c3: 
-        setor = st.selectbox("💼 SETOR DE ATIVIDADE", ["Serviços", "Comércio", "Indústria", "Educação", "Saúde", "TI/Tecnologia", "Construção Civil", "Transportes", "Administração Pública", "Outros"])
+    with c1: idade = st.number_input("👤 IDADE", min_value=14, value=30)
+    with c2: escolaridade = st.selectbox("🎓 ESCOLARIDADE", ["Fundamental Incompleto", "Fundamental Completo", "Médio Incompleto", "Médio Completo", "Técnico", "Superior Incompleto", "Superior Completo", "Pós-Graduação", "Mestrado", "Doutorado"])
+    with c3: setor = st.selectbox("💼 SETOR DE ATIVIDADE", ["Serviços", "Comércio", "Indústria", "Educação", "Saúde", "TI/Tecnologia", "Construção Civil", "Transportes", "Administração Pública", "Outros"])
 
     st.markdown("---")
     
-    # MORADIA COM DROPDOWN
+    # MORADIA
     st.markdown("### 🏠 LOCAL DE MORADIA")
     m1, m2 = st.columns(2)
-    with m1: municipio_moradia = st.selectbox("MUNICÍPIO (Moradia)", lista_municipios)
-    with m2: distrito_moradia = st.selectbox("DISTRITO/BAIRRO (Moradia)", lista_distritos)
+    with m1: mun_moradia = st.selectbox("MUNICÍPIO (Moradia)", municipios_rmsp, index=municipios_rmsp.index("Franco da Rocha"))
+    with m2: 
+        if mun_moradia == "São Paulo":
+            dist_moradia = st.selectbox("DISTRITO (Moradia)", distritos_sp)
+        else:
+            dist_moradia = st.text_input("BAIRRO/DISTRITO (Moradia)", "Centro")
 
-    # TRABALHO COM DROPDOWN
+    # TRABALHO
     st.markdown("### 🏢 LOCAL DE TRABALHO")
     t1, t2, t3 = st.columns(3)
-    with t1: municipio_trabalho = st.selectbox("MUNICÍPIO (Trabalho)", lista_municipios)
-    with t2: distrito_trabalho = st.selectbox("DISTRITO/BAIRRO (Trabalho)", lista_distritos)
+    with t1: mun_trabalho = st.selectbox("MUNICÍPIO (Trabalho)", municipios_rmsp, index=municipios_rmsp.index("São Paulo"))
+    with t2: 
+        if mun_trabalho == "São Paulo":
+            dist_trabalho = st.selectbox("DISTRITO (Trabalho)", distritos_sp)
+        else:
+            dist_trabalho = st.text_input("BAIRRO/DISTRITO (Trabalho)", "Centro")
     with t3: h_dia = st.number_input("⏳ HORAS NO TRECHO (Ida/Volta)", value=2.0, step=0.5)
 
     st.markdown("---")
-    st.markdown("### 🚌 CUSTOS DIÁRIOS DE TRANSPORTE (Ida/Volta)")
+    st.markdown("### 🚌 CUSTOS DIÁRIOS (Ida/Volta)")
     tr1, tr2, tr3, tr4, tr5 = st.columns(5)
-    with tr1: g_onibus = st.number_input("🚍 ÔNIBUS (R$)", min_value=0.0)
-    with tr2: g_metro = st.number_input("🚇 METRÔ (R$)", min_value=0.0)
-    with tr3: g_trem = st.number_input("🚆 TREM (R$)", min_value=0.0)
-    with tr4: g_app = st.number_input("🚗 APP (R$)", min_value=0.0)
-    with tr5: g_carro = st.number_input("⛽ COMBUSTÍVEL (R$)", min_value=0.0)
+    with tr1: g_on = st.number_input("🚍 ÔNIBUS", min_value=0.0)
+    with tr2: g_me = st.number_input("🚇 METRÔ", min_value=0.0)
+    with tr3: g_tr = st.number_input("🚆 TREM", min_value=0.0)
+    with tr4: g_ap = st.number_input("🚗 APP", min_value=0.0)
+    with tr5: g_ca = st.number_input("⛽ CARRO", min_value=0.0)
 
     st.markdown("---")
     st.markdown("### 💰 RENDIMENTOS E CUSTO DE VIDA")
     r1, r2, r3 = st.columns(3)
-    with r1: sal_bruto = st.number_input("💰 SALÁRIO BRUTO (R$)", min_value=0.0)
-    with r2: custo_vida = st.number_input("🏠 CUSTO DE VIDA (ALUGUEL/COMIDA) (R$) ? (Opcional)", min_value=0.0, value=0.0)
-    with r3: dias_m = st.number_input("📅 DIAS TRABALHADOS/MÊS", value=22)
+    with r1: sal = st.number_input("💰 SALÁRIO BRUTO (R$)", min_value=0.0)
+    with r2: c_vida = st.number_input("🏠 CUSTO DE VIDA (ALUGUEL/COMIDA) (R$)?", min_value=0.0)
+    with r3: dias = st.number_input("📅 DIAS TRABALHADOS/MÊS", value=22)
 
     submit = st.form_submit_button("EFETUAR DIAGNÓSTICO")
 
 # 5. LÓGICA E RESULTADOS
 if submit:
-    gasto_diario = g_onibus + g_metro + g_trem + g_app + g_carro
-    custo_transp_m = gasto_diario * dias_m
-    v_hora_nom = sal_bruto / 176 if sal_bruto > 0 else 0
-    h_mensal = h_dia * dias_m
-    rend_disponivel = sal_bruto - custo_transp_m
-    sobra_final = rend_disponivel - custo_vida
-    v_hora_real = rend_disponivel / (176 + h_mensal) if (176 + h_mensal) > 0 else 0
-    confisco = custo_transp_m + (h_mensal * v_hora_nom)
-    depreciacao = (1 - (v_hora_real / v_hora_nom)) * 100 if v_hora_nom > 0 else 0
+    gasto_d = g_on + g_me + g_tr + g_ap + g_ca
+    custo_m = gasto_d * dias
+    v_h_nom = sal / 176 if sal > 0 else 0
+    h_m = h_dia * dias
+    rend_d = sal - custo_m
+    sobra = rend_d - c_vida
+    v_h_re = rend_d / (176 + h_m) if (176 + h_m) > 0 else 0
+    confi = custo_m + (h_m * v_h_nom)
+    depre = (1 - (v_h_re / v_h_nom)) * 100 if v_h_nom > 0 else 0
 
     st.markdown(f"""
     <div style="background:#000; padding:25px; border:2px solid #E63946; text-align:center; margin: 20px 0;">
-        <div style="color:#FFCC00; font-weight:bold; font-size:1.6rem;">
-            🏠 {municipio_moradia.upper()} - {distrito_moradia.upper()} <br>
+        <div style="color:#FFCC00; font-weight:bold; font-size:1.4rem;">
+            🏠 {mun_moradia.upper()} ({dist_moradia.upper()}) <br>
             <span style="color:#E63946;">—————▶</span> <br>
-            💼 {municipio_trabalho.upper()} - {distrito_trabalho.upper()}
+            💼 {mun_trabalho.upper()} ({dist_trabalho.upper()})
         </div>
         <div style="margin-top:15px; color:#FFCC00; font-size:1.1rem;">
-            <b>TEMPO EXPROPRIADO:</b> {h_mensal:.1f}h por mês<br>
-            <small>PERFIL: {idade} ANOS | {escolaridade.upper()} | {setor.upper()}</small>
+            <b>TEMPO EXPROPRIADO:</b> {h_m:.1f}h por mês
         </div>
     </div>
     """, unsafe_allow_html=True)
 
-    st.markdown("""<div style="background-color: #E63946; color: white; padding: 15px; text-align: center; font-weight: bold; border-radius: 5px; font-size: 1.2rem;">
-        🚨 ALERTA DE EXPROPRIAÇÃO MENSAL
-    </div>""", unsafe_allow_html=True)
+    st.markdown("""<div style="background-color: #E63946; color: white; padding: 15px; text-align: center; font-weight: bold; border-radius: 5px;">🚨 ALERTA DE EXPROPRIAÇÃO MENSAL</div>""", unsafe_allow_html=True)
 
     st.markdown(f"""
     <div class="report-box">
         <h3 style="margin-top:0; color:#FFCC00;">📋 RESULTADOS</h3>
-        <p>• 💹 <b>VALOR DA HORA REAL:</b> <span style="color:white;">R$ {v_hora_real:.2f}</span></p>
-        <p>• 💸 <b>CONFISCO OPERACIONAL:</b> <span style="color:white;">R$ {confisco:.2f}</span></p>
-        <p>• 💵 <b>RENDIMENTO DISPONÍVEL:</b> <span style="color:white;">R$ {rend_disponivel:.2f}</span></p>
-        <p>• 📉 <b>SOBRA RESIDUAL (PÓS-CUSTO DE VIDA):</b> <span style="color:white;">R$ {sobra_final:.2f}</span></p>
-        <p>• 📉 <b>DEPRECIAÇÃO DA FORÇA DE TRABALHO:</b> <span style="color:#E63946;">{depreciacao:.1f}%</span></p>
-    </div>
-    """, unsafe_allow_html=True)
-
-    st.markdown(f"""
-    <div style="background-color: #111; padding: 20px; border-left: 5px solid #FFCC00; margin-top: 25px; font-size: 1rem;">
-        <b style="color: #FFCC00;">NOTA TÉCNICA:</b><br>
-        O deslocamento entre {municipio_moradia} e {municipio_trabalho} corrói seu salário real.
+        <p>• 💹 <b>VALOR DA HORA REAL:</b> R$ {v_h_re:.2f}</p>
+        <p>• 💸 <b>CONFISCO OPERACIONAL:</b> R$ {confi:.2f}</p>
+        <p>• 💵 <b>RENDIMENTO DISPONÍVEL:</b> R$ {rend_d:.2f}</p>
+        <p>• 📉 <b>SOBRA RESIDUAL:</b> R$ {sobra:.2f}</p>
+        <p>• 📉 <b>DEPRECIAÇÃO:</b> {depre:.1f}%</p>
     </div>
     """, unsafe_allow_html=True)

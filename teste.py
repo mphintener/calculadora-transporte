@@ -24,57 +24,49 @@ distritos_sp = sorted(["Água Rasa", "Alto de Pinheiros", "Anhanguera", "Aricand
 st.title("📊 CALCULADORA DO TRECHO")
 st.subheader("Quanto de tempo e de dinheiro são consumidos no seu deslocamento diário?")
 
-# 3. FORMULÁRIO (Usando State para os distritos não sumirem)
-with st.form("diagnostico_mestre"):
-    st.markdown("### 👤 PERFIL")
-    c1, c2, c3 = st.columns(3)
-    with c1: idade = st.number_input("👤 IDADE", min_value=14, value=30)
-    with c2: escolaridade = st.selectbox("🎓 ESCOLARIDADE", ["Fundamental Incompleto", "Fundamental Completo", "Médio Incompleto", "Médio Completo", "Técnico", "Superior Incompleto", "Superior Completo", "Pós-Graduação", "Mestrado", "Doutorado"])
-    with c3: setor = st.selectbox("💼 SETOR DE ATIVIDADE", ["Serviços", "Comércio", "Indústria", "Educação", "Saúde", "TI/Tecnologia", "Construção Civil", "Transportes", "Administração Pública", "Outros"])
+# --- ENTRADA DE DADOS FORA DO FORM (Para garantir dinamismo) ---
 
-    st.markdown("---")
-    
-    # MORADIA INTELIGENTE
-    st.markdown("### 🏠 LOCAL DE MORADIA")
-    m1, m2 = st.columns(2)
-    with m1: mun_moradia = st.selectbox("MUNICÍPIO (Moradia)", municipios_rmsp, index=municipios_rmsp.index("São Paulo"))
-    with m2:
-        if mun_moradia == "São Paulo":
-            dist_moradia = st.selectbox("DISTRITO (Moradia)", distritos_sp, index=distritos_sp.index("Rio Pequeno"))
-        else:
-            dist_moradia = st.text_input("BAIRRO/DISTRITO (Moradia)", value="", help="Digite o nome do seu bairro.")
+st.markdown("### 👤 PERFIL")
+c1, c2, c3 = st.columns(3)
+idade = c1.number_input("👤 IDADE", min_value=14, value=30)
+escolaridade = c2.selectbox("🎓 ESCOLARIDADE", ["Fundamental Incompleto", "Fundamental Completo", "Médio Incompleto", "Médio Completo", "Técnico", "Superior Incompleto", "Superior Completo", "Pós-Graduação", "Mestrado", "Doutorado"])
+setor = c3.selectbox("💼 SETOR DE ATIVIDADE", ["Serviços", "Comércio", "Indústria", "Educação", "Saúde", "TI/Tecnologia", "Construção Civil", "Transportes", "Administração Pública", "Outros"])
 
-    # TRABALHO INTELIGENTE
-    st.markdown("### 🏢 LOCAL DE TRABALHO")
-    t1, t2, t3 = st.columns(3)
-    with t1: mun_trabalho = st.selectbox("MUNICÍPIO (Trabalho)", municipios_rmsp, index=municipios_rmsp.index("São Paulo"))
-    with t2:
-        if mun_trabalho == "São Paulo":
-            dist_trabalho = st.selectbox("DISTRITO (Trabalho)", distritos_sp, index=distritos_sp.index("Alto de Pinheiros"))
-        else:
-            dist_trabalho = st.text_input("BAIRRO/DISTRITO (Trabalho)", value="", help="Digite o nome do bairro onde trabalha.")
-    with t3: h_dia = st.number_input("⏳ HORAS NO TRECHO (Ida/Volta)", value=2.0, step=0.5)
+st.markdown("---")
+st.markdown("### 🏠 LOCAL DE MORADIA")
+m1, m2 = st.columns(2)
+mun_moradia = m1.selectbox("MUNICÍPIO (Moradia)", municipios_rmsp, index=municipios_rmsp.index("São Paulo"))
+if mun_moradia == "São Paulo":
+    dist_moradia = m2.selectbox("DISTRITO (Moradia)", distritos_sp, index=distritos_sp.index("Rio Pequeno"))
+else:
+    dist_moradia = m2.text_input("BAIRRO/DISTRITO (Moradia)", placeholder="Digite seu bairro")
 
-    st.markdown("---")
-    st.markdown("### 🚌 CUSTOS DIÁRIOS DE TRANSPORTE (Ida/Volta)")
-    tr1, tr2, tr3, tr4, tr5 = st.columns(5)
-    with tr1: g_on = st.number_input("🚍 ÔNIBUS (R$)", min_value=0.0)
-    with tr2: g_me = st.number_input("🚇 METRÔ (R$)", min_value=0.0)
-    with tr3: g_tr = st.number_input("🚆 TREM (R$)", min_value=0.0)
-    with tr4: g_ap = st.number_input("🚗 APP (R$)", min_value=0.0)
-    with tr5: g_ca = st.number_input("⛽ COMBUSTÍVEL (R$)", min_value=0.0)
+st.markdown("### 🏢 LOCAL DE TRABALHO")
+t1, t2, t3 = st.columns(3)
+mun_trabalho = t1.selectbox("MUNICÍPIO (Trabalho)", municipios_rmsp, index=municipios_rmsp.index("São Paulo"))
+if mun_trabalho == "São Paulo":
+    dist_trabalho = t2.selectbox("DISTRITO (Trabalho)", distritos_sp, index=distritos_sp.index("Alto de Pinheiros"))
+else:
+    dist_trabalho = t2.text_input("BAIRRO/DISTRITO (Trabalho)", placeholder="Digite o bairro de trabalho")
+h_dia = t3.number_input("⏳ HORAS NO TRECHO (Ida/Volta)", value=2.0, step=0.5)
 
-    st.markdown("---")
-    st.markdown("### 💰 RENDIMENTOS E CUSTO DE VIDA")
-    r1, r2, r3 = st.columns(3)
-    with r1: sal = st.number_input("💰 SALÁRIO BRUTO (R$)", min_value=0.0)
-    with r2: c_vida = st.number_input("🏠 CUSTO DE VIDA (R$)", min_value=0.0, help="Soma de: Aluguel, Comida, Energia, Água e Internet.")
-    with r3: dias = st.number_input("📅 DIAS TRABALHADOS/MÊS", value=22)
+st.markdown("---")
+st.markdown("### 🚌 CUSTOS DIÁRIOS E RENDIMENTOS")
+tr1, tr2, tr3, tr4, tr5 = st.columns(5)
+g_on = tr1.number_input("🚍 ÔNIBUS (R$)", min_value=0.0)
+g_me = tr2.number_input("🚇 METRÔ (R$)", min_value=0.0)
+g_tr = tr3.number_input("🚆 TREM (R$)", min_value=0.0)
+g_ap = tr4.number_input("🚗 APP (R$)", min_value=0.0)
+g_ca = tr5.number_input("⛽ CARRO (R$)", min_value=0.0)
 
-    submit = st.form_submit_button("EFETUAR DIAGNÓSTICO")
+r1, r2, r3 = st.columns(3)
+sal = r1.number_input("💰 SALÁRIO BRUTO (R$)", min_value=0.0)
+c_vida = r2.number_input("🏠 CUSTO DE VIDA (R$)", min_value=0.0, help="Soma de: Aluguel, Comida, Energia, Água e Internet.")
+dias = r3.number_input("📅 DIAS TRABALHADOS/MÊS", value=22)
 
-# 4. LÓGICA E RESULTADOS
-if submit:
+# Botão de ação (fora do form)
+if st.button("EFETUAR DIAGNÓSTICO"):
+    # LÓGICA DE CÁLCULO
     gasto_d = g_on + g_me + g_tr + g_ap + g_ca
     custo_m = gasto_d * dias
     v_h_nom = sal / 176 if sal > 0 else 0
@@ -88,19 +80,20 @@ if submit:
     depre = (1 - (v_h_re / v_h_nom)) * 100 if v_h_nom > 0 else 0
 
     # VETOR DE FLUXO
-    label_moradia = f"{dist_moradia.upper()}" if mun_moradia == mun_trabalho else f"{mun_moradia.upper()} ({dist_moradia.upper()})"
-    label_trabalho = f"{dist_trabalho.upper()}" if mun_moradia == mun_trabalho else f"{mun_trabalho.upper()} ({dist_trabalho.upper()})"
+    label_m = f"{dist_moradia.upper()}" if mun_moradia == mun_trabalho else f"{mun_moradia.upper()} ({dist_moradia.upper()})"
+    label_t = f"{dist_trabalho.upper()}" if mun_moradia == mun_trabalho else f"{mun_trabalho.upper()} ({dist_trabalho.upper()})"
     
     st.markdown(f"""
     <div style="background:#000; padding:25px; border:2px solid #E63946; text-align:center; margin: 20px 0;">
         <div style="color:#FFCC00; font-weight:bold; font-size:1.6rem;">
-            🏠 {label_moradia} ———▶ 💼 {label_trabalho}
+            🏠 {label_m} ———▶ 💼 {label_t}
         </div>
     </div>
     """, unsafe_allow_html=True)
 
     st.markdown("""<div style="background-color: #E63946; color: white; padding: 15px; text-align: center; font-weight: bold; border-radius: 5px;">🚨 ALERTA DE EXPROPRIAÇÃO MENSAL</div>""", unsafe_allow_html=True)
 
+    # RESULTADOS
     st.markdown(f"""
     <div class="report-box">
         <h3 style="margin-top:0; color:#FFCC00;">📋 RESULTADOS</h3>
@@ -113,6 +106,7 @@ if submit:
     </div>
     """, unsafe_allow_html=True)
 
+    # NOTA TÉCNICA
     st.markdown(f"""
     <div style="background-color: #111; padding: 20px; border-left: 5px solid #FFCC00; margin-top: 25px;">
         <b style="color: #FFCC00;">NOTA TÉCNICA:</b><br>

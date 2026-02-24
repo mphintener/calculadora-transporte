@@ -13,15 +13,25 @@ st.markdown("""
     }
     .stButton>button:hover { background-color: #E63946 !important; color: #FFFFFF !important; }
     .report-box { background:#111; padding:25px; border:2px solid #FFCC00; border-radius:10px; margin-top:20px; font-size: 1.1rem; }
-    input, select { background-color: #111 !important; color: white !important; border: 1px solid #444 !important; }
+    input, select, .stSelectbox { background-color: #111 !important; color: white !important; border: 1px solid #444 !important; }
     </style>
     """, unsafe_allow_html=True)
 
-# 2. TÍTULO E CHAMADA
+# 2. DEFINIÇÃO DAS LISTAS (Macrorregião e Capital)
+lista_municipios = ["Caieiras", "Franco da Rocha", "Francisco Morato", "Mairiporã", "Cajamar", "São Paulo", "Outros"]
+
+# Distritos principais da região e exemplos da capital para padronização
+lista_distritos = [
+    "Laranjeiras", "Centro", "Portal das Laranjeiras", "Vila Rosina", "Serpa", "Eucaliptos", # Caieiras
+    "Parque Vitória", "Jardim dos Reis", "Pouso Alegre", # Franco
+    "Bacia do Juquery", "Pirituba", "Perus", "Jaraguá", "Anhanguera", "Lapa", "Barra Funda", "Pinheiros", "Itaim Bibi", "Santo Amaro", "Itaquera", "Tatuapé", "Outros"
+]
+
+# 3. TÍTULO E CHAMADA
 st.title("📊 CALCULADORA DO TRECHO")
 st.subheader("Quanto de tempo e de dinheiro são consumidos no seu deslocamento diário?")
 
-# 3. FORMULÁRIO COMPLETO
+# 4. FORMULÁRIO COMPLETO
 with st.form("diagnostico_mestre"):
     st.markdown("### 👤 PERFIL")
     c1, c2, c3 = st.columns(3)
@@ -29,29 +39,25 @@ with st.form("diagnostico_mestre"):
         idade = st.number_input("👤 IDADE", min_value=14, value=30)
     with c2: 
         escolaridade = st.selectbox("🎓 ESCOLARIDADE", [
-            "Fundamental Incompleto", "Fundamental Completo", 
-            "Médio Incompleto", "Médio Completo", 
-            "Técnico", "Superior Incompleto", "Superior Completo", 
-            "Pós-Graduação", "Mestrado", "Doutorado"
+            "Fundamental Incompleto", "Fundamental Completo", "Médio Incompleto", "Médio Completo", 
+            "Técnico", "Superior Incompleto", "Superior Completo", "Pós-Graduação", "Mestrado", "Doutorado"
         ])
     with c3: 
-        setor = st.selectbox("💼 SETOR DE ATIVIDADE", [
-            "Serviços", "Comércio", "Indústria", "Educação", "Saúde", "TI/Tecnologia", "Construção Civil", "Transportes", "Administração Pública", "Outros"
-        ])
+        setor = st.selectbox("💼 SETOR DE ATIVIDADE", ["Serviços", "Comércio", "Indústria", "Educação", "Saúde", "TI/Tecnologia", "Construção Civil", "Transportes", "Administração Pública", "Outros"])
 
     st.markdown("---")
     
-    # MORADIA EM LINHA ÚNICA
+    # MORADIA COM DROPDOWN
     st.markdown("### 🏠 LOCAL DE MORADIA")
     m1, m2 = st.columns(2)
-    with m1: municipio_moradia = st.text_input("MUNICÍPIO (Moradia)", "Ex: Caieiras")
-    with m2: distrito_moradia = st.text_input("DISTRITO/BAIRRO (Moradia)", "Ex: Laranjeiras")
+    with m1: municipio_moradia = st.selectbox("MUNICÍPIO (Moradia)", lista_municipios)
+    with m2: distrito_moradia = st.selectbox("DISTRITO/BAIRRO (Moradia)", lista_distritos)
 
-    # TRABALHO EM LINHA ÚNICA
+    # TRABALHO COM DROPDOWN
     st.markdown("### 🏢 LOCAL DE TRABALHO")
     t1, t2, t3 = st.columns(3)
-    with t1: municipio_trabalho = st.text_input("MUNICÍPIO (Trabalho)", "Ex: São Paulo")
-    with t2: distrito_trabalho = st.text_input("DISTRITO/BAIRRO (Trabalho)", "Ex: Centro")
+    with t1: municipio_trabalho = st.selectbox("MUNICÍPIO (Trabalho)", lista_municipios)
+    with t2: distrito_trabalho = st.selectbox("DISTRITO/BAIRRO (Trabalho)", lista_distritos)
     with t3: h_dia = st.number_input("⏳ HORAS NO TRECHO (Ida/Volta)", value=2.0, step=0.5)
 
     st.markdown("---")
@@ -72,7 +78,7 @@ with st.form("diagnostico_mestre"):
 
     submit = st.form_submit_button("EFETUAR DIAGNÓSTICO")
 
-# 4. LÓGICA E RESULTADOS
+# 5. LÓGICA E RESULTADOS
 if submit:
     gasto_diario = g_onibus + g_metro + g_trem + g_app + g_carro
     custo_transp_m = gasto_diario * dias_m

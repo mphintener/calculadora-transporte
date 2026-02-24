@@ -1,11 +1,10 @@
 import streamlit as st
 from geodata import GEO_SPO 
 # --- CÓDIGO DE ATIVAÇÃO DO APLICATIVO (PWA) ---
-# Isso permite que o usuário "Instale" a calculadora no celular
 st.markdown("""
-    <link rel="manifest" href="https://raw.githubusercontent.com/SEU_USUARIO/calculadora-transporte/main/manifest.json">
+    <link rel="manifest" href="https://raw.githubusercontent.com/mphintener/calculadora-transporte/main/manifest.json">
     <meta name="theme-color" content="#FFCC00">
-    <link rel="apple-touch-icon" href="https://raw.githubusercontent.com/SEU_USUARIO/calculadora-transporte/main/logo.png">
+    <link rel="apple-touch-icon" href="https://raw.githubusercontent.com/mphintener/calculadora-transporte/main/logo.png">
 """, unsafe_allow_html=True)
 # ----------------------------------------------
 # 1. IDENTIDADE VISUAL (CSS)

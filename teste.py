@@ -17,14 +17,14 @@ st.markdown("""
     </style>
     """, unsafe_allow_html=True)
 
-# 2. BANCO DE DADOS GEOGRÁFICO (RMSP e Distritos SP)
+# 2. BANCO DE DADOS GEOGRÁFICO
 municipios_rmsp = sorted(["Arujá", "Barueri", "Biritiba-Mirim", "Caieiras", "Cajamar", "Carapicuíba", "Cotia", "Diadema", "Embu das Artes", "Embu-Guaçu", "Ferraz de Vasconcelos", "Francisco Morato", "Franco da Rocha", "Guararema", "Guarulhos", "Itapecerica da Serra", "Itapevi", "Itaquaquecetuba", "Jandira", "Juquitiba", "Mairiporã", "Mauá", "Mogi das Cruzes", "Osasco", "Pirapora do Bom Jesus", "Poá", "Ribeirão Pires", "Rio Grande da Serra", "Salesópolis", "Santa Isabel", "Santana de Parnaíba", "Santo André", "São Bernardo do Campo", "São Caetano do Sul", "São Lourenço da Serra", "São Paulo", "Suzano", "Taboão da Serra", "Vargem Grande Paulista"])
 distritos_sp = sorted(["Água Rasa", "Alto de Pinheiros", "Anhanguera", "Aricanduva", "Artur Alvim", "Barra Funda", "Bela Vista", "Belém", "Bom Retiro", "Brasilândia", "Butantã", "Cachoeirinha", "Cambuci", "Campo Belo", "Campo Grande", "Campo Limpo", "Cangaíba", "Capão Redondo", "Carrão", "Casa Verde", "Cidade Ademar", "Cidade Dutra", "Cidade Líder", "Cidade Tiradentes", "Consolação", "Cursino", "Ermelino Matarazzo", "Freguesia do Ó", "Grajaú", "Guaianases", "Iguatemi", "Ipiranga", "Itaim Bibi", "Itaim Paulista", "Itaquera", "Jabaquara", "Jaçanã", "Jaguara", "Jaguaré", "Jaraguá", "Jardim Ângela", "Jardim Helena", "Jardim Paulista", "Jardim São Luís", "Lapa", "Liberdade", "Limão", "Mandaqui", "Marsilac", "Moema", "Mooca", "Morumbi", "Parelheiros", "Pari", "Parque do Carmo", "Pedreira", "Penha", "Perdizes", "Perus", "Pinheiros", "Pirituba", "Ponte Rasa", "Raposo Tavares", "República", "Rio Pequeno", "Sacomã", "Santa Cecília", "Santana", "Santo Amaro", "São Domingos", "São Lucas", "São Mateus", "São Miguel", "São Rafael", "Sapopemba", "Saúde", "Sé", "Socorro", "Tatuapé", "Tremembé", "Tucuruvi", "Vila Andrade", "Vila Curuçá", "Vila Formosa", "Vila Guilherme", "Vila Jacuí", "Vila Leopoldina", "Vila Maria", "Vila Mariana", "Vila Matilde", "Vila Medeiros", "Vila Prudente", "Vila Sônia"])
 
 st.title("📊 CALCULADORA DO TRECHO")
 st.subheader("Quanto de tempo e de dinheiro são consumidos no seu deslocamento diário?")
 
-# 3. FORMULÁRIO COMPLETO
+# 3. FORMULÁRIO (Usando State para os distritos não sumirem)
 with st.form("diagnostico_mestre"):
     st.markdown("### 👤 PERFIL")
     c1, c2, c3 = st.columns(3)
@@ -33,14 +33,27 @@ with st.form("diagnostico_mestre"):
     with c3: setor = st.selectbox("💼 SETOR DE ATIVIDADE", ["Serviços", "Comércio", "Indústria", "Educação", "Saúde", "TI/Tecnologia", "Construção Civil", "Transportes", "Administração Pública", "Outros"])
 
     st.markdown("---")
+    
+    # MORADIA INTELIGENTE
+    st.markdown("### 🏠 LOCAL DE MORADIA")
     m1, m2 = st.columns(2)
-    with m1: mun_moradia = st.selectbox("🏠 MUNICÍPIO (Moradia)", municipios_rmsp, index=municipios_rmsp.index("São Paulo"))
-    with m2: dist_moradia = st.selectbox("📍 DISTRITO (Moradia)", distritos_sp, index=distritos_sp.index("Rio Pequeno")) if mun_moradia == "São Paulo" else st.text_input("📍 BAIRRO (Moradia)", "Centro")
+    with m1: mun_moradia = st.selectbox("MUNICÍPIO (Moradia)", municipios_rmsp, index=municipios_rmsp.index("São Paulo"))
+    with m2:
+        if mun_moradia == "São Paulo":
+            dist_moradia = st.selectbox("DISTRITO (Moradia)", distritos_sp, index=distritos_sp.index("Rio Pequeno"))
+        else:
+            dist_moradia = st.text_input("BAIRRO/DISTRITO (Moradia)", value="", help="Digite o nome do seu bairro.")
 
+    # TRABALHO INTELIGENTE
+    st.markdown("### 🏢 LOCAL DE TRABALHO")
     t1, t2, t3 = st.columns(3)
-    with t1: mun_trabalho = st.selectbox("🏢 MUNICÍPIO (Trabalho)", municipios_rmsp, index=municipios_rmsp.index("São Paulo"))
-    with t2: dist_trabalho = st.selectbox("📍 DISTRITO (Trabalho)", distritos_sp, index=distritos_sp.index("Alto de Pinheiros")) if mun_trabalho == "São Paulo" else st.text_input("📍 BAIRRO (Trabalho)", "Centro")
-    with t3: h_dia = st.number_input("⏳ HORAS NO TRECHO (Total Ida/Volta)", value=2.0, step=0.5)
+    with t1: mun_trabalho = st.selectbox("MUNICÍPIO (Trabalho)", municipios_rmsp, index=municipios_rmsp.index("São Paulo"))
+    with t2:
+        if mun_trabalho == "São Paulo":
+            dist_trabalho = st.selectbox("DISTRITO (Trabalho)", distritos_sp, index=distritos_sp.index("Alto de Pinheiros"))
+        else:
+            dist_trabalho = st.text_input("BAIRRO/DISTRITO (Trabalho)", value="", help="Digite o nome do bairro onde trabalha.")
+    with t3: h_dia = st.number_input("⏳ HORAS NO TRECHO (Ida/Volta)", value=2.0, step=0.5)
 
     st.markdown("---")
     st.markdown("### 🚌 CUSTOS DIÁRIOS DE TRANSPORTE (Ida/Volta)")
@@ -55,7 +68,7 @@ with st.form("diagnostico_mestre"):
     st.markdown("### 💰 RENDIMENTOS E CUSTO DE VIDA")
     r1, r2, r3 = st.columns(3)
     with r1: sal = st.number_input("💰 SALÁRIO BRUTO (R$)", min_value=0.0)
-    with r2: c_vida = st.number_input("🏠 CUSTO DE VIDA (ALUGUEL/COMIDA) (R$) ? (Opcional)", min_value=0.0)
+    with r2: c_vida = st.number_input("🏠 CUSTO DE VIDA (R$)", min_value=0.0, help="Soma de: Aluguel, Comida, Energia, Água e Internet.")
     with r3: dias = st.number_input("📅 DIAS TRABALHADOS/MÊS", value=22)
 
     submit = st.form_submit_button("EFETUAR DIAGNÓSTICO")
@@ -83,13 +96,11 @@ if submit:
         <div style="color:#FFCC00; font-weight:bold; font-size:1.6rem;">
             🏠 {label_moradia} ———▶ 💼 {label_trabalho}
         </div>
-        <div style="margin-top:10px; color:#FFCC00; font-size:1.2rem;">{mun_moradia if mun_moradia == mun_trabalho else ""}</div>
     </div>
     """, unsafe_allow_html=True)
 
     st.markdown("""<div style="background-color: #E63946; color: white; padding: 15px; text-align: center; font-weight: bold; border-radius: 5px;">🚨 ALERTA DE EXPROPRIAÇÃO MENSAL</div>""", unsafe_allow_html=True)
 
-    # MÉTRICAS CONSOLIDATAS
     st.markdown(f"""
     <div class="report-box">
         <h3 style="margin-top:0; color:#FFCC00;">📋 RESULTADOS</h3>
@@ -102,16 +113,12 @@ if submit:
     </div>
     """, unsafe_allow_html=True)
 
-    # NOTA TÉCNICA
     st.markdown(f"""
     <div style="background-color: #111; padding: 20px; border-left: 5px solid #FFCC00; margin-top: 25px;">
         <b style="color: #FFCC00;">NOTA TÉCNICA:</b><br>
-        O "Confisco" reflete o valor total subtraído do rendimento real do trabalhador. 
-        Ele soma o gasto direto em tarifas ao valor monetário do tempo de deslocamento (calculado sobre o valor da hora nominal). 
-        Consideramos o trecho como "trabalho não pago" pois é um tempo obrigatório para a reprodução da força de trabalho, mas não remunerado.
+        O "Confisco" reflete o valor total subtraído do rendimento real do trabalhador. Ele soma o gasto direto em tarifas ao valor monetário do tempo de deslocamento (calculado sobre o valor da hora nominal). Consideramos o trecho como "trabalho não pago" pois é um tempo obrigatório para a reprodução da força de trabalho, mas não remunerado.
     </div>
     """, unsafe_allow_html=True)
 
-    # DOWNLOAD
     relatorio = f"DIAGNÓSTICO: {mun_moradia}\nCONFISCO: R$ {confi:.2f}\nTEMPO NÃO PAGO: {h_m:.1f}h"
-    st.download_button("📥 BAIXAR NOTA TÉCNICA", relatorio, file_name=f"nota_tecnica.txt")
+    st.download_button("📥 BAIXAR NOTA TÉCNICA", relatorio, file_name="diagnostico_trecho.txt")

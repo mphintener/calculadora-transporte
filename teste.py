@@ -119,7 +119,7 @@ g_me = g2.number_input("🚇 METRÔ", min_value=0.0)
 g_tr = g3.number_input("🚆 TREM", min_value=0.0)
 g_ap = g4.number_input("🚗 APP", min_value=0.0)
 g_ca = g5.number_input("⛽ CARRO/COMBUSTÍVEL", min_value=0.0)
-st.markdown("""
+
    # Certifique-se de que este bloco está EXATAMENTE assim, com as aspas triplas no início e no fim
 # 1. ESTILO DO BOTÃO E ELIMINAÇÃO DE FAIXAS
 st.markdown("""

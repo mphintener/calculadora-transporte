@@ -114,12 +114,23 @@ with t2.container():
         dist_trabalho = st.text_input("BAIRRO/DISTRITO (Trabalho)", placeholder="Digite o bairro", key="dist_trab_txt")
 
 st.markdown("### ⏳ TRECHO DE DESLOCAMENTO")
-tr1, tr2 = st.columns(2)
-# Tempo gasto diariamente (Ida + Volta)
-h_dia = tr1.number_input("HORAS NO TRECHO (Diário - Ida e Volta)", min_value=0.0, max_value=24.0, step=0.5, key="horas_trecho")
+# Criamos as colunas novamente para garantir que elas existam neste ponto do código
+col_tempo, col_dias = st.columns(2)
 
-# Dias trabalhados no mês
-dias_mes = tr2.number_input("DIAS TRABALHADOS (No mês)", min_value=1, max_value=31, value=22, key="dias_trabalho")
+with col_tempo:
+    h_dia = st.number_input("HORAS NO TRECHO (Ida + Volta)", 
+                            min_value=0.0, 
+                            max_value=24.0, 
+                            step=0.5, 
+                            key="horas_trecho_estavel")
+
+with col_dias:
+    # Este é o campo que sumiu, agora com uma chave (key) blindada
+    dias_mes = st.number_input("DIAS TRABALHADOS (No mês)", 
+                               min_value=1, 
+                               max_value=31, 
+                               value=22, 
+                               key="dias_trabalho_estavel")
 
 st.markdown("---")
 st.markdown("### 💰 RENDIMENTO E CUSTO")

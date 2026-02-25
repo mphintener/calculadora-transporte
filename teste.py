@@ -85,25 +85,25 @@ idade = p1.number_input("IDADE", min_value=14, step=1, value=None)
 escolaridade = p2.selectbox("ESCOLARIDADE", ["Fundamental Incompleto", "Fundamental Completo", "Médio Incompleto", "Médio Completo", "Técnico", "Superior Incompleto", "Superior Completo", "Pós-Graduação"])
 setor = p3.selectbox("SETOR DE ATIVIDADE", ["Comércio", "Construção Civil", "Educação", "Indústria", "Serviços", "Saúde", "TI"])
 
-# 5. LOCALIZAÇÃO (CORREÇÃO TOTAL MORADIA + TRABALHO)
+# 5. LOCALIZAÇÃO (REVISADO: MORADIA E TRABALHO)
 st.markdown("### 🏠 LOCALIZAÇÃO E TRAJETO")
-l1, l2, l3 = st.columns(3)
+col_moradia, col_trabalho, col_horas = st.columns(3)
 
-with l1:
+with col_moradia:
     mun_m = st.selectbox("MUNICÍPIO (MORADIA)", municipios, key="mun_m")
     if mun_m == "São Paulo":
         label_m = st.selectbox("DISTRITO/BAIRRO (MORADIA)", distritos, key="dist_m")
     else:
         label_m = mun_m
 
-with l2:
+with col_trabalho:
     mun_t = st.selectbox("MUNICÍPIO (TRABALHO)", municipios, key="mun_t")
     if mun_t == "São Paulo":
         label_t = st.selectbox("DISTRITO/BAIRRO (TRABALHO)", distritos, key="dist_t")
     else:
         label_t = mun_t
 
-with l3:
+with col_horas:
     h_dia = st.number_input("HORAS NO TRECHO (IDA+VOLTA)", min_value=0.0, step=0.5, value=None)
 
 st.markdown("---")

@@ -112,8 +112,8 @@ if mun_trabalho == "São Paulo":
     dist_trabalho = col_trabalho.selectbox("DISTRITO (Trabalho)", distritos, key="dist_trab_sel")
 else:
     dist_trabalho = col_trabalho.text_input("BAIRRO/DISTRITO (Trabalho)", placeholder="Digite o bairro", key="dist_trab_txt")
-
 h_dia = t3.number_input("HORAS NO TRECHO (Ida/Volta)", value=2.0, step=0.5)
+
 st.markdown("---")
 st.markdown("### 💰 RENDIMENTO E CUSTO")
 e1, e2, e3 = st.columns(3)

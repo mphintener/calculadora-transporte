@@ -1,51 +1,75 @@
 import streamlit as st
 
-# 1. SETUP E IDENTIDADE VISUAL (BLINDAGEM CONTRA A FAIXA AMARELA)
+# 1. SETUP E IDENTIDADE VISUAL (BLINDAGEM TOTAL)
 st.set_page_config(page_title="Calculadora do Trecho", layout="wide")
 
 st.markdown("""
     <style>
-    /* ELIMINAÇÃO TOTAL DA FAIXA SUPERIOR */
-    [data-testid="stHeader"], header { display: none !important; }
-    .block-container { padding-top: 0rem !important; margin-top: -60px !important; }
-
-    /* IDENTIDADE VISUAL: PRETO E AMARELO */
-    .stApp { background-color: #000000 !important; }
-    h1, h2, h3, label, p, span { 
-        color: #FFCC00 !important; 
-        font-family: 'Arial Black', sans-serif !important; 
+    /* 1. MATA A FAIXA AMARELA E O HEADER NATIVO */
+    header, [data-testid="stHeader"], .st-emotion-cache-18ni7ap {
+        visibility: hidden;
+        display: none !important;
+        height: 0px !important;
+    }
+    
+    /* 2. PUXA O CONTEÚDO PARA O TOPO ABSOLUTO */
+    .block-container {
+        padding-top: 0rem !important;
+        margin-top: -60px !important;
     }
 
-    /* BORDAS AMARELAS NOS CAMPOS */
+    /* 3. FUNDO PRETO E CORES DA IDENTIDADE (AMARELO E VERMELHO) */
+    .stApp { background-color: #000000 !important; }
+    
+    h1, h2, h3, label, p, span { 
+        color: #FFCC00 !important; 
+        font-family: 'Arial Black', sans-serif !important;
+    }
+
+    /* 4. RESTAURANDO AS BORDAS AMARELAS ORIGINAIS NOS CAMPOS */
     div[data-baseweb="input"], div[data-baseweb="select"], .stSelectbox, .stNumberInput {
         border: 2px solid #FFCC00 !important;
         border-radius: 4px !important;
         background-color: #111 !important;
     }
+    
+    /* TEXTO DENTRO DOS INPUTS */
     input { color: #FFFFFF !important; }
     div[role="listbox"] { color: #FFFFFF !important; background-color: #111 !important; }
 
-    /* BOTÃO DE IMPACTO */
+    /* 5. BOTÃO DE IMPACTO */
     .stButton>button { 
-        background-color: #FFCC00 !important; color: #000 !important; 
-        font-weight: 900 !important; width: 100%; border: 4px solid #E63946 !important;
-        font-size: 1.4rem !important; text-transform: uppercase; margin-top: 25px;
-        border-radius: 8px;
+        background-color: #FFCC00 !important; 
+        color: #000000 !important; 
+        font-weight: 900 !important; 
+        width: 100%; 
+        height: 3.5em; 
+        border: 4px solid #E63946 !important;
+        font-size: 1.4rem !important;
+        text-transform: uppercase;
+        margin-top: 25px;
     }
     .stButton>button:hover { background-color: #E63946 !important; color: #FFFFFF !important; }
-    
+
+    /* 6. CAIXA DE RESULTADOS */
     .report-box { 
-        background-color: #111; padding: 25px; border: 3px solid #FFCC00; border-radius: 10px; margin-top: 20px;
+        background-color: #111; 
+        padding: 25px; 
+        border: 3px solid #FFCC00; 
+        border-radius: 10px; 
+        margin-top: 20px;
     }
     </style>
     """, unsafe_allow_html=True)
 
 # 2. CABEÇALHO (LOGO À DIREITA)
 st.markdown('<div style="height: 60px;"></div>', unsafe_allow_html=True) 
-col_t, col_l = st.columns([4, 1])
-with col_t:
+col_tit, col_logo = st.columns([4, 1])
+
+with col_tit:
     st.markdown('<h1 style="margin: 0; padding-top: 15px;">CALCULADORA DO TRECHO</h1>', unsafe_allow_html=True)
-with col_l:
+
+with col_logo:
     try:
         st.image("logo.png", width=140)
     except:
@@ -60,9 +84,10 @@ st.markdown("""
 
 # 4. BANCO DE DADOS GEOGRÁFICO
 municipios = [" "] + sorted(["Arujá", "Barueri", "Biritiba-Mirim", "Caieiras", "Cajamar", "Carapicuíba", "Cotia", "Diadema", "Embu das Artes", "Embu-Guaçu", "Ferraz de Vasconcelos", "Francisco Morato", "Franco da Rocha", "Guararema", "Guarulhos", "Itapecerica da Serra", "Itapevi", "Itaquaquecetuba", "Jandira", "Juquitiba", "Mairiporã", "Mauá", "Mogi das Cruzes", "Osasco", "Pirapora do Bom Jesus", "Poá", "Ribeirão Pires", "Rio Grande da Serra", "Salesópolis", "Santa Isabel", "Santana de Parnaíba", "Santo André", "São Bernardo do Campo", "São Caetano do Sul", "São Lourenço da Serra", "São Paulo", "Suzano", "Taboão da Serra", "Vargem Grande Paulista"])
+
 distritos = [" "] + sorted(["Água Rasa", "Alto de Pinheiros", "Anhanguera", "Aricanduva", "Artur Alvim", "Barra Funda", "Bela Vista", "Belém", "Bom Retiro", "Brasilândia", "Butantã", "Cachoeirinha", "Cambuci", "Campo Belo", "Campo Grande", "Campo Limpo", "Cangaíba", "Capão Redondo", "Carrão", "Casa Verde", "Cidade Ademar", "Cidade Dutra", "Cidade Líder", "Cidade Tiradentes", "Consolação", "Cursino", "Ermelino Matarazzo", "Freguesia do Ó", "Grajaú", "Guaianases", "Iguatemi", "Ipiranga", "Itaim Bibi", "Itaim Paulista", "Itaquera", "Jabaquara", "Jaçanã", "Jaguara", "Jaguaré", "Jaraguá", "Jardim Ângela", "Jardim Helena", "Jardim Paulista", "Jardim São Luís", "Lapa", "Liberdade", "Limão", "Mandaqui", "Marsilac", "Moema", "Mooca", "Morumbi", "Parelheiros", "Pari", "Parque do Carmo", "Pedreira", "Penha", "Perdizes", "Perus", "Pinheiros", "Pirituba", "Ponte Rasa", "Raposo Tavares", "República", "Rio Pequeno", "Sacomã", "Santa Cecília", "Santana", "Santo Amaro", "São Domingos", "São Lucas", "São Mateus", "São Miguel", "São Rafael", "Sapopemba", "Saúde", "Sé", "Socorro", "Tatuapé", "Tremembé", "Tucuruvi", "Vila Andrade", "Vila Curuçá", "Vila Formosa", "Vila Guilherme", "Vila Jacuí", "Vila Leopoldina", "Vila Maria", "Vila Mariana", "Vila Matilde", "Vila Medeiros", "Vila Prudente", "Vila Sônia"])
 
-# 5. FORMULÁRIO DE ENTRADA
+# 5. ENTRADA DE DADOS
 st.markdown("### 👤 PERFIL")
 p1, p2, p3 = st.columns(3)
 idade = p1.number_input("IDADE", min_value=14, step=1, value=None)
@@ -97,7 +122,7 @@ g_ca = g5.number_input("⛽ CARRO", min_value=0.0)
 # 6. LÓGICA DE DIAGNÓSTICO
 if st.button("EFETUAR DIAGNÓSTICO"):
     if sal and h_dia:
-        # Cálculos Técnicos
+        # Cálculos de Expropriação
         tarifa_m = (g_on + g_me + g_tr + g_ap + g_ca) * dias
         h_m = h_dia * dias
         v_h_nom = sal / 176
@@ -129,7 +154,7 @@ if st.button("EFETUAR DIAGNÓSTICO"):
         """, unsafe_allow_html=True)
 
         # DOWNLOAD DO DIAGNÓSTICO
-        relatorio = f"DIAGNÓSTICO TÉCNICO\nFLUXO: {label_m} -> {label_t}\nCONFISCO: R$ {confi:.2f}\nSALÁRIO LÍQUIDO (-TRANSPORTE): R$ {sal_liq_transp:.2f}\nDEPRECIAÇÃO: {depre:.1f}%"
+        relatorio = f"DIAGNÓSTICO TÉCNICO\\nFLUXO: {label_m} -> {label_t}\\nCONFISCO: R$ {confi:.2f}\\nSALÁRIO LÍQUIDO (-TRANSPORTE): R$ {sal_liq_transp:.2f}\\nDEPRECIAÇÃO: {depre:.1f}%"
         st.download_button("📥 BAIXAR NOTA TÉCNICA", relatorio, file_name="diagnostico_trecho.txt")
     else:
         st.error("Preencha obrigatoriamente Salário e Horas no Trecho.")

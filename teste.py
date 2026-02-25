@@ -153,12 +153,12 @@ st.markdown("""
     """, unsafe_allow_html=True)
 
 # 2. O COMPONENTE DO BOTÃO (FORA DO TEXTO ACIMA)
-if st.button("GERAR DIAGNÓSTICO TÉCNICO"):
+if st.button("GERAR DIAGNÓSTICO"):
     # Sua lógica de cálculos começa aqui dentro
     st.write("Calculando...") # Exemplo para testar o clique
 
 # 8. DIAGNÓSTICO
-if st.button("EFETUAR DIAGNÓSTICO"):
+if st.button:
     if sal and h_dia:
         tarifa_m = (g_on + g_me + g_tr + g_ap + g_ca) * dias
         h_m = h_dia * dias

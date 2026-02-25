@@ -140,7 +140,7 @@ st.markdown("""
         background-color: #000000 !important;
     }
 
-    /* 4. GARANTE QUE O BOTÃO NÃO TENHA ESSA FAIXA GRUDADA */
+    /* 4. GARANTE QUE O BOTÃO NÃO TENHA ESSA FAIXA GRUDADA */ 
     .stButton {
         border: none !important;
         box-shadow: none !important;

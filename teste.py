@@ -131,7 +131,7 @@ st.markdown("""
     }
 
     /* FORMATAÇÃO DO BOTÃO EM NEGRITO EXTREMO */
-    div.st.button > button {
+    div.stButton > button {
         opacity: 1 !important;
         background-color: #FFCC00 !important;
         color: #000000 !important;
@@ -145,7 +145,7 @@ st.markdown("""
     }
 
     /* TEXTO INTERNO DO BOTÃO */
-    div.st.button > button p {
+    div.stButton > button p {
         color: #000000 !important;
         font-weight: 900 !important;
     }

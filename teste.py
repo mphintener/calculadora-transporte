@@ -1,4 +1,4 @@
-# 1. IDENTIDADE VISUAL E CONFIGURAÇÃO
+# 1. IDENTIDADE VISUAL E CONFIGURAÇÃO 
 st.set_page_config(page_title="Calculadora do Trecho", layout="wide")
 
 st.markdown("""

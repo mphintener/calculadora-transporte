@@ -68,7 +68,7 @@ c1, c2 = st.columns([4, 1])
 with c1:
     st.markdown('<h1 style="margin: 0;">CALCULADORA DO TRECHO</h1>', unsafe_allow_html=True)
 with c2:
-    try: st.image("logo.png", width=150)
+    try: st.image("logo.png", width=180)
     except: st.markdown('<p style="text-align:right;">[LOGO]</p>', unsafe_allow_html=True)
 
 # 4. FRASE DE IMPACTO

@@ -93,33 +93,34 @@ if mun_moradia == "São Paulo":
 else:
     dist_moradia = m2.text_input("BAIRRO/DISTRITO (Moradia)", placeholder="Digite seu bairro")
 
-st.markdown("### 💼 LOCAL DE TRABALHO")
-t1, t2, t3 = st.columns(3)
+ith st.form(key="formulario_diagnostico"):
+    st.markdown("### 📋 DADOS DE LOCALIZAÇÃO")
+    
+    # --- MORADIA ---
+    m1, m2 = st.columns(2)
+    with m1:
+        mun_moradia = st.selectbox("MUNICÍPIO (Moradia)", municipios, key="f_mun_mor")
+    with m2:
+        if mun_moradia == "São Paulo":
+            dist_moradia = st.selectbox("DISTRITO (Moradia)", distritos, key="f_dist_sp_mor")
+        else:
+            dist_moradia = st.text_input("BAIRRO/CIDADE (Moradia)", placeholder="Digite seu bairro", key="f_bairro_out_mor")
 
-with t1:
-    mun_trabalho = st.selectbox("MUNICÍPIO (Trabalho)", municipios, key="k_mun_trab_final")
+    st.markdown("---")
 
-with t2:
-    if mun_trabalho == "São Paulo":
-        dist_trabalho = st.selectbox("DISTRITO (Trabalho)", distritos, key="k_dist_sp_trab")
-    else:
-        dist_trabalho = st.text_input("BAIRRO/DISTRITO (Trabalho)", placeholder="Digite o bairro", key="k_bairro_out_trab")
+    # --- TRABALHO ---
+    t1, t2 = st.columns(2)
+    with t1:
+        mun_trabalho = st.selectbox("MUNICÍPIO (Trabalho)", municipios, key="f_mun_trab")
+    with t2:
+        if mun_trabalho == "São Paulo":
+            dist_trabalho = st.selectbox("DISTRITO (Trabalho)", distritos, key="f_dist_sp_trab")
+        else:
+            dist_trabalho = st.text_input("BAIRRO/CIDADE (Trabalho)", placeholder="Digite o bairro", key="f_bairro_out_trab")
 
-st.markdown("### 💼 LOCAL DE TRABALHO")
-t1, t2, t3 = st.columns(3)
-
-mun_trabalho = t1.selectbox("MUNICÍPIO (Trabalho)", municipios, key="mun_trab_final")
-
-# Usamos um container dentro da coluna t2 para alternar entre lista e texto
-with t2.container():
-    if mun_trabalho == "São Paulo":
-        dist_trabalho = st.selectbox("DISTRITO (Trabalho)", distritos, key="dist_trab_sel")
-    else:
-        dist_trabalho = st.text_input("BAIRRO/DISTRITO (Trabalho)", placeholder="Digite o bairro", key="dist_trab_txt")
-
-st.markdown("### ⏳ TRECHO DE DESLOCAMENTO")
-# Criamos as colunas novamente para garantir que elas existam neste ponto do código
-col_tempo, col_dias = st.columns(2)
+    # (Mantenha aqui o restante dos seus inputs de salário, gastos e o botão submit)
+    # ...
+    botao_gerar = st.form_submit_button("GERAR DIAGNÓSTICO TÉCNICO")
 
 with col_tempo:
     h_dia = st.number_input("HORAS NO TRECHO (Ida + Volta)", 

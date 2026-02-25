@@ -84,36 +84,35 @@ idade = p1.number_input("IDADE", min_value=14, step=1, value=None)
 escolaridade = p2.selectbox("ESCOLARIDADE", ["Fundamental Incompleto", "Fundamental Completo", "Médio Incompleto", "Médio Completo", "Técnico", "Superior Incompleto", "Superior Completo", "Pós-Graduação"])
 setor = p3.selectbox("SETOR DE ATIVIDADE", ["Comércio", "Construção Civil", "Educação", "Indústria", "Serviços", "Saúde", "Outros"])
 
-# --- MORADIA ---
+# --- SEÇÃO MORADIA ---
 m1, m2 = st.columns(2)
 
-# 1. Município
-mun_moradia = m1.selectbox("MUNICÍPIO (Moradia)", municipios, key="mun_mor_final")
+with m1:
+    mun_moradia = st.selectbox("MUNICÍPIO (Moradia)", municipios, key="mun_mor_estavel")
 
-# 2. Lógica do Bairro com Memória (Session State)
-if mun_moradia == "São Paulo":
-    dist_moradia = m2.selectbox("DISTRITO (Moradia)", distritos, key="dist_mor_sp")
-else:
-    # O segredo: adicionamos uma key fixa que o Streamlit não vai resetar
-    dist_moradia = m2.text_input("BAIRRO/CIDADE (Moradia)", key="bairro_mor_input")
+with m2:
+    if mun_moradia == "São Paulo":
+        # Se for SP, ele usa esta gaveta de memória:
+        dist_moradia = st.selectbox("DISTRITO (Moradia)", distritos, key="dist_sp_gaveta")
+    else:
+        # Se for OUTRA, ele usa esta gaveta COMPLETAMENTE diferente:
+        dist_moradia = st.text_input("BAIRRO/CIDADE (Moradia)", key="bairro_outros_gaveta")
 
 st.markdown("---")
 
-# --- TRABALHO ---
+# --- SEÇÃO TRABALHO ---
 st.markdown("### 💼 LOCAL DE TRABALHO")
 t1, t2, t3 = st.columns(3)
 
-# 1. Município Trabalho
-mun_trabalho = t1.selectbox("MUNICÍPIO (Trabalho)", municipios, key="mun_trab_final")
+with t1:
+    mun_trabalho = st.selectbox("MUNICÍPIO (Trabalho)", municipios, key="mun_trab_estavel")
 
-# 2. Bairro Trabalho
-if mun_trabalho == "São Paulo":
-    dist_trabalho = t2.selectbox("DISTRITO (Trabalho)", distritos, key="dist_trab_sp")
-else:
-    dist_trabalho = t2.text_input("BAIRRO/DISTRITO (Trabalho)", key="bairro_trab_input")
-st.markdown("### ⏳ TRECHO DE DESLOCAMENTO")
-# Criamos as colunas novamente para garantir que elas existam neste ponto do código
-col_tempo, col_dias = st.columns(2)
+with t2:
+    if mun_trabalho == "São Paulo":
+        dist_trabalho = st.selectbox("DISTRITO (Trabalho)", distritos, key="dist_sp_trab_gaveta")
+    else:
+        # O segredo é que esta KEY nunca foi usada antes
+        dist_trabalho = st.text_input("BAIRRO/CIDADE (Trabalho)", key="bairro_outros_trab_gaveta")
 
 with col_tempo:
     h_dia = st.number_input("HORAS NO TRECHO (Ida + Volta)", 

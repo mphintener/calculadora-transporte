@@ -83,7 +83,6 @@ p1, p2, p3 = st.columns(3)
 idade = p1.number_input("👤 IDADE", min_value=14, value=30)
 escolaridade = p2.selectbox("ESCOLARIDADE", ["Fundamental Incompleto", "Fundamental Completo", "Médio Incompleto", "Médio Completo", "Técnico", "Superior Incompleto", "Superior Completo", "Pós-Graduação"])
 setor = p3.selectbox("SETOR DE ATIVIDADE", ["Comércio", "Construção Civil", "Educação", "Indústria", "Serviços", "Saúde", "Outros"])
-
 st.markdown("---")
 st.markdown("### 🏠 LOCAL DE MORADIA")
 m1, m2 = st.columns(2)
@@ -92,7 +91,6 @@ if mun_moradia == "São Paulo":
     dist_moradia = m2.selectbox("DISTRITO (Moradia)", distritos, index=0)
 else:
     dist_moradia = m2.text_input("BAIRRO/DISTRITO (Moradia)", placeholder="Digite seu bairro")
-
 st.markdown("### 🏢 LOCAL DE TRABALHO")
 t1, t2, t3 = st.columns(3)
 mun_trabalho = t1.selectbox("MUNICÍPIO (Trabalho)", municipios, index=0)
@@ -104,7 +102,6 @@ st.markdown("### ⏳ TRECHO DE DESLOCAMENTO")
 tr_c1, tr_c2 = st.columns(2)
 h_dia = tr_c1.number_input("HORAS NO TRECHO (Ida + Volta)", value=2.0, step=0.5, key="k_horas_dia")
 dias = tr_c2.number_input("DIAS TRABALHADOS (No mês)", value=22, key="k_dias_mes")
-
 st.markdown("---")
 st.markdown("### 💰 RENDIMENTO E CUSTO")
 e1, e2, e3 = st.columns(3)
@@ -117,7 +114,6 @@ g_me = g2.number_input("🚇 METRÔ", min_value=0.0)
 g_tr = g3.number_input("🚆 TREM", min_value=0.0)
 g_ap = g4.number_input("🚗 APP", min_value=0.0)
 g_ca = g5.number_input("⛽ CARRO/COMBUSTÍVEL", min_value=0.0)
-
    # Certifique-se de que este bloco está EXATAMENTE assim, com as aspas triplas no início e no fim
 # 1. ESTILO DO BOTÃO E ELIMINAÇÃO DE FAIXAS
 st.markdown("""
@@ -148,8 +144,7 @@ st.markdown("""
         font-weight: 900 !important;
     }
     </style>
-    """, unsafe_allow_html=True)
-   
+    """, unsafe_allow_html=True) 
 # 8. DIAGNÓSTICO
 if st.button("GERAR DIAGNÓSTICO"):
     # PROTEÇÃO: Verifica se as variáveis foram preenchidas e são maiores que zero
@@ -165,7 +160,6 @@ if st.button("GERAR DIAGNÓSTICO"):
         label_sobra = "SOBRA RESIDUAL (PÓS-CUSTO DE VIDA)" if c_vida else "SOBRA RESIDUAL (PÓS-TRANSPORTE)"
         sobra = sal_liq_transp - (c_vida if c_vida else 0)
         depre = (1 - (v_h_re / v_h_nom)) * 100
-
         st.markdown(f"""
         <div class="report-box">
             <h3 style="margin-top:0;">📋 RESULTADOS TÉCNICOS</h3>
@@ -177,14 +171,12 @@ if st.button("GERAR DIAGNÓSTICO"):
             <p>• 📉 <b>DEPRECIAÇÃO DA FORÇA DE TRABALHO:</b> <span style="color:#E63946;">{depre:.1f}%</span></p>
         </div>
         """, unsafe_allow_html=True)
-
         st.markdown(f"""
         <div style="background-color: #111; padding: 20px; border-left: 5px solid #E63946; margin-top: 25px; color: #EEE;">
             <b style="color: #FFCC00;">NOTA TÉCNICA:</b><br>
             Consideramos o trecho como "trabalho não pago". O confisco de R$ {confi:.2f} representa a perda real do valor da sua força de trabalho devido ao tempo e custo de mobilidade.
         </div>
         """, unsafe_allow_html=True)
-
         relatorio = f"DIAGNÓSTICO TÉCNICO\\nFLUXO: {label_m} -> {label_t}\\nCONFISCO: R$ {confi:.2f}\\nDEPRECIAÇÃO: {depre:.1f}%"
         st.download_button("📥 BAIXAR NOTA TÉCNICA", relatorio, file_name="diagnostico_trecho.txt")
     else:

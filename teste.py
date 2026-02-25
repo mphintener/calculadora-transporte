@@ -1,44 +1,88 @@
-import streamlit as st
-# 1. IDENTIDADE VISUAL E CONFIGURAÇÃO
+mport streamlit as st
+
+# 1. CONFIGURAÇÃO E IDENTIDADE VISUAL
 st.set_page_config(page_title="Calculadora do Trecho", layout="wide")
 
 st.markdown("""
     <style>
-    /* FUNDO E CORES BÁSICAS */
+    /* REMOVE CABEÇALHO NATIVO */
+    [data-testid="stHeader"] {display: none;}
+    .block-container {padding-top: 1rem !important;}
+    
+    /* FUNDO PRETO E TEXTOS AMARELOS */
     .stApp { background-color: #000000; color: #FFFFFF; }
-    header {visibility: hidden;}
+    h1, h2, h3, label, p { color: #FFCC00 !important; font-family: 'Arial', sans-serif; }
     
-    /* ESPAÇAMENTO PARA O TÍTULO NÃO SUMIR */
-    .main-block { padding-top: 60px; }
-    
-    /* TÍTULO */
-    .title-text { color: #FFCC00; text-align: center; font-size: 2.5rem; font-weight: bold; margin-bottom: 5px; }
-    .subtitle-text { color: #FFCC00; text-align: center; font-size: 1.1rem; margin-bottom: 30px; }
-
-    /* BORDAS DOS CAMPOS - VISIBILIDADE GARANTIDA */
-    .stNumberInput input, .stTextInput input, .stSelectbox div[data-baseweb="select"] {
-        background-color: #111 !important;
-        color: #FFFFFF !important;
-        border: 1px solid #FFCC00 !important;
-        border-radius: 4px;
+    /* TÍTULO DISCRETO À ESQUERDA */
+    .titulo-discreto {
+        color: #FFCC00;
+        text-align: left;
+        font-size: 1.8rem !important;
+        font-weight: 800;
+        letter-spacing: 1px;
     }
 
-    /* LABEL DOS CAMPOS */
-    label p { color: #FFCC00 !important; font-weight: bold !important; }
+    /* ESTILO DOS INPUTS */
+    input, select, .stSelectbox, div[data-baseweb="input"] {
+        background-color: #111 !important;
+        color: white !important;
+        border: 1px solid #FFCC00 !important;
+    }
 
     /* BOTÃO GERAR DIAGNÓSTICO */
     .stButton>button { 
-        background-color: #FFCC00 !important; color: #000000 !important; 
-        font-weight: bold !important; width: 100%; height: 3.5em; 
-        border: none; font-size: 1.3rem; margin-top: 20px;
+        background-color: #FFCC00 !important; 
+        color: #000000 !important; 
+        font-weight: 900 !important; 
+        width: 100%; 
+        height: 3.5em; 
+        border: none; 
+        font-size: 1.3rem !important;
+        text-transform: uppercase;
+        margin-top: 10px;
     }
     .stButton>button:hover { background-color: #E63946 !important; color: #FFFFFF !important; }
 
     /* CAIXA DE RESULTADOS */
-    .report-box { background:#111; padding:25px; border:2px solid #FFCC00; border-radius:10px; margin-top:20px; }
+    .report-box { 
+        background:#111; 
+        padding:25px; 
+        border:2px solid #FFCC00; 
+        border-radius:10px; 
+        margin-top:20px; 
+    }
     </style>
     """, unsafe_allow_html=True)
 
+# 2. CABEÇALHO (TÍTULO E LOGO À DIREITA)
+col_tit, col_logo = st.columns([4, 1])
+with col_tit:
+    st.markdown('<h1 class="titulo-discreto">CALCULADORA DO TRECHO</h1>', unsafe_allow_html=True)
+with col_logo:
+    # O arquivo logo.png deve estar na mesma pasta no GitHub
+    try:
+        st.image("logo.png", width=100)
+    except:
+        st.write("📷 [Logo]")
+
+# 3. PERGUNTA CENTRAL EM DESTAQUE
+st.markdown(f"""
+    <div style="
+        background-color: #FFCC00; 
+        color: #000000; 
+        padding: 15px; 
+        border-radius: 10px; 
+        text-align: center; 
+        font-size: 1.4rem; 
+        font-weight: 900; 
+        margin-top: 10px; 
+        margin-bottom: 25px;
+        border: 4px solid #E63946;
+        text-transform: uppercase;
+    ">
+        Quanto de tempo e de dinheiro são consumidos no seu deslocamento diário?
+    </div>
+    """, unsafe_allow_html=True)
 # 2. BANCO DE DADOS GEOGRÁFICO
 municipios_rmsp = [" "] + sorted(["Arujá", "Barueri", "Biritiba-Mirim", "Caieiras", "Cajamar", "Carapicuíba", "Cotia", "Diadema", "Embu das Artes", "Embu-Guaçu", "Ferraz de Vasconcelos", "Francisco Morato", "Franco da Rocha", "Guararema", "Guarulhos", "Itapecerica da Serra", "Itapevi", "Itaquaquecetuba", "Jandira", "Juquitiba", "Mairiporã", "Mauá", "Mogi das Cruzes", "Osasco", "Pirapora do Bom Jesus", "Poá", "Ribeirão Pires", "Rio Grande da Serra", "Salesópolis", "Santa Isabel", "Santana de Parnaíba", "Santo André", "São Bernardo do Campo", "São Caetano do Sul", "São Lourenço da Serra", "São Paulo", "Suzano", "Taboão da Serra", "Vargem Grande Paulista"])
 distritos_sp = [" "] + sorted(["Água Rasa", "Alto de Pinheiros", "Anhanguera", "Aricanduva", "Artur Alvim", "Barra Funda", "Bela Vista", "Belém", "Bom Retiro", "Brasilândia", "Butantã", "Cachoeirinha", "Cambuci", "Campo Belo", "Campo Grande", "Campo Limpo", "Cangaíba", "Capão Redondo", "Carrão", "Casa Verde", "Cidade Ademar", "Cidade Dutra", "Cidade Líder", "Cidade Tiradentes", "Consolação", "Cursino", "Ermelino Matarazzo", "Freguesia do Ó", "Grajaú", "Guaianases", "Iguatemi", "Ipiranga", "Itaim Bibi", "Itaim Paulista", "Itaquera", "Jabaquara", "Jaçanã", "Jaguara", "Jaguaré", "Jaraguá", "Jardim Ângela", "Jardim Helena", "Jardim Paulista", "Jardim São Luís", "Lapa", "Liberdade", "Limão", "Mandaqui", "Marsilac", "Moema", "Mooca", "Morumbi", "Parelheiros", "Pari", "Parque do Carmo", "Pedreira", "Penha", "Perdizes", "Perus", "Pinheiros", "Pirituba", "Ponte Rasa", "Raposo Tavares", "República", "Rio Pequeno", "Sacomã", "Santa Cecília", "Santana", "Santo Amaro", "São Domingos", "São Lucas", "São Mateus", "São Miguel", "São Rafael", "Sapopemba", "Saúde", "Sé", "Socorro", "Tatuapé", "Tremembé", "Tucuruvi", "Vila Andrade", "Vila Curuçá", "Vila Formosa", "Vila Guilherme", "Vila Jacuí", "Vila Leopoldina", "Vila Maria", "Vila Mariana", "Vila Matilde", "Vila Medeiros", "Vila Prudente", "Vila Sônia"])

@@ -77,9 +77,10 @@ st.markdown("""
         Quanto de tempo e de dinheiro são consumidos no seu deslocamento diário?
     </div>
     """, unsafe_allow_html=True)
-# 6. ENTRADA DE DADOS: PERFIL DO USUÁRIO (RESTAURADO)
+# 3. ENTRADA DE DADOS
 st.markdown("### 👤 PERFIL")
 p1, p2, p3 = st.columns(3)
+idade = p1.number_input("👤 IDADE", min_value=14, value=30)
 idade = p1.number_input("IDADE", min_value=14, step=1, value=None)
 escolaridade = p2.selectbox("ESCOLARIDADE", ["Fundamental Incompleto", "Fundamental Completo", "Médio Incompleto", "Médio Completo", "Técnico", "Superior Incompleto", "Superior Completo", "Pós-Graduação"])
 setor = p3.selectbox("SETOR DE ATIVIDADE", ["Comércio", "Construção Civil", "Educação", "Indústria", "Serviços", "Saúde", "Outros"])

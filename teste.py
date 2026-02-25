@@ -158,7 +158,7 @@ if st.button("GERAR DIAGNÓSTICO"):
    st.warning("⚠️ Por favor, preencha os campos de SALÁRIO, GASTOS COM TRANSPORTE E HORAS NO TRECHO para continuar")
 
 # 8. DIAGNÓSTICO
-    if st.button("GERAR DIAGNÓSTICO TÉCNICO"):
+if st.button("GERAR DIAGNÓSTICO"):
     # PROTEÇÃO: Verifica se as variáveis foram preenchidas e são maiores que zero
     if (salario and h_dia and salario > 0):
         # --- CÁLCULOS (SÓ OCORREM SE OS DADOS ESTIVEREM LÁ) ---

@@ -1,44 +1,75 @@
 import streamlit as st
 
-# 1. IDENTIDADE VISUAL E CONFIGURAÇÃO (CSS ULTRA REFORÇADO)
+# 1. IDENTIDADE VISUAL E CONFIGURAÇÃO ULTRA REFORÇADA
 st.set_page_config(page_title="Calculadora do Trecho", layout="wide")
 
 st.markdown("""
     <style>
-    .stApp { background-color: #000000; color: #FFFFFF; }
-    
-    /* Proteção do Cabeçalho contra faixas do sistema */
-    .main-header-container {
-        padding-top: 40px !important;
-        margin-bottom: 20px;
-        position: relative;
-        z-index: 9999;
+    /* 1. ELIMINAÇÃO DA FAIXA BRANCA/AMARELA DO TOPO E STATUS */
+    header, [data-testid="stHeader"], [data-testid="stStatusWidget"] {
+        visibility: hidden !important;
+        display: none !important;
+        height: 0px !important;
     }
-    
-    h1 { color: #FFCC00 !important; font-family: 'Arial', sans-serif; font-weight: 800; text-align: center; }
-    .subheader-text { color: #FFCC00 !important; text-align: center; font-size: 1.2rem; margin-bottom: 40px; }
 
+    /* 2. FUNDO PRETO ABSOLUTO */
+    .stApp { background-color: #000000 !important; color: #FFFFFF !important; }
+    
+    /* 3. SUBIR O CONTEÚDO (Remove o espaço vazio do topo) */
+    .block-container { 
+        padding-top: 0rem !important; 
+        margin-top: -30px !important;
+    }
+
+    /* 4. TÍTULOS E LABELS EM AMARELO */
+    h1 { color: #FFCC00 !important; font-family: 'Arial Black', sans-serif; font-weight: 800; text-align: center; }
+    label, p, span { color: #FFCC00 !important; font-weight: bold !important; }
+
+    /* 5. CORREÇÃO DO BOTÃO (Texto nunca fica encoberto) */
     .stButton>button { 
         background-color: #FFCC00 !important; 
         color: #000000 !important; 
-        font-weight: bold !important; 
-        width: 100%; 
-        border-radius: 5px; 
-        height: 4.5em; 
-        border: 2px solid #FFCC00;
-        font-size: 1.4rem !important;
-        margin-top: 20px;
-        box-shadow: 0px 5px 15px rgba(255, 204, 0, 0.3);
+        font-weight: 900 !important; 
+        width: 100% !important; 
+        height: 4.5em !important;
+        border: 2px solid #FFCC00 !important;
+        font-size: 1.2rem !important;
+        text-transform: uppercase !important;
+        z-index: 9999 !important; /* Garante que fique na frente */
+        opacity: 1 !important;
+        display: block !important;
     }
-    .stButton>button:hover { background-color: #E63946 !important; color: #FFFFFF !important; border-color: #E63946; }
+    .stButton>button:hover { background-color: #E63946 !important; color: #FFFFFF !important; border-color: #E63946 !important; }
 
-    .report-box { background:#111; padding:30px; border:2px solid #FFCC00; border-radius:10px; margin-top:20px; }
-    label, p { color: #FFCC00 !important; font-weight: bold; }
-    input, select, .stSelectbox { background-color: #111 !important; color: white !important; border: 1px solid #444 !important; }
+    /* 6. CAMPOS SEM BORDAS - APENAS LINHA INFERIOR DISCRETA */
+    div[data-baseweb="input"], div[data-baseweb="select"], .stSelectbox, .stNumberInput {
+        border: none !important;
+        border-bottom: 1px solid #333 !important;
+        border-radius: 0px !important;
+        background-color: transparent !important;
+    }
     
-    .block-container { padding-top: 1rem !important; }
+    /* Força o texto digitado a ser branco */
+    input { color: #FFFFFF !important; -webkit-text-fill-color: #FFFFFF !important; }
+    
+    /* Setas dos Selectboxes Amarelas */
+    svg[viewBox="0 0 24 24"] { fill: #FFCC00 !important; }
     </style>
     """, unsafe_allow_html=True)
+
+# 2. INSERÇÃO DO LOGO (No topo de tudo)
+# Se o arquivo estiver no seu GitHub:
+# st.image("logo.png", width=180) 
+# Se preferir centralizar o logo, use colunas:
+col_l1, col_l2, col_l3 = st.columns([1,1,1])
+with col_l2:
+    # st.image("logo.png", use_container_width=True)
+    pass
+
+st.title("⚖️ CALCULADORA DO TRECHO")
+st.markdown("<p style='text-align: center; color: #FFCC00;'>Diagnóstico de Expropriação e Jornada Não Paga</p>", unsafe_allow_html=True)
+
+# --- DAQUI PARA BAIXO SEGUE A LOCALIZAÇÃO ---
 # 3. LOCALIZAÇÃO GEOGRÁFICA (Segue abaixo...)
 # 2. BANCO DE DADOS GEOGRÁFICO
 municipios_rmsp = [" "] + sorted(["Arujá", "Barueri", "Biritiba-Mirim", "Caieiras", "Cajamar", "Carapicuíba", "Cotia", "Diadema", "Embu das Artes", "Embu-Guaçu", "Ferraz de Vasconcelos", "Francisco Morato", "Franco da Rocha", "Guararema", "Guarulhos", "Itapecerica da Serra", "Itapevi", "Itaquaquecetuba", "Jandira", "Juquitiba", "Mairiporã", "Mauá", "Mogi das Cruzes", "Osasco", "Pirapora do Bom Jesus", "Poá", "Ribeirão Pires", "Rio Grande da Serra", "Salesópolis", "Santa Isabel", "Santana de Parnaíba", "Santo André", "São Bernardo do Campo", "São Caetano do Sul", "São Lourenço da Serra", "São Paulo", "Suzano", "Taboão da Serra", "Vargem Grande Paulista"])

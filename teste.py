@@ -87,23 +87,19 @@ setor = p3.selectbox("SETOR DE ATIVIDADE", ["Comércio", "Construção Civil", "
 st.markdown("---")
 st.markdown("### 🏠 LOCAL DE MORADIA")
 m1, m2 = st.columns(2)
-# Usamos chaves únicas para garantir que o Streamlit salve os dados
-mun_moradia = m1.selectbox("MUNICÍPIO (Moradia)", municipios, index=0, key="k_mun_mor")
-
+mun_moradia = m1.selectbox("MUNICÍPIO (Moradia)", municipios_rmsp, index=0)
 if mun_moradia == "São Paulo":
-    dist_moradia = m2.selectbox("DISTRITO (Moradia)", distritos, index=0, key="k_dist_sp_mor")
+    dist_moradia = m2.selectbox("DISTRITO (Moradia)", distritos_sp, index=0)
 else:
-    dist_moradia = m2.text_input("BAIRRO/DISTRITO (Moradia)", placeholder="Digite seu bairro", key="k_bairro_out_mor")
+    dist_moradia = m2.text_input("BAIRRO/DISTRITO (Moradia)", placeholder="Digite seu bairro")
 
-st.markdown("### 💼 LOCAL DE TRABALHO")
-t1, t2 = st.columns(2)
-mun_trabalho = t1.selectbox("MUNICÍPIO (Trabalho)", municipios, index=0, key="k_mun_tra")
-
+st.markdown("### 🏢 LOCAL DE TRABALHO")
+t1, t2, t3 = st.columns(3)
+mun_trabalho = t1.selectbox("MUNICÍPIO (Trabalho)", municipios_rmsp, index=0)
 if mun_trabalho == "São Paulo":
-    dist_trabalho = t2.selectbox("DISTRITO (Trabalho)", distritos, index=0, key="k_dist_sp_tra")
+    dist_trabalho = t2.selectbox("DISTRITO (Trabalho)", distritos_sp, index=0)
 else:
-    dist_trabalho = t2.text_input("BAIRRO/DISTRITO (Trabalho)", placeholder="Digite o bairro de trabalho", key="k_bairro_out_tra")
-
+    dist_trabalho = t2.text_input("BAIRRO/DISTRITO (Trabalho)", placeholder="Digite o bairro de trabalho")
 st.markdown("### ⏳ TRECHO DE DESLOCAMENTO")
 tr_c1, tr_c2 = st.columns(2)
 h_dia = tr_c1.number_input("HORAS NO TRECHO (Ida + Volta)", value=2.0, step=0.5, key="k_horas_dia")
@@ -116,11 +112,11 @@ sal = e1.number_input("SALÁRIO BRUTO (R$)", min_value=0.0, value=None)
 c_vida = e2.number_input("🏠 CUSTO DE VIDA (R$)", min_value=0.0, help="Soma de: Aluguel, Comida, Energia, Água, Internet")
 st.markdown("### 🚌 TRANSPORTE DIÁRIO (IDA/VOLTA) (R$)")
 g1, g2, g3, g4, g5 = st.columns(5)
-g_on = g1.number_input("🚍 ÔNIBUS", key=min_value=0.0)
-g_me = g2.number_input("🚇 METRÔ", key=min_value=0.0)
-g_tr = g3.number_input("🚆 TREM", key=min_value=0.0)
-g_ap = g4.number_input("🚗 APP", key=min_value=0.0)
-g_ca = g5.number_input("⛽ CARRO/COMBUSTÍVEL", key=min_value=0.0)
+g_on = g1.number_input("🚍 ÔNIBUS", min_value=0.0)
+g_me = g2.number_input("🚇 METRÔ", min_value=0.0)
+g_tr = g3.number_input("🚆 TREM", min_value=0.0)
+g_ap = g4.number_input("🚗 APP", min_value=0.0)
+g_ca = g5.number_input("⛽ CARRO/COMBUSTÍVEL", min_value=0.0)
 
    # Certifique-se de que este bloco está EXATAMENTE assim, com as aspas triplas no início e no fim
 # 1. ESTILO DO BOTÃO E ELIMINAÇÃO DE FAIXAS

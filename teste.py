@@ -151,15 +151,11 @@ st.markdown("""
     }
     </style>
     """, unsafe_allow_html=True)
-
-if st.button("GERAR DIAGNÓSTICO"):
-    # Verificação amigável
-    if salario is None or h_dia is None or salario == 0:
-    st.warning("⚠️ Por favor, preencha os campos de SALÁRIO, GASTOS COM TRANSPORTE E HORAS NO TRECHO para continuar")
-
+   
 # 8. DIAGNÓSTICO
 if st.button("GERAR DIAGNÓSTICO"):
     # PROTEÇÃO: Verifica se as variáveis foram preenchidas e são maiores que zero
+    st.warning("⚠️ Por favor, preencha os campos de SALÁRIO, GASTOS COM TRANSPORTE E HORAS NO TRECHO para continuar")
     if (salario and h_dia and salario > 0):
         # --- CÁLCULOS (SÓ OCORREM SE OS DADOS ESTIVEREM LÁ) ---
         tarifa_m = (g_on + g_me + g_tr + g_ap + g_ca) * dias

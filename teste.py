@@ -84,21 +84,14 @@ idade = p1.number_input("IDADE", min_value=14, step=1, value=None)
 escolaridade = p2.selectbox("ESCOLARIDADE", ["Fundamental Incompleto", "Fundamental Completo", "Médio Incompleto", "Médio Completo", "Técnico", "Superior Incompleto", "Superior Completo", "Pós-Graduação"])
 setor = p3.selectbox("SETOR DE ATIVIDADE", ["Comércio", "Construção Civil", "Educação", "Indústria", "Serviços", "Saúde", "Outros"])
 
-# 7. LOCALIZAÇÃO (MORADIA E TRABALHO)
-# ========================================================= 
-# --- SEÇÃO MORADIA ---
+st.markdown("---")
+st.markdown("### 🏠 LOCAL DE MORADIA")
 m1, m2 = st.columns(2)
-with m1:
-    # Usamos uma chave única 'k_mun_mor_final'
-    mun_moradia = st.selectbox("MUNICÍPIO (Moradia)", municipios, key="k_mun_mor_final")
-
-with m2:
-    if mun_moradia == "São Paulo":
-        # Chave específica para quando é SP
-        dist_moradia = st.selectbox("DISTRITO (Moradia)", distritos, key="k_dist_sp_mor")
-    else:
-        # Chave específica para quando NÃO é SP
-        dist_moradia = st.text_input("BAIRRO/DISTRITO (Moradia)", placeholder="Digite seu bairro", key="k_bairro_out_mor")
+mun_moradia = m1.selectbox("MUNICÍPIO (Moradia)", municipios_rmsp, index=0)
+if mun_moradia == "São Paulo":
+    dist_moradia = m2.selectbox("DISTRITO (Moradia)", distritos_sp, index=0)
+else:
+    dist_moradia = m2.text_input("BAIRRO/DISTRITO (Moradia)", placeholder="Digite seu bairro")
 
 st.markdown("### 💼 LOCAL DE TRABALHO")
 t1, t2, t3 = st.columns(3)

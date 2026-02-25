@@ -121,6 +121,27 @@ g_tr = g3.number_input("🚆 TREM", min_value=0.0)
 g_ap = g4.number_input("🚗 APP", min_value=0.0)
 g_ca = g5.number_input("⛽ CARRO/COMBUSTÍVEL", min_value=0.0)
 
+t.markdown("""
+    <style>
+    /* GARANTE QUE O BOTÃO OCUPE A LARGURA TODA E MATE A FAIXA AMARELA PEQUENA */
+    div.stButton > button {
+        background-color: #FFCC00 !important;
+        color: #000000 !important;
+        font-weight: 900 !important;
+        font-size: 1.4rem !important;
+        text-transform: uppercase;
+        width: 100% !important; 
+        height: 3.5em !important;
+        border: 4px solid #E63946 !important;
+        margin-top: 30px !important;
+    }
+    </style>
+    """, unsafe_allow_html=True)
+
+with st.container():
+    # Isso limpa o layout das colunas de transporte antes de desenhar o botão
+    st.markdown('<div style="clear: both;"></div>', unsafe_allow_html=True)
+
 # 8. DIAGNÓSTICO
 if st.button("EFETUAR DIAGNÓSTICO"):
     if sal and h_dia:

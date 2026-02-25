@@ -110,7 +110,7 @@ mun_trabalho = t1.selectbox("MUNICÍPIO (Trabalho)", municipios, key="mun_trab_f
 if mun_trabalho == "São Paulo":
     dist_trabalho = t2.selectbox("DISTRITO (Trabalho)", distritos, key="dist_trab_sp")
 else:
-    dist_trabalho = t2.text_input("BAIRRO/CIDADE (Trabalho)", key="bairro_trab_input")
+    dist_trabalho = t2.text_input("BAIRRO/DISTRITO (Trabalho)", key="bairro_trab_input")
 st.markdown("### ⏳ TRECHO DE DESLOCAMENTO")
 # Criamos as colunas novamente para garantir que elas existam neste ponto do código
 col_tempo, col_dias = st.columns(2)

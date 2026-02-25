@@ -123,17 +123,39 @@ g_ca = g5.number_input("⛽ CARRO/COMBUSTÍVEL", min_value=0.0)
 
 st.markdown("""
     <style>
-    /* GARANTE QUE O BOTÃO OCUPE A LARGURA TODA E MATE A FAIXA AMARELA PEQUENA */
+    /* 1. MATA O HEADER E A DECORAÇÃO COLORIDA (A FAIXA AMARELA) */
+    header, [data-testid="stHeader"], [data-testid="stDecoration"] {
+        display: none !important;
+        visibility: hidden !important;
+        height: 0px !important;
+    }
+
+    /* 2. ELIMINA QUALQUER AVISO OU NOTIFICAÇÃO QUE GERE FAIXAS AMARELAS */
+    [data-testid="stNotification"], .stAlert, .st-emotion-cache-p5msec {
+        display: none !important;
+        visibility: hidden !important;
+    }
+
+    /* 3. REFORÇA O FUNDO PRETO E TIRA QUALQUER BORDA COLORIDA */
+    .stApp {
+        background-color: #000000 !important;
+    }
+
+    /* 4. GARANTE QUE O BOTÃO NÃO TENHA ESSA FAIXA GRUDADA */
+    .stButton {
+        border: none !important;
+        box-shadow: none !important;
+    }
+
+    /* 5. SEU BOTÃO INTEGRAL */
     div.stButton > button {
         background-color: #FFCC00 !important;
         color: #000000 !important;
         font-weight: 900 !important;
-        font-size: 1.4rem !important;
-        text-transform: uppercase;
-        width: 100% !important; 
+        width: 100% !important;
         height: 3.5em !important;
         border: 4px solid #E63946 !important;
-        margin-top: 30px !important;
+        text-transform: uppercase;
     }
     </style>
     """, unsafe_allow_html=True)

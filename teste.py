@@ -1,38 +1,47 @@
 import streamlit as st
 
-# 1. IDENTIDADE VISUAL E CONFIGURAÇÃO
+# 1. IDENTIDADE VISUAL E CONFIGURAÇÃO (LIMPEZA PROFUNDA)
 st.set_page_config(page_title="Calculadora do Trecho", layout="wide")
 
 st.markdown("""
     <style>
-    /* REMOVE A FAIXA AMARELA DE FOCO */
-    * { outline: none !important; }
-    [data-testid="stMarkdownContainer"] > div:focus { outline: none !important; }
+    /* 1. ELIMINA O AMARELO FANTASMA (Destaque de fundo e outline) */
+    * { 
+        outline: none !important; 
+        -webkit-tap-highlight-color: transparent !important;
+    }
     
-    /* Esconde elementos nativos que causam poluição visual */
+    /* Remove o background que o Streamlit coloca em blocos de texto ao focar/clicar */
+    .stMarkdown div, .stMarkdown span, h1, h2, h3, p {
+        background-color: transparent !important;
+        background: transparent !important;
+        border: none !important;
+    }
+
+    /* 2. OCULTA ELEMENTOS NATIVOS */
     header {visibility: hidden;}
+    footer {visibility: hidden;}
     .stApp { background-color: #000000; color: #FFFFFF; }
     
-    /* Espaçamento e Proteção do Título */
-    .block-container { padding-top: 4rem !important; }
+    /* 3. PROTEÇÃO E POSICIONAMENTO DO TÍTULO */
+    .block-container { padding-top: 3rem !important; }
     
     .header-fix {
         color: #FFCC00 !important;
         font-family: 'Arial', sans-serif;
         text-align: center;
-        background-color: #000000;
-        border: none !important; /* Garante que não haja borda */
-        outline: none !important;
+        background: none !important;
+        padding: 10px;
     }
 
     h1 { 
         font-size: 2.8rem; 
         font-weight: 900; 
-        margin-bottom: 5px; 
-        border: none !important; 
+        color: #FFCC00 !important;
+        background: transparent !important;
     }
 
-    /* Botão Amarelo - Ultra Visível */
+    /* 4. BOTÃO AMARRELO VIBRANTE */
     .stButton>button { 
         background-color: #FFCC00 !important; 
         color: #000000 !important; 
@@ -50,6 +59,7 @@ st.markdown("""
         border-color: #E63946;
     }
 
+    /* 5. CAMPOS E FORMULÁRIO */
     .report-box { background:#111; padding:30px; border:2px solid #FFCC00; border-radius:10px; margin-top:20px; }
     label, p { color: #FFCC00 !important; font-weight: bold; }
     input, select, .stSelectbox { background-color: #111 !important; color: white !important; border: 1px solid #444 !important; }
@@ -62,7 +72,7 @@ distritos_sp = [" "] + sorted(["Água Rasa", "Alto de Pinheiros", "Anhanguera", 
 
 # TÍTULO E SUBTÍTULO
 st.markdown('<div class="header-fix"><h1>📊 CALCULADORA DO TRECHO</h1></div>', unsafe_allow_html=True)
-st.markdown('<p style="text-align: center; color: #FFCC00; font-size: 1.2rem; font-weight: bold;">Quanto de tempo e de dinheiro são consumidos no seu deslocamento diário?</p>', unsafe_allow_html=True)
+st.markdown('<p style="text-align: center; color: #FFCC00; font-size: 1.2rem; font-weight: bold; background: transparent;">Quanto de tempo e de dinheiro são consumidos no seu deslocamento diário?</p>', unsafe_allow_html=True)
 
 # 3. ENTRADA DE DADOS
 st.markdown("### 👤 PERFIL")

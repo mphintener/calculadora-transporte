@@ -1,24 +1,23 @@
 import streamlit as st
 
-# 1. SETUP E LIMPEZA RADICAL DE INTERFACE
+# 1. SETUP DA PÁGINA
 st.set_page_config(page_title="Calculadora do Trecho", layout="wide")
 
+# 2. ESTILO CSS (Onde o código de visibilidade entra)
 st.markdown("""
     <style>
-    /* ELIMINAÇÃO TOTAL DA FAIXA SUPERIOR */
-    header, [data-testid="stHeader"], .st-emotion-cache-18ni7ap {
-        visibility: hidden !important;
-        display: none !important;
-        height: 0px !important;
+    /* ELIMINAÇÃO DA FAIXA SUPERIOR */
+    header, [data-testid="stHeader"] {
+        visibility: hidden;
+        display: none;
     }
     
-    /* CONTEÚDO NO TOPO ABSOLUTO */
     .block-container {
         padding-top: 0rem !important;
-        margin-top: -60px !important;
+        margin-top: -30px !important;
     }
 
-    /* IDENTIDADE VISUAL: PRETO, AMARELO E VERMELHO */
+    /* IDENTIDADE VISUAL */
     .stApp { background-color: #000000 !important; }
     
     h1, h2, h3, label, p, span { 
@@ -26,37 +25,38 @@ st.markdown("""
         font-family: 'Arial Black', sans-serif !important;
     }
 
-    /* CAMPOS SEM BORDAS - APENAS LINHA INFERIOR DISCRETA */
-    div[data-baseweb="input"], div[data-baseweb="select"], .stSelectbox, .stNumberInput {
+    /* CAMPOS SEM BORDAS (SÓ LINHA INFERIOR) */
+    div[data-baseweb="input"], div[data-baseweb="select"], .stSelectbox, .stNumberInput, .stTextInput {
         border: none !important;
-        border-bottom: 1px solid #333 !important;
+        border-bottom: 2px solid #333 !important; /* Linha discreta por padrão */
         border-radius: 0px !important;
-        background-color: #111 !important;
+        background-color: transparent !important;
     }
-    
-    input { color: #FFFFFF !important; }
-    div[role="listbox"] { color: #FFFFFF !important; background-color: #111 !important; }
 
-    /* BOTÃO DE IMPACTO */
+    /* QUANDO CLICAR NO CAMPO, A LINHA FICA AMARELA */
+    div[data-baseweb="input"]:focus-within {
+        border-bottom: 2px solid #FFCC00 !important;
+    }
+
+    /* COR DO TEXTO DIGITADO (FORÇANDO BRANCO) */
+    input { 
+        color: #FFFFFF !important; 
+        -webkit-text-fill-color: #FFFFFF !important; /* Força no Chrome/Safari */
+    }
+
+    /* BOTÃO */
     .stButton>button { 
         background-color: #FFCC00 !important; 
         color: #000000 !important; 
         font-weight: 900 !important; 
         width: 100%; 
-        height: 3.5em; 
         border: 4px solid #E63946 !important;
-        font-size: 1.4rem !important;
         text-transform: uppercase;
-        margin-top: 30px !important;
-    }
-    .stButton>button:hover { background-color: #E63946 !important; color: #FFFFFF !important; }
-
-    .report-box { 
-        background-color: #111; padding: 25px; border-left: 5px solid #FFCC00; border-radius: 0px; margin-top: 20px;
     }
     </style>
     """, unsafe_allow_html=True)
 
+# ABAIXO DISSO VOCÊ CONTINUA COM AS LISTAS E OS INPUTS...
 # 2. BANCO DE DADOS GEOGRÁFICO
 municipios = [" "] + sorted(["Arujá", "Barueri", "Biritiba-Mirim", "Caieiras", "Cajamar", "Carapicuíba", "Cotia", "Diadema", "Embu das Artes", "Embu-Guaçu", "Ferraz de Vasconcelos", "Francisco Morato", "Franco da Rocha", "Guararema", "Guarulhos", "Itapecerica da Serra", "Itapevi", "Itaquaquecetuba", "Jandira", "Juquitiba", "Mairiporã", "Mauá", "Mogi das Cruzes", "Osasco", "Pirapora do Bom Jesus", "Poá", "Ribeirão Pires", "Rio Grande da Serra", "Salesópolis", "Santa Isabel", "Santana de Parnaíba", "Santo André", "São Bernardo do Campo", "São Caetano do Sul", "São Lourenço da Serra", "São Paulo", "Suzano", "Taboão da Serra", "Vargem Grande Paulista"])
 

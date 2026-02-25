@@ -78,7 +78,7 @@ st.markdown("""
     </div>
     """, unsafe_allow_html=True)
 # 5. LOCALIZAÇÃO E TRAJETO (DISTRITOS CORRIGIDOS)
-t.markdown("---")
+st.markdown("---")
 st.markdown("### 🏠 LOCAL DE MORADIA")
 m1, m2 = st.columns(2)
 mun_moradia = m1.selectbox("MUNICÍPIO (Moradia)", municipios_rmsp, key="mun_m")

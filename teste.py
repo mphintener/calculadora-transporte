@@ -117,7 +117,7 @@ g_on = g1.number_input("🚍 ÔNIBUS", min_value=0.0)
 g_me = g2.number_input("🚇 METRÔ", min_value=0.0)
 g_tr = g3.number_input("🚆 TREM", min_value=0.0)
 g_ap = g4.number_input("🚗 APP", min_value=0.0)
-g_ca = g5.number_input("⛽ CARRO", min_value=0.0)
+g_ca = g5.number_input("⛽ CARRO/COMBUSTÍVEL", min_value=0.0)
 
 # 6. LÓGICA DE DIAGNÓSTICO
 if st.button("EFETUAR DIAGNÓSTICO"):

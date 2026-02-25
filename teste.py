@@ -77,8 +77,14 @@ st.markdown("""
         Quanto de tempo e de dinheiro são consumidos no seu deslocamento diário?
     </div>
     """, unsafe_allow_html=True)
+# 5. ENTRADA DE DADOS: PERFIL DO USUÁRIO (RESTAURADO)
+st.markdown("### 👤 PERFIL")
+p1, p2, p3 = st.columns(3)
+idade = p1.number_input("IDADE", min_value=14, step=1, value=None)
+escolaridade = p2.selectbox("ESCOLARIDADE", ["Fundamental Incompleto", "Fundamental Completo", "Médio Incompleto", "Médio Completo", "Técnico", "Superior Incompleto", "Superior Completo", "Pós-Graduação"])
+setor = p3.selectbox("SETOR DE ATIVIDADE", ["Comércio", "Construção Civil", "Educação", "Indústria", "Serviços", "Saúde"])
 
-# 5. LOCALIZAÇÃO (CORREÇÃO DA LÓGICA DE DISTRITOS)
+# 6. LOCALIZAÇÃO (MORADIA E TRABALHO)
 st.markdown("---")
 st.markdown("### 🏠 LOCAL DE MORADIA")
 m1, m2 = st.columns(2)
@@ -99,17 +105,6 @@ else:
     dist_trabalho = t2.text_input("BAIRRO/DISTRITO (Trabalho)", placeholder="Digite o bairro de trabalho", key="dist_t_text")
 
 h_dia = t3.number_input("HORAS NO TRECHO (Ida/Volta)", value=2.0, step=0.5)
-st.markdown("### 💼 LOCAL DE TRABALHO")
-t1, t2, t3 = st.columns(3)
-mun_trabalho = t1.selectbox("MUNICÍPIO (Trabalho)", municipios_rmsp, key="mun_t")
-
-if mun_trabalho == "São Paulo":
-    dist_trabalho = t2.selectbox("DISTRITO (Trabalho)", distritos_sp, key="dist_t_select")
-else:
-    dist_trabalho = t2.text_input("BAIRRO/DISTRITO (Trabalho)", placeholder="Digite o bairro de trabalho", key="dist_t_text")
-
-h_dia = t3.number_input("HORAS NO TRECHO (Ida/Volta)", value=2.0, step=0.5)
-
 st.markdown("---")
 st.markdown("### 💰 RENDIMENTO E CUSTO")
 e1, e2, e3 = st.columns(3)
@@ -125,7 +120,7 @@ g_tr = g3.number_input("🚆 TREM", min_value=0.0)
 g_ap = g4.number_input("🚗 APP", min_value=0.0)
 g_ca = g5.number_input("⛽ CARRO/COMBUSTÍVEL", min_value=0.0)
 
-# 6. DIAGNÓSTICO
+# 7. DIAGNÓSTICO
 if st.button("EFETUAR DIAGNÓSTICO"):
     if sal and h_dia:
         tarifa_m = (g_on + g_me + g_tr + g_ap + g_ca) * dias

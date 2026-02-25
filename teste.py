@@ -113,7 +113,6 @@ with t2:
     else:
         # O segredo é que esta KEY nunca foi usada antes
         dist_trabalho = st.text_input("BAIRRO/CIDADE (Trabalho)", key="bairro_outros_trab_gaveta")
-
 with col_tempo:
     h_dia = st.number_input("HORAS NO TRECHO (Ida + Volta)", 
                             min_value=0.0, 

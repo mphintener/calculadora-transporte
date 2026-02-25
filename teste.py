@@ -1,44 +1,47 @@
-import streamlit as st 
-# 1. IDENTIDADE VISUAL E CONFIGURAÇÃO (CSS ULTRA REFORÇADO)
-st.set_page_config(page_title="Calculadora do Trecho", layout="wide")
+import streamlit as st
+
+# 1. SETUP E O CSS "MATADOR" DE TEXTO PRETO
+st.set_page_config(page_title="Calculadora de Expropriação", layout="wide")
 
 st.markdown("""
     <style>
-    .stApp { background-color: #000000; color: #FFFFFF; }
+    header { visibility: hidden; height: 0px; }
+    .stApp { background-color: #000000 !important; }
     
-    /* Proteção do Cabeçalho contra faixas do sistema */
-    .main-header-container {
-        padding-top: 40px !important;
-        margin-bottom: 20px;
-        position: relative;
-        z-index: 9999;
+    /* Cores dos Títulos e Labels */
+    h1, h2, h3, label, p, span { 
+        color: #FFCC00 !important; 
+        font-family: 'Arial Black', sans-serif !important; 
     }
-    
-    h1 { color: #FFCC00 !important; font-family: 'Arial', sans-serif; font-weight: 800; text-align: center; }
-    .subheader-text { color: #FFCC00 !important; text-align: center; font-size: 1.2rem; margin-bottom: 40px; }
 
+    /* FORÇANDO O TEXTO BRANCO EM TODOS OS TIPOS DE CAMPO */
+    input, select, textarea, [data-baseweb="select"] div {
+        color: #FFFFFF !important;
+        -webkit-text-fill-color: #FFFFFF !important; /* Força no Chrome/Edge */
+    }
+
+    /* Cor do texto dentro das caixas de seleção e número */
+    .stNumberInput div div input, .stTextInput div div input, .stSelectbox div div {
+        color: #FFFFFF !important;
+        background-color: #111 !important;
+    }
+
+    /* Linha amarela embaixo para dar contraste */
+    div[data-baseweb="input"], .stSelectbox {
+        border: none !important;
+        border-bottom: 2px solid #FFCC00 !important;
+    }
+
+    /* BOTÃO */
     .stButton>button { 
         background-color: #FFCC00 !important; 
-        color: #000000 !important; 
-        font-weight: bold !important; 
-        width: 100%; 
-        border-radius: 5px; 
-        height: 4.5em; 
-        border: 2px solid #FFCC00;
-        font-size: 1.4rem !important;
-        margin-top: 20px;
-        box-shadow: 0px 5px 15px rgba(255, 204, 0, 0.3);
+        color: #000 !important; 
+        font-weight: 900 !important; 
+        border: 4px solid #E63946 !important;
+        width: 100%; height: 4em;
     }
-    .stButton>button:hover { background-color: #E63946 !important; color: #FFFFFF !important; border-color: #E63946; }
-
-    .report-box { background:#111; padding:30px; border:2px solid #FFCC00; border-radius:10px; margin-top:20px; }
-    label, p { color: #FFCC00 !important; font-weight: bold; }
-    input, select, .stSelectbox { background-color: #111 !important; color: white !important; border: 1px solid #444 !important; }
-    
-    .block-container { padding-top: 1rem !important; }
     </style>
     """, unsafe_allow_html=True)
-
 # 2. BANCO DE DADOS GEOGRÁFICO
 municipios_rmsp = [" "] + sorted(["Arujá", "Barueri", "Biritiba-Mirim", "Caieiras", "Cajamar", "Carapicuíba", "Cotia", "Diadema", "Embu das Artes", "Embu-Guaçu", "Ferraz de Vasconcelos", "Francisco Morato", "Franco da Rocha", "Guararema", "Guarulhos", "Itapecerica da Serra", "Itapevi", "Itaquaquecetuba", "Jandira", "Juquitiba", "Mairiporã", "Mauá", "Mogi das Cruzes", "Osasco", "Pirapora do Bom Jesus", "Poá", "Ribeirão Pires", "Rio Grande da Serra", "Salesópolis", "Santa Isabel", "Santana de Parnaíba", "Santo André", "São Bernardo do Campo", "São Caetano do Sul", "São Lourenço da Serra", "São Paulo", "Suzano", "Taboão da Serra", "Vargem Grande Paulista"])
 distritos_sp = [" "] + sorted(["Água Rasa", "Alto de Pinheiros", "Anhanguera", "Aricanduva", "Artur Alvim", "Barra Funda", "Bela Vista", "Belém", "Bom Retiro", "Brasilândia", "Butantã", "Cachoeirinha", "Cambuci", "Campo Belo", "Campo Grande", "Campo Limpo", "Cangaíba", "Capão Redondo", "Carrão", "Casa Verde", "Cidade Ademar", "Cidade Dutra", "Cidade Líder", "Cidade Tiradentes", "Consolação", "Cursino", "Ermelino Matarazzo", "Freguesia do Ó", "Grajaú", "Guaianases", "Iguatemi", "Ipiranga", "Itaim Bibi", "Itaim Paulista", "Itaquera", "Jabaquara", "Jaçanã", "Jaguara", "Jaguaré", "Jaraguá", "Jardim Ângela", "Jardim Helena", "Jardim Paulista", "Jardim São Luís", "Lapa", "Liberdade", "Limão", "Mandaqui", "Marsilac", "Moema", "Mooca", "Morumbi", "Parelheiros", "Pari", "Parque do Carmo", "Pedreira", "Penha", "Perdizes", "Perus", "Pinheiros", "Pirituba", "Ponte Rasa", "Raposo Tavares", "República", "Rio Pequeno", "Sacomã", "Santa Cecília", "Santana", "Santo Amaro", "São Domingos", "São Lucas", "São Mateus", "São Miguel", "São Rafael", "Sapopemba", "Saúde", "Sé", "Socorro", "Tatuapé", "Tremembé", "Tucuruvi", "Vila Andrade", "Vila Curuçá", "Vila Formosa", "Vila Guilherme", "Vila Jacuí", "Vila Leopoldina", "Vila Maria", "Vila Mariana", "Vila Matilde", "Vila Medeiros", "Vila Prudente", "Vila Sônia"])

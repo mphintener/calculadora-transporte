@@ -98,34 +98,32 @@ with m2:
         # Forçamos o valor inicial como vazio para destravar a digitação
         dist_moradia = st.text_input("BAIRRO/CIDADE (Moradia)", key="K_TEXTO_BAIRRO_OUTROS", value="")
 
-st.markdown("---")
+# --- 1. MORADIA ---
+st.markdown("### 🏠 MORADIA")
+col_m1, col_m2 = st.columns(2)
 
-# --- BLOCO DE TRABALHO ESTABILIZADO ---
-st.markdown("### 💼 LOCAL DE TRABALHO")
-t1, t2, t3 = st.columns(3)
+with col_m1:
+    mun_moradia = st.selectbox("MUNICÍPIO", municipios, key="K_MUN_MOR_UNIQ")
 
-with t1:
-    mun_trabalho = st.selectbox("MUNICÍPIO (Trabalho)", municipios, key="K_NOVA_MUN_TRAB")
-
-with t2:
-    if mun_trabalho == "São Paulo":
-        dist_trabalho = st.selectbox("DISTRITO (Trabalho)", distritos, key="K_LISTA_DISTRITO_TRAB")
+with col_m2:
+    if mun_moradia == "São Paulo":
+        dist_moradia = st.selectbox("DISTRITO", distritos, key="K_DIST_SP_UNIQ")
     else:
-        dist_trabalho = st.text_input("BAIRRO/CIDADE (Trabalho)", key="K_TEXTO_BAIRRO_TRAB", value="")
-with col_tempo:
-    h_dia = st.number_input("HORAS NO TRECHO (Ida + Volta)", 
-                            min_value=0.0, 
-                            max_value=24.0, 
-                            step=0.5, 
-                            key="horas_trecho_estavel")
+        # O segredo para não sumir: uma chave que NUNCA foi usada e valor inicial limpo
+        dist_moradia = st.text_input("BAIRRO/CIDADE", key="K_BAIRRO_OUTROS_UNIQ", value="")
 
-with col_dias:
-    # Este é o campo que sumiu, agora com uma chave (key) blindada
-    dias_mes = st.number_input("DIAS TRABALHADOS (No mês)", 
-                               min_value=1, 
-                               max_value=31, 
-                               value=22, 
-                               key="dias_trabalho_estavel")
+# --- 2. TRABALHO ---
+st.markdown("### 💼 TRABALHO")
+col_t1, col_t2 = st.columns(2)
+
+with col_t1:
+    mun_trabalho = st.selectbox("MUNICÍPIO TRABALHO", municipios, key="K_MUN_TRAB_UNIQ")
+
+with col_t2:
+    if mun_trabalho == "São Paulo":
+        dist_trabalho = st.selectbox("DISTRITO TRABALHO", distritos, key="K_DIST_TRAB_SP_UNIQ")
+    else:
+        dist_trabalho = st.text_input("BAIRRO/CIDADE TRABALHO", key="K_BAIRRO_TRAB_OUT_UNIQ", value="")
 
 st.markdown("---")
 st.markdown("### 💰 RENDIMENTO E CUSTO")

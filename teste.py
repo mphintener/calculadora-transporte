@@ -5,35 +5,56 @@ st.set_page_config(page_title="Calculadora do Trecho", layout="wide")
 
 st.markdown("""
     <style>
-    /* ELIMINAÇÃO DO 'AMARELO FANTASMA' E FOCO NATIVO */
-    * { outline: none !important; box-shadow: none !important; -webkit-tap-highlight-color: transparent !important; }
-    [data-testid="stMarkdownContainer"] > div:focus-within { background: transparent !important; }
-    .st-ae, .st-af, .st-ag, .st-ah, .st-ai, .st-aj, .st-ak { background-color: transparent !important; border-color: transparent !important; }
-
-    /* ESTÉTICA DE ALTO CONTRASTE */
+    /* 1. RESET E FUNDO */
+    .stApp { background-color: #000000; color: #FFFFFF; }
     header {visibility: hidden;}
     footer {visibility: hidden;}
-    .stApp { background-color: #000000; color: #FFFFFF; }
-    .block-container { padding-top: 3rem !important; }
     
-    /* CABEÇALHO */
-    .header-fix { color: #FFCC00 !important; text-align: center; background: #000 !important; padding: 10px; }
-    h1 { font-size: 2.8rem; font-weight: 900; margin: 0; background: transparent !important; }
-    .subheader-text { color: #FFCC00 !important; text-align: center; font-size: 1.2rem; font-weight: bold; margin-bottom: 30px; }
-
-    /* BOTÃO GERAR DIAGNÓSTICO */
-    .stButton>button { 
-        background-color: #FFCC00 !important; color: #000 !important; 
-        font-weight: 900 !important; width: 100%; height: 4.5em; 
-        border: 4px solid #FFCC00; font-size: 1.4rem !important;
-        text-transform: uppercase; margin-top: 20px;
+    /* 2. REMOVE A FAIXA AMARELA E EMPURRA O CONTEÚDO */
+    .block-container { 
+        padding-top: 5rem !important; 
+        max-width: 950px;
     }
-    .stButton>button:hover { background-color: #E63946 !important; color: #FFF !important; border-color: #E63946; }
 
-    /* CAMPOS E RESULTADOS */
+    /* 3. TÍTULO E SUBTÍTULO - SEMPRE VISÍVEIS */
+    .header-fix { 
+        color: #FFCC00 !important; 
+        text-align: center; 
+        padding-bottom: 20px;
+    }
+    h1 { font-size: 2.5rem !important; font-weight: 800 !important; margin: 0; }
+    .subheader-text { color: #FFCC00 !important; text-align: center; font-size: 1.1rem; margin-bottom: 40px; }
+
+    /* 4. RESTAURANDO AS BORDAS DOS CAMPOS (O QUE TINHA SUMIDO) */
+    .stNumberInput div, .stSelectbox div, .stTextInput div {
+        background-color: #111 !important;
+        border: 1px solid #FFCC00 !important; /* Borda amarela fixa */
+        border-radius: 5px !important;
+    }
+    
+    /* Remove o efeito de foco que cria a mancha amarela */
+    div[data-baseweb="input"], div[data-baseweb="select"] {
+        outline: none !important;
+        box-shadow: none !important;
+    }
+
+    /* 5. BOTÃO GERAR DIAGNÓSTICO - ULTRA DESTAQUE */
+    .stButton>button { 
+        background-color: #FFCC00 !important; 
+        color: #000000 !important; 
+        font-weight: 900 !important; 
+        width: 100%; 
+        height: 4.5em; 
+        border: none !important;
+        font-size: 1.4rem !important;
+        text-transform: uppercase;
+        margin-top: 30px;
+    }
+    .stButton>button:hover { background-color: #E63946 !important; color: #FFFFFF !important; }
+
+    /* 6. RESULTADOS */
     .report-box { background:#111; padding:25px; border:2px solid #FFCC00; border-radius:10px; margin-top:20px; }
-    label, p { color: #FFCC00 !important; font-weight: bold; }
-    input, select, .stSelectbox div { background-color: #111 !important; color: white !important; }
+    label { color: #FFCC00 !important; font-weight: bold !important; margin-bottom: 5px !important; }
     </style>
     """, unsafe_allow_html=True)
 
@@ -44,12 +65,12 @@ distritos_sp = [" "] + sorted(["Água Rasa", "Alto de Pinheiros", "Anhanguera", 
 st.markdown('<div class="header-fix"><h1>📊 CALCULADORA DO TRECHO</h1></div>', unsafe_allow_html=True)
 st.markdown('<div class="subheader-text">Quanto de tempo e de dinheiro são consumidos no seu deslocamento diário?</div>', unsafe_allow_html=True)
 
-# 3. ENTRADA DE DADOS (CAMPOS NEUTROS)
+# 3. ENTRADA DE DADOS
 st.markdown("### 👤 PERFIL")
 p1, p2, p3 = st.columns(3)
 idade = p1.number_input("👤 IDADE", min_value=14, value=None, placeholder="Digite")
-escolaridade = p2.selectbox("🎓 ESCOLARIDADE", ["Fundamental Incompleto", "Fundamental Completo", "Médio Incompleto", "Médio Completo", "Técnico", "Superior incompleto", "Superior Completo", "Pós/Mestrado/Doutorado"], index=None, placeholder="Selecione")
-setor = p3.selectbox("💼 SETOR", ["Serviços", "Comércio", "Indústria", "Educação", "Saúde", "Construção Civil", "Outros"], index=None, placeholder="Selecione")
+escolaridade = p2.selectbox("🎓 ESCOLARIDADE", ["Fundamental Incompleto", "Fundamental Completo", "Médio Incompleto", "Médio Completo", "Técnico", "Superior Incompleto", "Superior Completo", "Pós/Mestrado/Doutorado"], index=None, placeholder="Selecione")
+setor = p3.selectbox("💼 SETOR", ["Serviços", "Comércio", "Educação", "Indústria", "Saúde", "Construção Civil", "Outros"], index=None, placeholder="Selecione")
 
 st.markdown("---")
 st.markdown("### 🏠 LOCALIZAÇÃO")
@@ -87,7 +108,7 @@ g_ca = tr5.number_input("⛽ CARRO", value=0.0)
 st.markdown("<br>", unsafe_allow_html=True)
 if st.button("EFETUAR DIAGNÓSTICO"):
     if not mun_moradia.strip() or not mun_trabalho.strip() or sal is None or h_dia is None:
-        st.error("⚠️ Preencha os campos obrigatórios: Municípios, Horas e Salário.")
+        st.error("⚠️ Preencha os campos obrigatórios (Municípios, Horas e Salário).")
     else:
         gasto_d = g_on + g_me + g_tr + g_ap + g_ca
         custo_m = gasto_d * dias
@@ -100,8 +121,6 @@ if st.button("EFETUAR DIAGNÓSTICO"):
         valor_tempo_nao_pago = h_m * v_h_nom
         confi = custo_m + valor_tempo_nao_pago
         depre = (1 - (v_h_re / v_h_nom)) * 100 if v_h_nom > 0 else 0
-
-        # Rótulo Dinâmico para Sobra
         label_sobra = "SOBRA RESIDUAL (DESCONTADO CUSTO DE VIDA)" if (c_vida and c_vida > 0) else "SOBRA RESIDUAL (PÓS-TRANSPORTE)"
 
         # VETOR DE FLUXO
@@ -120,7 +139,6 @@ if st.button("EFETUAR DIAGNÓSTICO"):
 
         st.markdown("""<div style="background-color: #E63946; color: white; padding: 15px; text-align: center; font-weight: bold; border-radius: 5px;">🚨 ALERTA DE EXPROPRIAÇÃO MENSAL</div>""", unsafe_allow_html=True)
 
-        # RESULTADOS
         st.markdown(f"""
         <div class="report-box">
             <h3 style="margin-top:0; color:#FFCC00;">📋 RESULTADOS</h3>
@@ -133,7 +151,6 @@ if st.button("EFETUAR DIAGNÓSTICO"):
         </div>
         """, unsafe_allow_html=True)
 
-        # NOTA TÉCNICA
         st.markdown(f"""
         <div style="background-color: #111; padding: 20px; border-left: 5px solid #FFCC00; margin-top: 25px;">
             <b style="color: #FFCC00;">NOTA TÉCNICA:</b><br>

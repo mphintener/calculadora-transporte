@@ -121,7 +121,7 @@ g_tr = g3.number_input("🚆 TREM", min_value=0.0)
 g_ap = g4.number_input("🚗 APP", min_value=0.0)
 g_ca = g5.number_input("⛽ CARRO/COMBUSTÍVEL", min_value=0.0)
 
-t.markdown("""
+st.markdown("""
     <style>
     /* GARANTE QUE O BOTÃO OCUPE A LARGURA TODA E MATE A FAIXA AMARELA PEQUENA */
     div.stButton > button {

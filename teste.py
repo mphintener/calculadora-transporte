@@ -110,7 +110,7 @@ st.markdown("---")
 st.markdown("### 💰 RENDIMENTO E CUSTO")
 e1, e2, e3 = st.columns(3)
 sal = e1.number_input("SALÁRIO BRUTO (R$)", min_value=0.0, value=None)
-c_vida = r2.number_input("🏠 CUSTO DE VIDA (R$)", min_value=0.0, help="Soma de: Aluguel, Comida, Energia, Água e Internet".)
+c_vida = r2.number_input("🏠 CUSTO DE VIDA (R$)", min_value=0.0, help="Soma de: Aluguel, Comida, Energia, Água, Internet")
 dias = e3.number_input("DIAS TRABALHADOS/MÊS", value=22)
 
 st.markdown("### 🚌 TRANSPORTE DIÁRIO (IDA/VOLTA) (R$)")

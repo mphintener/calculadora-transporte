@@ -152,7 +152,7 @@ st.markdown("""
     </style>
     """, unsafe_allow_html=True)
 
-f st.button("GERAR DIAGNÓSTICO"):
+if st.button("GERAR DIAGNÓSTICO"):
     # Verificação amigável
     if salario is None or h_dia is None or salario == 0:
         st.warning("⚠️ Por favor, preencha os campos de SALÁRIO, GASTO COM TRANSPORTE E HORAS NO TRECHO para continuar.")

@@ -134,6 +134,7 @@ st.markdown("""
         visibility: hidden !important;
     }
 
+
     /* 3. REFORÇA O FUNDO PRETO E TIRA QUALQUER BORDA COLORIDA */
     .stApp {
         background-color: #000000 !important;
@@ -145,15 +146,29 @@ st.markdown("""
         box-shadow: none !important;
     }
 
-    /* 5. SEU BOTÃO INTEGRAL */
+    /* 5. BOTÃO INTEGRAL COM TEXTO EM NEGRITO EXTREMO */
     div.stButton > button {
         background-color: #FFCC00 !important;
         color: #000000 !important;
-        font-weight: 900 !important;
-        width: 100% !important;
-        height: 3.5em !important;
-        border: 4px solid #E63946 !important;
+        
+        /* NEGRITO E ESTILO DO TEXTO */
+        font-weight: 900 !important; 
+        font-family: 'Arial Black', sans-serif !important;
         text-transform: uppercase;
+        letter-spacing: 1px; /* Melhora a leitura do negrito */
+        
+        width: 100% !important;
+        height: 3.8em !important;
+        border: 4px solid #E63946 !important;
+        border-radius: 0px !important; /* Mantém o estilo "bloco" da tese */
+        transition: 0.3s;
+    }
+
+    /* EFEITO AO PASSAR O MOUSE (OPCIONAL) */
+    div.stButton > button:hover {
+        background-color: #E63946 !important;
+        color: #FFFFFF !important;
+        border: 4px solid #FFCC00 !important;
     }
     </style>
     """, unsafe_allow_html=True)

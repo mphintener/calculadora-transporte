@@ -158,7 +158,7 @@ if st.button("GERAR DIAGNÓSTICO"):
     st.warning("⚠️ Por favor, preencha os campos de SALÁRIO, GASTOS COM TRANSPORTE E HORAS NO TRECHO para continuar")
 
 # 8. DIAGNÓSTICO
-if st.button:
+    if st.button:
     if sal and h_dia:
         tarifa_m = (g_on + g_me + g_tr + g_ap + g_ca) * dias
         h_m = h_dia * dias

@@ -49,7 +49,7 @@ distritos_sp = [" "] + sorted(["Água Rasa", "Alto de Pinheiros", "Anhanguera", 
 st.markdown('<div class="main-header-container"><h1>📊 CALCULADORA DO TRECHO</h1><div class="subheader-text">Quanto de tempo e de dinheiro são consumidos no seu deslocamento diário?</div></div>', unsafe_allow_html=True)
 
 # 6. ENTRADA DE DADOS: PERFIL DO USUÁRIO (RESTAURADO)
-st.markdown("### 👤 PERFIL")
+st.markdown("### 👤 PERFIL DO USUÁRIO")
 p1, p2, p3 = st.columns(3)
 idade = p1.number_input("IDADE", min_value=14, step=1, value=None)
 escolaridade = p2.selectbox("ESCOLARIDADE", ["Fundamental Incompleto", "Fundamental Completo", "Médio Incompleto", "Médio Completo", "Técnico", "Superior Incompleto", "Superior Completo", "Pós-Graduação"])
@@ -74,7 +74,7 @@ else:
 h_dia = t3.number_input("⏳ HORAS NO TRECHO (Ida/Volta)", value=2.0, step=0.5)
 
 st.markdown("---")
-st.markdown("### 🚌 CUSTOS DIÁRIOS E RENDIMENTOS")
+st.markdown("### 🚌 CUSTOS DIÁRIOS (TRANSPORTE IDA/VOLTA E RENDIMENTOS")
 tr1, tr2, tr3, tr4, tr5 = st.columns(5)
 g_on = tr1.number_input("🚍 ÔNIBUS", min_value=0.0)
 g_me = tr2.number_input("🚇 METRÔ", min_value=0.0)

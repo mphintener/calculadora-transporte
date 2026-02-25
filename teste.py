@@ -5,6 +5,14 @@ st.set_page_config(page_title="Calculadora do Trecho", layout="wide")
 
 st.markdown("""
     <style>
+    /* ELIMINAÇÃO TOTAL DA FAIXA SUPERIOR */
+    header, [data-testid="stHeader"], .st-emotion-cache-18ni7ap {
+        visibility: hidden !important;
+        display: none !important;
+        height: 0px !important;
+    }
+st.markdown("""
+    <style>
     .stApp { background-color: #000000; color: #FFFFFF; }
     
     /* Proteção do Cabeçalho contra faixas do sistema */
@@ -72,7 +80,7 @@ else:
 h_dia = t3.number_input("⏳ HORAS NO TRECHO (Ida/Volta)", value=2.0, step=0.5)
 
 st.markdown("---")
-st.markdown("### 🚌 CUSTOS DIÁRIOS (TRANSPORTE IDA/VOLTA E RENDIMENTOS")
+st.markdown("### 🚌 CUSTOS DIÁRIOS ("TRANSPORTE IDA/VOLTA E RENDIMENTOS")
 tr1, tr2, tr3, tr4, tr5 = st.columns(5)
 g_on = tr1.number_input("🚍 ÔNIBUS", min_value=0.0)
 g_me = tr2.number_input("🚇 METRÔ", min_value=0.0)

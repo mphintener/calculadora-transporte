@@ -103,16 +103,24 @@ else:
 
 st.markdown("### 💼 LOCAL DE TRABALHO")
 t1, t2, t3 = st.columns(3)
+
 mun_trabalho = t1.selectbox("MUNICÍPIO (Trabalho)", municipios, key="mun_trab_final")
 
-# Criamos um espaço vazio na coluna t2
-col_trabalho = t2.container()
+# Usamos um container dentro da coluna t2 para alternar entre lista e texto
+with t2.container():
+    if mun_trabalho == "São Paulo":
+        dist_trabalho = st.selectbox("DISTRITO (Trabalho)", distritos, key="dist_trab_sel")
+    else:
+        dist_trabalho = st.text_input("BAIRRO/DISTRITO (Trabalho)", placeholder="Digite o bairro", key="dist_trab_txt"))
 
-if mun_trabalho == "São Paulo":
-    dist_trabalho = col_trabalho.selectbox("DISTRITO (Trabalho)", distritos, key="dist_trab_sel")
-else:
-    dist_trabalho = col_trabalho.text_input("BAIRRO/DISTRITO (Trabalho)", placeholder="Digite o bairro", key="dist_trab_txt")
-h_dia = t3.number_input("HORAS NO TRECHO (Ida/Volta)", value=2.0, step=0.5)
+t.markdown("### ⏳ TRECHO DE DESLOCAMENTO")
+tr1, tr2 = st.columns(2)
+
+# Tempo gasto diariamente (Ida + Volta)
+h_dia = tr1.number_input("HORAS NO TRECHO (Diário - Ida e Volta)", min_value=0.0, max_value=24.0, step=0.5, key="horas_trecho")
+
+# Dias trabalhados no mês
+dias_mes = tr2.number_input("DIAS TRABALHADOS (No mês)", min_value=1, max_value=31, value=22, key="dias_trabalho")
 
 st.markdown("---")
 st.markdown("### 💰 RENDIMENTO E CUSTO")

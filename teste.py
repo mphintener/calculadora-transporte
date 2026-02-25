@@ -87,9 +87,9 @@ setor = p3.selectbox("SETOR DE ATIVIDADE", ["Comércio", "Construção Civil", "
 st.markdown("---")
 st.markdown("### 🏠 LOCAL DE MORADIA")
 m1, m2 = st.columns(2)
-mun_moradia = m1.selectbox("MUNICÍPIO (Moradia)", municipios_rmsp, index=0)
+mun_moradia = m1.selectbox("MUNICÍPIO (Moradia)", municipios, index=0)
 if mun_moradia == "São Paulo":
-    dist_moradia = m2.selectbox("DISTRITO (Moradia)", distritos_sp, index=0)
+    dist_moradia = m2.selectbox("DISTRITO (Moradia)", distritos, index=0)
 else:
     dist_moradia = m2.text_input("BAIRRO/DISTRITO (Moradia)", placeholder="Digite seu bairro")
 

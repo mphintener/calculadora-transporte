@@ -1,4 +1,4 @@
-mport streamlit as st
+import streamlit as st
 
 # 1. CONFIGURAÇÃO E IDENTIDADE VISUAL
 st.set_page_config(page_title="Calculadora do Trecho", layout="wide")

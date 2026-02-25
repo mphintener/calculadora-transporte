@@ -86,20 +86,31 @@ setor = p3.selectbox("SETOR DE ATIVIDADE", ["Comércio", "Construção Civil", "
 
 # 7. LOCALIZAÇÃO (MORADIA E TRABALHO)
 # ========================================================= 
-st.markdown("---")
-st.markdown("### 🏠 LOCAL DE MORADIA")
+# --- SEÇÃO MORADIA ---
 m1, m2 = st.columns(2)
-mun_moradia = m1.selectbox("MUNICÍPIO (Moradia)", municipios, key="mun_mor_final")
+with m1:
+    # Usamos uma chave única 'k_mun_mor_final'
+    mun_moradia = st.selectbox("MUNICÍPIO (Moradia)", municipios, key="k_mun_mor_final")
 
-# Criamos um espaço vazio na coluna m2 para a troca de campos
-col_moradia = m2.container()
+with m2:
+    if mun_moradia == "São Paulo":
+        # Chave específica para quando é SP
+        dist_moradia = st.selectbox("DISTRITO (Moradia)", distritos, key="k_dist_sp_mor")
+    else:
+        # Chave específica para quando NÃO é SP
+        dist_moradia = st.text_input("BAIRRO/DISTRITO (Moradia)", placeholder="Digite seu bairro", key="k_bairro_out_mor")
 
-if mun_moradia == "São Paulo":
-    # Usamos o container para desenhar
-    dist_moradia = col_moradia.selectbox("DISTRITO (Moradia)", distritos, key="dist_mor_sel")
-else:
-    # O container limpa o selectbox e coloca o text_input
-    dist_moradia = col_moradia.text_input("BAIRRO/DISTRITO (Moradia)", placeholder="Digite seu bairro", key="dist_mor_txt")
+st.markdown("### 💼 LOCAL DE TRABALHO")
+t1, t2, t3 = st.columns(3)
+
+with t1:
+    mun_trabalho = st.selectbox("MUNICÍPIO (Trabalho)", municipios, key="k_mun_trab_final")
+
+with t2:
+    if mun_trabalho == "São Paulo":
+        dist_trabalho = st.selectbox("DISTRITO (Trabalho)", distritos, key="k_dist_sp_trab")
+    else:
+        dist_trabalho = st.text_input("BAIRRO/DISTRITO (Trabalho)", placeholder="Digite o bairro", key="k_bairro_out_trab")
 
 st.markdown("### 💼 LOCAL DE TRABALHO")
 t1, t2, t3 = st.columns(3)

@@ -1,47 +1,41 @@
 import streamlit as st
 
-# 1. IDENTIDADE VISUAL E CONFIGURAÇÃO (LIMPEZA PROFUNDA)
+# 1. IDENTIDADE VISUAL E CONFIGURAÇÃO (BLOQUEIO TOTAL DE FOCO)
 st.set_page_config(page_title="Calculadora do Trecho", layout="wide")
 
 st.markdown("""
     <style>
-    /* 1. ELIMINA O AMARELO FANTASMA (Destaque de fundo e outline) */
+    /* ELIMINA QUALQUER RASTRO DE SELEÇÃO OU FOCO */
     * { 
         outline: none !important; 
+        box-shadow: none !important;
         -webkit-tap-highlight-color: transparent !important;
     }
     
-    /* Remove o background que o Streamlit coloca em blocos de texto ao focar/clicar */
-    .stMarkdown div, .stMarkdown span, h1, h2, h3, p {
-        background-color: transparent !important;
-        background: transparent !important;
-        border: none !important;
-    }
-
-    /* 2. OCULTA ELEMENTOS NATIVOS */
+    /* Remove o cabeçalho e fundos automáticos */
     header {visibility: hidden;}
-    footer {visibility: hidden;}
     .stApp { background-color: #000000; color: #FFFFFF; }
     
-    /* 3. PROTEÇÃO E POSICIONAMENTO DO TÍTULO */
+    /* Proteção Estrita do Título */
     .block-container { padding-top: 3rem !important; }
     
     .header-fix {
         color: #FFCC00 !important;
         font-family: 'Arial', sans-serif;
         text-align: center;
-        background: none !important;
-        padding: 10px;
+        background-color: #000000 !important; /* Fundo preto sólido */
+        padding: 20px;
+        z-index: 9999;
     }
 
     h1 { 
         font-size: 2.8rem; 
         font-weight: 900; 
-        color: #FFCC00 !important;
-        background: transparent !important;
+        margin: 0;
+        background-color: #000000 !important;
     }
 
-    /* 4. BOTÃO AMARRELO VIBRANTE */
+    /* Estilo do Botão */
     .stButton>button { 
         background-color: #FFCC00 !important; 
         color: #000000 !important; 
@@ -53,16 +47,15 @@ st.markdown("""
         font-size: 1.5rem !important;
         text-transform: uppercase;
     }
-    .stButton>button:hover { 
-        background-color: #E63946 !important; 
-        color: #FFFFFF !important; 
-        border-color: #E63946;
+    
+    /* Campos de Entrada - Fundo Totalmente Preto */
+    .stNumberInput, .stSelectbox, .stTextInput {
+        background-color: #000000 !important;
     }
-
-    /* 5. CAMPOS E FORMULÁRIO */
+    
     .report-box { background:#111; padding:30px; border:2px solid #FFCC00; border-radius:10px; margin-top:20px; }
     label, p { color: #FFCC00 !important; font-weight: bold; }
-    input, select, .stSelectbox { background-color: #111 !important; color: white !important; border: 1px solid #444 !important; }
+    input, select, .stSelectbox > div { background-color: #111 !important; color: white !important; border: 1px solid #444 !important; }
     </style>
     """, unsafe_allow_html=True)
 
@@ -72,14 +65,14 @@ distritos_sp = [" "] + sorted(["Água Rasa", "Alto de Pinheiros", "Anhanguera", 
 
 # TÍTULO E SUBTÍTULO
 st.markdown('<div class="header-fix"><h1>📊 CALCULADORA DO TRECHO</h1></div>', unsafe_allow_html=True)
-st.markdown('<p style="text-align: center; color: #FFCC00; font-size: 1.2rem; font-weight: bold; background: transparent;">Quanto de tempo e de dinheiro são consumidos no seu deslocamento diário?</p>', unsafe_allow_html=True)
+st.markdown('<p style="text-align: center; color: #FFCC00; font-size: 1.2rem; font-weight: bold;">Quanto de tempo e de dinheiro são consumidos no seu deslocamento diário?</p>', unsafe_allow_html=True)
 
-# 3. ENTRADA DE DADOS
+# 3. ENTRADA DE DADOS (Campos Neutros)
 st.markdown("### 👤 PERFIL")
 p1, p2, p3 = st.columns(3)
-idade = p1.number_input("👤 IDADE", min_value=14, value=30)
-escolaridade = p2.selectbox("🎓 ESCOLARIDADE", ["Fundamental", "Médio", "Técnico", "Superior", "Pós/Mestrado/Doutorado"])
-setor = p3.selectbox("💼 SETOR", ["Serviços", "Comércio", "Indústria", "Educação", "Saúde", "TI", "Construção", "Outros"])
+idade = p1.number_input("👤 IDADE", min_value=14, value=None, placeholder="Digite")
+escolaridade = p2.selectbox("🎓 ESCOLARIDADE", ["Fundamental Incompleto", "Fundamental Completo" "Médio Incompleto", "Médio Completo" "Técnico", "Superior", "Pós/Mestrado/Doutorado"], index=None, placeholder="Selecione")
+setor = p3.selectbox("💼 SETOR", ["Serviços", "Comércio", "Indústria", "Educação", "Saúde", "Construção Civil", "Outros"], index=None, placeholder="Selecione")
 
 st.markdown("---")
 st.markdown("### 🏠 LOCALIZAÇÃO")
@@ -96,41 +89,41 @@ if mun_trabalho == "São Paulo":
     dist_trabalho = t2.selectbox("DISTRITO (Trabalho)", distritos_sp, index=0)
 else:
     dist_trabalho = t2.text_input("BAIRRO (Trabalho)", placeholder="Digite o bairro de trabalho")
-h_dia = t3.number_input("⏳ HORAS NO TRECHO (Ida/Volta)", value=2.0, step=0.5)
+h_dia = t3.number_input("⏳ HORAS NO TRECHO (Ida/Volta)", value=None, step=0.5, placeholder="Ex: 2.5")
 
 st.markdown("---")
 st.markdown("### 💰 RENDIMENTOS")
 r1, r2, r3 = st.columns(3)
-sal = r1.number_input("💰 SALÁRIO BRUTO (R$)", min_value=0.0)
-c_vida = r2.number_input("🏠 CUSTO DE VIDA (R$)", min_value=0.0, help="Soma de: Aluguel, Comida, Energia, Água e Internet.")
+sal = r1.number_input("💰 SALÁRIO BRUTO (R$)", min_value=0.0, value=None, placeholder="0,00")
+c_vida = r2.number_input("🏠 CUSTO DE VIDA (R$)", min_value=0.0, value=None, placeholder="0,00", help="Soma de: Aluguel, Comida, Energia, Água e Internet.")
 dias = r3.number_input("📅 DIAS TRABALHADOS/MÊS", value=22)
 
 st.markdown("### 🚌 CUSTOS DIÁRIOS (Ida/Volta)")
 tr1, tr2, tr3, tr4, tr5 = st.columns(5)
-g_on = tr1.number_input("🚍 ÔNIBUS", min_value=0.0)
-g_me = tr2.number_input("🚇 METRÔ", min_value=0.0)
-g_tr = tr3.number_input("🚆 TREM", min_value=0.0)
-g_ap = tr4.number_input("🚗 APP", min_value=0.0)
-g_ca = tr5.number_input("⛽ CARRO", min_value=0.0)
+g_on = tr1.number_input("🚍 ÔNIBUS", min_value=0.0, value=0.0)
+g_me = tr2.number_input("🚇 METRÔ", min_value=0.0, value=0.0)
+g_tr = tr3.number_input("🚆 TREM", min_value=0.0, value=0.0)
+g_ap = tr4.number_input("🚗 APP", min_value=0.0, value=0.0)
+g_ca = tr5.number_input("⛽ CARRO", min_value=0.0, value=0.0)
 
 # 4. BOTÃO
 st.markdown("<br>", unsafe_allow_html=True)
 if st.button("EFETUAR DIAGNÓSTICO"):
-    if mun_moradia == " " or mun_trabalho == " ":
-        st.error("⚠️ Por favor, selecione os municípios.")
+    if not mun_moradia.strip() or not mun_trabalho.strip() or sal is None or h_dia is None:
+        st.error("⚠️ Preencha os campos obrigatórios (Municípios, Horas e Salário).")
     else:
         gasto_d = g_on + g_me + g_tr + g_ap + g_ca
         custo_m = gasto_d * dias
         v_h_nom = sal / 176 if sal > 0 else 0
         h_m = h_dia * dias
         sal_liq_transp = sal - custo_m
-        sobra = sal_liq_transp - c_vida
+        sobra = sal_liq_transp - (c_vida or 0)
         v_h_re = sal_liq_transp / (176 + h_m) if (176 + h_m) > 0 else 0
         
         valor_tempo_nao_pago = h_m * v_h_nom
         confi = custo_m + valor_tempo_nao_pago
         depre = (1 - (v_h_re / v_h_nom)) * 100 if v_h_nom > 0 else 0
-        label_sobra = "SOBRA RESIDUAL (DESCONTADO CUSTO DE VIDA)" if c_vida > 0 else "SOBRA RESIDUAL (PÓS-TRANSPORTE)"
+        label_sobra = "SOBRA RESIDUAL (DESCONTADO CUSTO DE VIDA)" if (c_vida and c_vida > 0) else "SOBRA RESIDUAL (PÓS-TRANSPORTE)"
 
         # VETOR DE FLUXO
         d_mor = (dist_moradia or "").upper()

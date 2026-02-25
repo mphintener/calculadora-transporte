@@ -85,15 +85,26 @@ idade = p1.number_input("IDADE", min_value=14, step=1, value=None)
 escolaridade = p2.selectbox("ESCOLARIDADE", ["Fundamental Incompleto", "Fundamental Completo", "Médio Incompleto", "Médio Completo", "Técnico", "Superior Incompleto", "Superior Completo", "Pós-Graduação"])
 setor = p3.selectbox("SETOR DE ATIVIDADE", ["Comércio", "Construção Civil", "Educação", "Indústria", "Serviços", "Saúde", "TI"])
 
+# 5. LOCALIZAÇÃO (CORREÇÃO TOTAL MORADIA + TRABALHO)
 st.markdown("### 🏠 LOCALIZAÇÃO E TRAJETO")
 l1, l2, l3 = st.columns(3)
-mun_m = l1.selectbox("MUNICÍPIO (MORADIA)", municipios)
-label_m = l1.selectbox("DISTRITO/BAIRRO (MORADIA)", distritos) if mun_m == "São Paulo" else mun_m
 
-mun_t = l2.selectbox("MUNICÍPIO (TRABALHO)", municipios)
-label_t = l2.selectbox("DISTRITO/BAIRRO (TRABALHO)", distritos) if mun_t == "São Paulo" else mun_t
+with l1:
+    mun_m = st.selectbox("MUNICÍPIO (MORADIA)", municipios, key="mun_m")
+    if mun_m == "São Paulo":
+        label_m = st.selectbox("DISTRITO/BAIRRO (MORADIA)", distritos, key="dist_m")
+    else:
+        label_m = mun_m
 
-h_dia = l3.number_input("HORAS NO TRECHO (IDA+VOLTA)", min_value=0.0, step=0.5, value=None)
+with l2:
+    mun_t = st.selectbox("MUNICÍPIO (TRABALHO)", municipios, key="mun_t")
+    if mun_t == "São Paulo":
+        label_t = st.selectbox("DISTRITO/BAIRRO (TRABALHO)", distritos, key="dist_t")
+    else:
+        label_t = mun_t
+
+with l3:
+    h_dia = st.number_input("HORAS NO TRECHO (IDA+VOLTA)", min_value=0.0, step=0.5, value=None)
 
 st.markdown("---")
 st.markdown("### 💰 RENDIMENTO E CUSTO")

@@ -84,19 +84,14 @@ idade = p1.number_input("IDADE", min_value=14, step=1, value=None)
 escolaridade = p2.selectbox("ESCOLARIDADE", ["Fundamental Incompleto", "Fundamental Completo", "Médio Incompleto", "Médio Completo", "Técnico", "Superior Incompleto", "Superior Completo", "Pós-Graduação"])
 setor = p3.selectbox("SETOR DE ATIVIDADE", ["Comércio", "Construção Civil", "Educação", "Indústria", "Serviços", "Saúde", "Outros"])
 
-# --- BLOCO DE MORADIA ESTABILIZADO ---
-m1, m2 = st.columns(2)
+--- TESTE DE DESTRAVAMENTO ---
+st.markdown("### 🏠 TESTE DE ENTRADA")
 
-with m1:
-    mun_moradia = st.selectbox("MUNICÍPIO (Moradia)", municipios, key="K_NOVA_MUN_MOR")
+# 1. Teste o Município
+mun_moradia = st.selectbox("MUNICÍPIO (Moradia)", municipios, key="mun_v99")
 
-with m2:
-    if mun_moradia == "São Paulo":
-        # Usamos uma chave que o Streamlit nunca viu antes
-        dist_moradia = st.selectbox("DISTRITO (Moradia)", distritos, key="K_LISTA_DISTRITO_SP")
-    else:
-        # Forçamos o valor inicial como vazio para destravar a digitação
-        dist_moradia = st.text_input("BAIRRO/CIDADE (Moradia)", key="K_TEXTO_BAIRRO_OUTROS", value="")
+# 2. Teste o Bairro (Sem IF por enquanto, apenas para ver se digita)
+dist_moradia = st.text_input("BAIRRO/DISTRITO (Digite algo aqui)", key="bairro_v99")
 
 # --- 1. MORADIA ---
 st.markdown("### 🏠 MORADIA")

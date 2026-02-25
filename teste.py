@@ -11,17 +11,7 @@ st.markdown("""
         display: none !important;
         height: 0px !important;
     }
-st.markdown("""
-    <style>
-    .stApp { background-color: #000000; color: #FFFFFF; }
-    
-    /* Proteção do Cabeçalho contra faixas do sistema */
-    .main-header-container {
-        padding-top: 40px !important;
-        margin-bottom: 20px;
-        position: relative;
-        z-index: 9999;
-    }
+
     
     h1 { color: #FFCC00 !important; font-family: 'Arial', sans-serif; font-weight: 800; text-align: center; }
     .subheader-text { color: #FFCC00 !important; text-align: center; font-size: 1.2rem; margin-bottom: 40px; }

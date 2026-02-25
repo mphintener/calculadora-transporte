@@ -120,7 +120,8 @@ g_tr = g3.number_input("🚆 TREM", min_value=0.0)
 g_ap = g4.number_input("🚗 APP", min_value=0.0)
 g_ca = g5.number_input("⛽ CARRO/COMBUSTÍVEL", min_value=0.0)
 st.markdown("""
-   st.markdown("""
+   # Certifique-se de que este bloco está EXATAMENTE assim, com as aspas triplas no início e no fim
+st.markdown("""
     <style>
     /* 1. MATA A FAIXA AMARELA E O HEADER */
     header, [data-testid="stHeader"], [data-testid="stDecoration"] {
@@ -128,44 +129,34 @@ st.markdown("""
         visibility: hidden !important;
     }
 
-    /* 2. FORÇA O BOTÃO A FICAR VISÍVEL (TIRA A TRANSPARÊNCIA) */
+    /* 2. FORÇA O BOTÃO A FICAR VISÍVEL E EM NEGRITO */
     div.stButton > button {
         opacity: 1 !important;
         visibility: visible !important;
         display: block !important;
-        
-        /* CORES FIXAS (PARA NÃO SUMIR) */
         background-color: #FFCC00 !important;
         color: #000000 !important;
-        
-        /* NEGRITO EXTREMO */
         font-weight: 900 !important;
         font-family: 'Arial Black', sans-serif !important;
         text-transform: uppercase;
-        
-        /* FORMATO */
         width: 100% !important;
         height: 3.5em !important;
         border: 4px solid #E63946 !important;
         margin-top: 30px !important;
     }
 
-    /* 3. GARANTE QUE O TEXTO NÃO SUMA (COR PRETA SEMPRE) */
+    /* 3. GARANTE QUE O TEXTO INTERNO SEJA PRETO E NEGRITO */
     div.stButton > button p {
         color: #000000 !important;
         font-weight: 900 !important;
     }
-
-    /* 4. TIRA QUALQUER EFEITO DE "FADE" DO STREAMLIT */
-    div.stButton > button:active, div.stButton > button:focus {
-        background-color: #FFCC00 !important;
-        color: #000000 !important;
-    }
     </style>
     """, unsafe_allow_html=True)
-with st.container():
-    # Isso limpa o layout das colunas de transporte antes de desenhar o botão
-    st.markdown('<div style="clear: both;"></div>', unsafe_allow_html=True)
+
+# O BOTÃO DEVE VIR LOGO ABAIXO, FORA DAS ASPAS ACIMA
+if st.button("GERAR DIAGNÓSTICO TÉCNICO"):
+    # Sua lógica de cálculos aqui
+    pass
 
 # 8. DIAGNÓSTICO
 if st.button("EFETUAR DIAGNÓSTICO"):

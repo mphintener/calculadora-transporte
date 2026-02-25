@@ -77,25 +77,26 @@ st.markdown("""
         Quanto de tempo e de dinheiro são consumidos no seu deslocamento diário?
     </div>
     """, unsafe_allow_html=True)
-# 5. LOCALIZAÇÃO (CORREÇÃO DEFINITIVA)
+5. LOCALIZAÇÃO (MORADIA E TRABALHO)
+# =========================================================
 st.markdown("---")
 st.markdown("### 🏠 LOCAL DE MORADIA")
 m1, m2 = st.columns(2)
-mun_moradia = m1.selectbox("MUNICÍPIO (Moradia)", municipios_rmsp, key="mun_m_def")
+mun_moradia = m1.selectbox("MUNICÍPIO (Moradia)", municipios_rmsp, key="mun_mor_final")
 
 if mun_moradia == "São Paulo":
-    dist_moradia = m2.selectbox("DISTRITO (Moradia)", distritos_sp, key="dist_m_sel_def")
+    dist_moradia = m2.selectbox("DISTRITO (Moradia)", distritos_sp, key="dist_mor_sel")
 else:
-    dist_moradia = m2.text_input("BAIRRO/DISTRITO (Moradia)", placeholder="Digite seu bairro", key="dist_m_txt_def")
+    dist_moradia = m2.text_input("BAIRRO/DISTRITO (Moradia)", placeholder="Digite seu bairro", key="dist_mor_txt")
 
 st.markdown("### 💼 LOCAL DE TRABALHO")
 t1, t2, t3 = st.columns(3)
-mun_trabalho = t1.selectbox("MUNICÍPIO (Trabalho)", municipios_rmsp, key="mun_t_def")
+mun_trabalho = t1.selectbox("MUNICÍPIO (Trabalho)", municipios_rmsp, key="mun_trab_final")
 
 if mun_trabalho == "São Paulo":
-    dist_trabalho = t2.selectbox("DISTRITO (Trabalho)", distritos_sp, key="dist_t_sel_def")
+    dist_trabalho = t2.selectbox("DISTRITO (Trabalho)", distritos_sp, key="dist_trab_sel")
 else:
-    dist_trabalho = t2.text_input("BAIRRO/DISTRITO (Trabalho)", placeholder="Digite o bairro", key="dist_t_txt_def")
+    dist_trabalho = t2.text_input("BAIRRO/DISTRITO (Trabalho)", placeholder="Digite o bairro", key="dist_trab_txt")
 
 h_dia = t3.number_input("HORAS NO TRECHO (Ida/Volta)", value=2.0, step=0.5)
 st.markdown("---")

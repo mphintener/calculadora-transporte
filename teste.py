@@ -44,8 +44,23 @@ municipios_rmsp = [" "] + sorted(["Arujá", "Barueri", "Biritiba-Mirim", "Caieir
 distritos_sp = [" "] + sorted(["Água Rasa", "Alto de Pinheiros", "Anhanguera", "Aricanduva", "Artur Alvim", "Barra Funda", "Bela Vista", "Belém", "Bom Retiro", "Brasilândia", "Butantã", "Cachoeirinha", "Cambuci", "Campo Belo", "Campo Grande", "Campo Limpo", "Cangaíba", "Capão Redondo", "Carrão", "Casa Verde", "Cidade Ademar", "Cidade Dutra", "Cidade Líder", "Cidade Tiradentes", "Consolação", "Cursino", "Ermelino Matarazzo", "Freguesia do Ó", "Grajaú", "Guaianases", "Iguatemi", "Ipiranga", "Itaim Bibi", "Itaim Paulista", "Itaquera", "Jabaquara", "Jaçanã", "Jaguara", "Jaguaré", "Jaraguá", "Jardim Ângela", "Jardim Helena", "Jardim Paulista", "Jardim São Luís", "Lapa", "Liberdade", "Limão", "Mandaqui", "Marsilac", "Moema", "Mooca", "Morumbi", "Parelheiros", "Pari", "Parque do Carmo", "Pedreira", "Penha", "Perdizes", "Perus", "Pinheiros", "Pirituba", "Ponte Rasa", "Raposo Tavares", "República", "Rio Pequeno", "Sacomã", "Santa Cecília", "Santana", "Santo Amaro", "São Domingos", "São Lucas", "São Mateus", "São Miguel", "São Rafael", "Sapopemba", "Saúde", "Sé", "Socorro", "Tatuapé", "Tremembé", "Tucuruvi", "Vila Andrade", "Vila Curuçá", "Vila Formosa", "Vila Guilherme", "Vila Jacuí", "Vila Leopoldina", "Vila Maria", "Vila Mariana", "Vila Matilde", "Vila Medeiros", "Vila Prudente", "Vila Sônia"])
 
 st.markdown('<div class="header-fix"><h1>📊 CALCULADORA DO TRECHO</h1></div>', unsafe_allow_html=True)
-st.markdown('<p class="subheader-text">Quanto de tempo e de dinheiro são consumidos no seu deslocamento diário?</p>', unsafe_allow_html=True)
-
+st.markdown(f"""
+    <div style="
+        background-color: #FFCC00; 
+        color: #000000; 
+        padding: 20px; 
+        border-radius: 10px; 
+        text-align: center; 
+        font-size: 1.5rem; 
+        font-weight: 900; 
+        margin-top: 20px; 
+        margin-bottom: 30px;
+        border: 4px solid #E63946;
+        text-transform: uppercase;
+    ">
+        Quanto de tempo e de dinheiro são consumidos no seu deslocamento diário?
+    </div>
+    """, unsafe_allow_html=True)
 # 3. ENTRADA DE DADOS
 st.markdown("### 👤 PERFIL")
 p1, p2, p3 = st.columns(3)

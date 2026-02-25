@@ -85,7 +85,7 @@ escolaridade = p2.selectbox("ESCOLARIDADE", ["Fundamental Incompleto", "Fundamen
 setor = p3.selectbox("SETOR DE ATIVIDADE", ["Comércio", "Construção Civil", "Educação", "Indústria", "Serviços", "Saúde", "Outros"])
 
 # 7. LOCALIZAÇÃO (MORADIA E TRABALHO)
-# =========================================================
+# ========================================================= 
 st.markdown("---")
 st.markdown("### 🏠 LOCAL DE MORADIA")
 m1, m2 = st.columns(2)

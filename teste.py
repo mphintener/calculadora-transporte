@@ -81,14 +81,14 @@ st.markdown("""
 st.markdown("---")
 st.markdown("### 🏠 LOCAL DE MORADIA")
 m1, m2 = st.columns(2)
-mun_moradia = m1.selectbox("MUNICÍPIO (Moradia)", municipios_rmsp, key="mun_m")
+mun_moradia = m1.selectbox("MUNICÍPIO (Moradia)", municipios_rmsp, key="mun_moradia")
 if mun_moradia == "São Paulo":
     dist_moradia = m2.selectbox("DISTRITO (Moradia)", distritos_sp, key="dist_m_select")
 else:
     dist_moradia = m2.text_input("BAIRRO/DISTRITO (Moradia)", placeholder="Digite seu bairro", key="dist_m_text")
 st.markdown("### 💼 LOCAL DE TRABALHO")
 t1, t2, t3 = st.columns(3)
-mun_trabalho = t1.selectbox("MUNICÍPIO (Trabalho)", municipios_rmsp, key="mun_t")
+mun_trabalho = t1.selectbox("MUNICÍPIO (Trabalho)", municipios_rmsp, key="mun_trabalho")
 if mun_trabalho == "São Paulo":
     dist_trabalho = t2.selectbox("DISTRITO (Trabalho)", distritos_sp, key="dist_t_select")
 else:

@@ -1,3 +1,4 @@
+import streamlit as st
 # 1. IDENTIDADE VISUAL E CONFIGURAÇÃO
 st.set_page_config(page_title="Calculadora do Trecho", layout="wide")
 

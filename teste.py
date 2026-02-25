@@ -87,20 +87,20 @@ setor = p3.selectbox("SETOR DE ATIVIDADE", ["Comércio", "Construção Civil", "
 st.markdown("---")
 st.markdown("###  LOCAL DE MORADIA")
 m1, m2 = st.columns(2)
-mun_moradia = m1.selectbox("MUNICÍPIO (Moradia)", municipios_rmsp, index=0, key="sel_mun_mor")
+mun_moradia = m1.selectbox("MUNICÍPIO (Moradia)", municipios_, index=0, key="sel_mun_mor")
 
 if mun_moradia == "São Paulo":
-    dist_moradia = m2.selectbox("DISTRITO (Moradia)", distritos_sp, index=0, key="sel_dist_mor")
+    dist_moradia = m2.selectbox("DISTRITO (Moradia)", distritos, index=0, key="sel_dist_mor")
 else:
     dist_moradia = m2.text_input("BAIRRO/DISTRITO (Moradia)", placeholder="Digite seu bairro", key="txt_bairro_mor")
 
 st.markdown("###  LOCAL DE TRABALHO")
 t1, t2 = st.columns(2)
 with t1:
-    mun_trabalho = st.selectbox("MUNICÍPIO (Trabalho)", municipios_rmsp, index=0, key="sel_mun_tra")
+    mun_trabalho = st.selectbox("MUNICÍPIO (Trabalho)", municipios, index=0, key="sel_mun_tra")
 with t2:
     if mun_trabalho == "São Paulo":
-        dist_trabalho = st.selectbox("DISTRITO (Trabalho)", distritos_sp, index=0, key="sel_dist_tra")
+        dist_trabalho = st.selectbox("DISTRITO (Trabalho)", distritos, index=0, key="sel_dist_tra")
     else:
         dist_trabalho = st.text_input("BAIRRO/DISTRITO (Trabalho)", placeholder="Digite o bairro de trabalho", key="txt_bairro_tra")
 

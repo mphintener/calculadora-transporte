@@ -88,7 +88,7 @@ st.markdown("---")
 st.markdown("### 🏠 LOCAL DE MORADIA")
 m1, m2 = st.columns(2)
 # Usamos chaves únicas para garantir que o Streamlit salve os dados
-mun_moradia = m1.selectbox("MUNICÍPIO (Moradia)", municipio, index=0, key="k_mun_mor")
+mun_moradia = m1.selectbox("MUNICÍPIO (Moradia)", município, index=0, key="k_mun_mor")
 
 if mun_moradia == "São Paulo":
     dist_moradia = m2.selectbox("DISTRITO (Moradia)", distrito, index=0, key="k_dist_sp_mor")
@@ -97,7 +97,7 @@ else:
 
 st.markdown("### 💼 LOCAL DE TRABALHO")
 t1, t2 = st.columns(2)
-mun_trabalho = t1.selectbox("MUNICÍPIO (Trabalho)", municipio, index=0, key="k_mun_tra")
+mun_trabalho = t1.selectbox("MUNICÍPIO (Trabalho)", município, index=0, key="k_mun_tra")
 
 if mun_trabalho == "São Paulo":
     dist_trabalho = t2.selectbox("DISTRITO (Trabalho)", distrito, index=0, key="k_dist_sp_tra")

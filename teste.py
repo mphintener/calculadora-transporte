@@ -120,59 +120,49 @@ g_tr = g3.number_input("🚆 TREM", min_value=0.0)
 g_ap = g4.number_input("🚗 APP", min_value=0.0)
 g_ca = g5.number_input("⛽ CARRO/COMBUSTÍVEL", min_value=0.0)
 st.markdown("""
+   st.markdown("""
     <style>
-    /* 1. MATA O HEADER E A DECORAÇÃO COLORIDA (A FAIXA AMARELA) */
+    /* 1. MATA A FAIXA AMARELA E O HEADER */
     header, [data-testid="stHeader"], [data-testid="stDecoration"] {
         display: none !important;
         visibility: hidden !important;
-        height: 0px !important;
     }
 
-    /* 2. ELIMINA QUALQUER AVISO OU NOTIFICAÇÃO QUE GERE FAIXAS AMARELAS */
-    [data-testid="stNotification"], .stAlert, .st-emotion-cache-p5msec {
-        display: none !important;
-        visibility: hidden !important;
-    }
-
-
-    /* 3. REFORÇA O FUNDO PRETO E TIRA QUALQUER BORDA COLORIDA */
-    .stApp {
-        background-color: #000000 !important;
-    }
-
-    /* 4. GARANTE QUE O BOTÃO NÃO TENHA ESSA FAIXA GRUDADA */ 
-    .stButton {
-        border: none !important;
-        box-shadow: none !important;
-    }
-
-    /* 5. BOTÃO INTEGRAL COM TEXTO EM NEGRITO EXTREMO */
+    /* 2. FORÇA O BOTÃO A FICAR VISÍVEL (TIRA A TRANSPARÊNCIA) */
     div.stButton > button {
+        opacity: 1 !important;
+        visibility: visible !important;
+        display: block !important;
+        
+        /* CORES FIXAS (PARA NÃO SUMIR) */
         background-color: #FFCC00 !important;
         color: #000000 !important;
         
-        /* NEGRITO E ESTILO DO TEXTO */
-        font-weight: 900 !important; 
+        /* NEGRITO EXTREMO */
+        font-weight: 900 !important;
         font-family: 'Arial Black', sans-serif !important;
         text-transform: uppercase;
-        letter-spacing: 1px; /* Melhora a leitura do negrito */
         
+        /* FORMATO */
         width: 100% !important;
-        height: 3.8em !important;
+        height: 3.5em !important;
         border: 4px solid #E63946 !important;
-        border-radius: 0px !important; /* Mantém o estilo "bloco" da tese */
-        transition: 0.3s;
+        margin-top: 30px !important;
     }
 
-    /* EFEITO AO PASSAR O MOUSE (OPCIONAL) */
-    div.stButton > button:hover {
-        background-color: #E63946 !important;
-        color: #FFFFFF !important;
-        border: 4px solid #FFCC00 !important;
+    /* 3. GARANTE QUE O TEXTO NÃO SUMA (COR PRETA SEMPRE) */
+    div.stButton > button p {
+        color: #000000 !important;
+        font-weight: 900 !important;
+    }
+
+    /* 4. TIRA QUALQUER EFEITO DE "FADE" DO STREAMLIT */
+    div.stButton > button:active, div.stButton > button:focus {
+        background-color: #FFCC00 !important;
+        color: #000000 !important;
     }
     </style>
     """, unsafe_allow_html=True)
-
 with st.container():
     # Isso limpa o layout das colunas de transporte antes de desenhar o botão
     st.markdown('<div style="clear: both;"></div>', unsafe_allow_html=True)

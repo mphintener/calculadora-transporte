@@ -79,22 +79,25 @@ st.markdown("""
     """, unsafe_allow_html=True)
 # 5. LOCALIZAÇÃO E TRAJETO (DISTRITOS CORRIGIDOS)
 st.markdown("---")
-st.markdown("### 🏠 LOCAL DE MORADIA")
+st.markdown("### 🏠 LOCAL DE MORADIA E TRAJETO")
 m1, m2 = st.columns(2)
-mun_moradia = m1.selectbox("MUNICÍPIO (Moradia)", municipios_rmsp, key="mun_moradia")
+mun_moradia = m1.selectbox("MUNICÍPIO (Moradia)", municipios_rmsp, key="mun_mor_key")
+
 if mun_moradia == "São Paulo":
-    dist_moradia = m2.selectbox("DISTRITO (Moradia)", distritos_sp, key="dist_m_select")
+    dist_moradia = m2.selectbox("DISTRITO (Moradia)", distritos_sp, key="dist_mor_sel")
 else:
-    dist_moradia = m2.text_input("BAIRRO/DISTRITO (Moradia)", placeholder="Digite seu bairro", key="dist_m_text")
+    dist_moradia = m2.text_input("BAIRRO/DISTRITO (Moradia)", placeholder="Digite seu bairro", key="dist_mor_txt")
+
 st.markdown("### 💼 LOCAL DE TRABALHO")
 t1, t2, t3 = st.columns(3)
-mun_trabalho = t1.selectbox("MUNICÍPIO (Trabalho)", municipios_rmsp, key="mun_trabalho")
-if mun_trabalho == "São Paulo":
-    dist_trabalho = t2.selectbox("DISTRITO (Trabalho)", distritos_sp, key="dist_t_select")
-else:
-    dist_trabalho = t2.text_input("BAIRRO/DISTRITO (Trabalho)", placeholder="Digite o bairro de trabalho", key="dist_t_text")
-h_dia = t3.number_input("HORAS NO TRECHO (Ida/Volta)", value=2.0, step=0.5)
+mun_trabalho = t1.selectbox("MUNICÍPIO (Trabalho)", municipios_rmsp, key="mun_trab_key")
 
+if mun_trabalho == "São Paulo":
+    dist_trabalho = t2.selectbox("DISTRITO (Trabalho)", distritos_sp, key="dist_trab_sel")
+else:
+    dist_trabalho = t2.text_input("BAIRRO/DISTRITO (Trabalho)", placeholder="Digite o bairro", key="dist_trab_txt")
+
+h_dia = t3.number_input("HORAS NO TRECHO (Ida/Volta)", value=2.0, step=0.5)
 st.markdown("---")
 st.markdown("### 💰 RENDIMENTO E CUSTO")
 e1, e2, e3 = st.columns(3)

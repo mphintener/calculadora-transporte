@@ -84,53 +84,33 @@ idade = p1.number_input("IDADE", min_value=14, step=1, value=None)
 escolaridade = p2.selectbox("ESCOLARIDADE", ["Fundamental Incompleto", "Fundamental Completo", "Médio Incompleto", "Médio Completo", "Técnico", "Superior Incompleto", "Superior Completo", "Pós-Graduação"])
 setor = p3.selectbox("SETOR DE ATIVIDADE", ["Comércio", "Construção Civil", "Educação", "Indústria", "Serviços", "Saúde", "Outros"])
 
-# 7. LOCALIZAÇÃO (MORADIA E TRABALHO)
-# ========================================================= 
 st.markdown("---")
-st.markdown("### 🏠 LOCAL DE MORADIA")
+st.markdown("###  LOCAL DE MORADIA")
 m1, m2 = st.columns(2)
-mun_moradia = m1.selectbox("MUNICÍPIO (Moradia)", municipios, key="mun_mor_final")
-
-# Criamos um espaço vazio na coluna m2 para a troca de campos
-col_moradia = m2.container()
+mun_moradia = m1.selectbox("MUNICÍPIO (Moradia)", municipios_rmsp, index=0, key="sel_mun_mor")
 
 if mun_moradia == "São Paulo":
-    # Usamos o container para desenhar
-    dist_moradia = col_moradia.selectbox("DISTRITO (Moradia)", distritos, key="dist_mor_sel")
+    dist_moradia = m2.selectbox("DISTRITO (Moradia)", distritos_sp, index=0, key="sel_dist_mor")
 else:
-    # O container limpa o selectbox e coloca o text_input
-    dist_moradia = col_moradia.text_input("BAIRRO/DISTRITO (Moradia)", placeholder="Digite seu bairro", key="dist_mor_txt")
+    dist_moradia = m2.text_input("BAIRRO/DISTRITO (Moradia)", placeholder="Digite seu bairro", key="txt_bairro_mor")
 
-st.markdown("### 💼 LOCAL DE TRABALHO")
-t1, t2, t3 = st.columns(3)
-
-mun_trabalho = t1.selectbox("MUNICÍPIO (Trabalho)", municipios, key="mun_trab_final")
-
-# Usamos um container dentro da coluna t2 para alternar entre lista e texto
-with t2.container():
+st.markdown("###  LOCAL DE TRABALHO")
+t1, t2 = st.columns(2)
+with t1:
+    mun_trabalho = st.selectbox("MUNICÍPIO (Trabalho)", municipios_rmsp, index=0, key="sel_mun_tra")
+with t2:
     if mun_trabalho == "São Paulo":
-        dist_trabalho = st.selectbox("DISTRITO (Trabalho)", distritos, key="dist_trab_sel")
+        dist_trabalho = st.selectbox("DISTRITO (Trabalho)", distritos_sp, index=0, key="sel_dist_tra")
     else:
-        dist_trabalho = st.text_input("BAIRRO/DISTRITO (Trabalho)", placeholder="Digite o bairro", key="dist_trab_txt")
+        dist_trabalho = st.text_input("BAIRRO/DISTRITO (Trabalho)", placeholder="Digite o bairro de trabalho", key="txt_bairro_tra")
 
-st.markdown("### ⏳ TRECHO DE DESLOCAMENTO")
-# Criamos as colunas novamente para garantir que elas existam neste ponto do código
-col_tempo, col_dias = st.columns(2)
-
-with col_tempo:
-    h_dia = st.number_input("HORAS NO TRECHO (Ida + Volta)", 
-                            min_value=0.0, 
-                            max_value=24.0, 
-                            step=0.5, 
-                            key="horas_trecho_estavel")
-
-with col_dias:
-    # Este é o campo que sumiu, agora com uma chave (key) blindada
-    dias_mes = st.number_input("DIAS TRABALHADOS (No mês)", 
-                               min_value=1, 
-                               max_value=31, 
-                               value=22, 
-                               key="dias_trabalho_estavel")
+# --- TRECHO DE DESLOCAMENTO (Campos que faltavam) ---
+st.markdown("###  TRECHO DE DESLOCAMENTO")
+tr_col1, tr_col2 = st.columns(2)
+with tr_col1:
+    h_dia = st.number_input("HORAS NO TRECHO (Ida + Volta)", value=2.0, step=0.5, key="num_horas_v105")
+with tr_col2:
+    dias = st.number_input("DIAS TRABALHADOS (No mês)", value=22, key="num_dias_v105")
 
 st.markdown("---")
 st.markdown("### 💰 RENDIMENTO E CUSTO")

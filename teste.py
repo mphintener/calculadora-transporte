@@ -77,7 +77,7 @@ st.markdown("""
         Quanto de tempo e de dinheiro são consumidos no seu deslocamento diário?
     </div>
     """, unsafe_allow_html=True)
-5. LOCALIZAÇÃO (MORADIA E TRABALHO)
+# 5. LOCALIZAÇÃO (MORADIA E TRABALHO)
 # =========================================================
 st.markdown("---")
 st.markdown("### 🏠 LOCAL DE MORADIA")

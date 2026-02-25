@@ -84,33 +84,30 @@ idade = p1.number_input("IDADE", min_value=14, step=1, value=None)
 escolaridade = p2.selectbox("ESCOLARIDADE", ["Fundamental Incompleto", "Fundamental Completo", "Médio Incompleto", "Médio Completo", "Técnico", "Superior Incompleto", "Superior Completo", "Pós-Graduação"])
 setor = p3.selectbox("SETOR DE ATIVIDADE", ["Comércio", "Construção Civil", "Educação", "Indústria", "Serviços", "Saúde", "Outros"])
 
-st.markdown("---")
-st.markdown("###  LOCAL DE MORADIA")
+t.markdown("---")
+st.markdown("### 🏠 LOCAL DE MORADIA")
 m1, m2 = st.columns(2)
-mun_moradia = m1.selectbox("MUNICÍPIO (Moradia)", municipios, index=0, key="sel_mun_mor")
+# Usamos chaves únicas para garantir que o Streamlit salve os dados
+mun_moradia = m1.selectbox("MUNICÍPIO (Moradia)", municipio, index=0, key="k_mun_mor")
 
 if mun_moradia == "São Paulo":
-    dist_moradia = m2.selectbox("DISTRITO (Moradia)", distritos, index=0, key="sel_dist_mor")
+    dist_moradia = m2.selectbox("DISTRITO (Moradia)", distrito, index=0, key="k_dist_sp_mor")
 else:
-    dist_moradia = m2.text_input("BAIRRO/DISTRITO (Moradia)", placeholder="Digite seu bairro", key="txt_bairro_mor")
+    dist_moradia = m2.text_input("BAIRRO/DISTRITO (Moradia)", placeholder="Digite seu bairro", key="k_bairro_out_mor")
 
-st.markdown("###  LOCAL DE TRABALHO")
+st.markdown("### 💼 LOCAL DE TRABALHO")
 t1, t2 = st.columns(2)
-with t1:
-    mun_trabalho = st.selectbox("MUNICÍPIO (Trabalho)", municipios, index=0, key="sel_mun_tra")
-with t2:
-    if mun_trabalho == "São Paulo":
-        dist_trabalho = st.selectbox("DISTRITO (Trabalho)", distritos, index=0, key="sel_dist_tra")
-    else:
-        dist_trabalho = st.text_input("BAIRRO/DISTRITO (Trabalho)", placeholder="Digite o bairro de trabalho", key="txt_bairro_tra")
+mun_trabalho = t1.selectbox("MUNICÍPIO (Trabalho)", municipio, index=0, key="k_mun_tra")
 
-# --- TRECHO DE DESLOCAMENTO (Campos que faltavam) ---
-st.markdown("###  TRECHO DE DESLOCAMENTO")
-tr_col1, tr_col2 = st.columns(2)
-with tr_col1:
-    h_dia = st.number_input("HORAS NO TRECHO (Ida + Volta)", value=2.0, step=0.5, key="num_horas_v105")
-with tr_col2:
-    dias = st.number_input("DIAS TRABALHADOS (No mês)", value=22, key="num_dias_v105")
+if mun_trabalho == "São Paulo":
+    dist_trabalho = t2.selectbox("DISTRITO (Trabalho)", distrito, index=0, key="k_dist_sp_tra")
+else:
+    dist_trabalho = t2.text_input("BAIRRO/DISTRITO (Trabalho)", placeholder="Digite o bairro de trabalho", key="k_bairro_out_tra")
+
+st.markdown("### ⏳ TRECHO DE DESLOCAMENTO")
+tr_c1, tr_c2 = st.columns(2)
+h_dia = tr_c1.number_input("HORAS NO TRECHO (Ida + Volta)", value=2.0, step=0.5, key="k_horas_dia")
+dias = tr_c2.number_input("DIAS TRABALHADOS (No mês)", value=22, key="k_dias_mes")
 
 st.markdown("---")
 st.markdown("### 💰 RENDIMENTO E CUSTO")

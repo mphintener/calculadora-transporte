@@ -121,19 +121,18 @@ g_ap = g4.number_input("🚗 APP", min_value=0.0)
 g_ca = g5.number_input("⛽ CARRO/COMBUSTÍVEL", min_value=0.0)
 st.markdown("""
    # Certifique-se de que este bloco está EXATAMENTE assim, com as aspas triplas no início e no fim
+# 1. ESTILO DO BOTÃO E ELIMINAÇÃO DE FAIXAS
 st.markdown("""
     <style>
-    /* 1. MATA A FAIXA AMARELA E O HEADER */
+    /* MATA O HEADER E A DECORAÇÃO COLORIDA */
     header, [data-testid="stHeader"], [data-testid="stDecoration"] {
         display: none !important;
         visibility: hidden !important;
     }
 
-    /* 2. FORÇA O BOTÃO A FICAR VISÍVEL E EM NEGRITO */
+    /* FORMATAÇÃO DO BOTÃO EM NEGRITO EXTREMO */
     div.stButton > button {
         opacity: 1 !important;
-        visibility: visible !important;
-        display: block !important;
         background-color: #FFCC00 !important;
         color: #000000 !important;
         font-weight: 900 !important;
@@ -145,7 +144,7 @@ st.markdown("""
         margin-top: 30px !important;
     }
 
-    /* 3. GARANTE QUE O TEXTO INTERNO SEJA PRETO E NEGRITO */
+    /* TEXTO INTERNO DO BOTÃO */
     div.stButton > button p {
         color: #000000 !important;
         font-weight: 900 !important;
@@ -153,10 +152,10 @@ st.markdown("""
     </style>
     """, unsafe_allow_html=True)
 
-# O BOTÃO DEVE VIR LOGO ABAIXO, FORA DAS ASPAS ACIMA
+# 2. O COMPONENTE DO BOTÃO (FORA DO TEXTO ACIMA)
 if st.button("GERAR DIAGNÓSTICO TÉCNICO"):
-    # Sua lógica de cálculos aqui
-    pass
+    # Sua lógica de cálculos começa aqui dentro
+    st.write("Calculando...") # Exemplo para testar o clique
 
 # 8. DIAGNÓSTICO
 if st.button("EFETUAR DIAGNÓSTICO"):

@@ -1,59 +1,84 @@
 import streamlit as st
 
-# 1. IDENTIDADE VISUAL E CONFIGURAÇÃO
+# 1. IDENTIDADE VISUAL E CONFIGURAÇÃO (CSS REFORÇADO)
 st.set_page_config(page_title="Calculadora do Trecho", layout="wide")
 
 st.markdown("""
     <style>
     .stApp { background-color: #000000; color: #FFFFFF; }
+    
+    /* FORÇAR O TÍTULO A FICAR POR CIMA DE TUDO */
+    .locked-title {
+        color: #FFCC00 !important;
+        font-family: 'Arial', sans-serif;
+        font-weight: bold;
+        font-size: 2.5rem;
+        text-align: center;
+        padding: 20px 0;
+        position: relative;
+        z-index: 9999 !important; /* Camada máxima */
+        background-color: #000000; /* Garante fundo preto por baixo */
+    }
+    
+    .locked-subheader {
+        color: #FFCC00 !important;
+        text-align: center;
+        font-size: 1.2rem;
+        margin-bottom: 30px;
+        position: relative;
+        z-index: 9999 !important;
+    }
+
     h1, h2, h3, h4, label, p { color: #FFCC00 !important; font-family: 'Arial', sans-serif; }
     
-    /* Proteção do Título contra sobreposição */
-    .main-container { padding-top: 2rem; }
-    
     .stButton>button { 
-        background-color: #FFCC00 !important; color: #000000 !important; 
-        font-weight: bold !important; width: 100%; border-radius: 5px; height: 3.5em; border: none; font-size: 1.2rem;
-        box-shadow: 0px 4px 10px rgba(255, 204, 0, 0.2);
+        background-color: #FFCC00 !important; 
+        color: #000000 !important; 
+        font-weight: bold !important; 
+        width: 100%; 
+        border-radius: 5px; 
+        height: 4em; 
+        border: 2px solid #FFCC00;
+        font-size: 1.3rem !important;
     }
-    .stButton>button:hover { background-color: #E63946 !important; color: #FFFFFF !important; transition: 0.3s; }
+    .stButton>button:hover { background-color: #E63946 !important; color: #FFFFFF !important; border: 2px solid #E63946; }
     .report-box { background:#111; padding:25px; border:2px solid #FFCC00; border-radius:10px; margin-top:20px; font-size: 1.1rem; }
     input, select, .stSelectbox { background-color: #111 !important; color: white !important; border: 1px solid #444 !important; }
     </style>
     """, unsafe_allow_html=True)
 
 # 2. BANCO DE DADOS GEOGRÁFICO
-municipios_rmsp = sorted(["Arujá", "Barueri", "Biritiba-Mirim", "Caieiras", "Cajamar", "Carapicuíba", "Cotia", "Diadema", "Embu das Artes", "Embu-Guaçu", "Ferraz de Vasconcelos", "Francisco Morato", "Franco da Rocha", "Guararema", "Guarulhos", "Itapecerica da Serra", "Itapevi", "Itaquaquecetuba", "Jandira", "Juquitiba", "Mairiporã", "Mauá", "Mogi das Cruzes", "Osasco", "Pirapora do Bom Jesus", "Poá", "Ribeirão Pires", "Rio Grande da Serra", "Salesópolis", "Santa Isabel", "Santana de Parnaíba", "Santo André", "São Bernardo do Campo", "São Caetano do Sul", "São Lourenço da Serra", "São Paulo", "Suzano", "Taboão da Serra", "Vargem Grande Paulista"])
-distritos_sp = sorted(["Água Rasa", "Alto de Pinheiros", "Anhanguera", "Aricanduva", "Artur Alvim", "Barra Funda", "Bela Vista", "Belém", "Bom Retiro", "Brasilândia", "Butantã", "Cachoeirinha", "Cambuci", "Campo Belo", "Campo Grande", "Campo Limpo", "Cangaíba", "Capão Redondo", "Carrão", "Casa Verde", "Cidade Ademar", "Cidade Dutra", "Cidade Líder", "Cidade Tiradentes", "Consolação", "Cursino", "Ermelino Matarazzo", "Freguesia do Ó", "Grajaú", "Guaianases", "Iguatemi", "Ipiranga", "Itaim Bibi", "Itaim Paulista", "Itaquera", "Jabaquara", "Jaçanã", "Jaguara", "Jaguaré", "Jaraguá", "Jardim Ângela", "Jardim Helena", "Jardim Paulista", "Jardim São Luís", "Lapa", "Liberdade", "Limão", "Mandaqui", "Marsilac", "Moema", "Mooca", "Morumbi", "Parelheiros", "Pari", "Parque do Carmo", "Pedreira", "Penha", "Perdizes", "Perus", "Pinheiros", "Pirituba", "Ponte Rasa", "Raposo Tavares", "República", "Rio Pequeno", "Sacomã", "Santa Cecília", "Santana", "Santo Amaro", "São Domingos", "São Lucas", "São Mateus", "São Miguel", "São Rafael", "Sapopemba", "Saúde", "Sé", "Socorro", "Tatuapé", "Tremembé", "Tucuruvi", "Vila Andrade", "Vila Curuçá", "Vila Formosa", "Vila Guilherme", "Vila Jacuí", "Vila Leopoldina", "Vila Maria", "Vila Mariana", "Vila Matilde", "Vila Medeiros", "Vila Prudente", "Vila Sônia"])
+municipios_rmsp = [" "] + sorted(["Arujá", "Barueri", "Biritiba-Mirim", "Caieiras", "Cajamar", "Carapicuíba", "Cotia", "Diadema", "Embu das Artes", "Embu-Guaçu", "Ferraz de Vasconcelos", "Francisco Morato", "Franco da Rocha", "Guararema", "Guarulhos", "Itapecerica da Serra", "Itapevi", "Itaquaquecetuba", "Jandira", "Juquitiba", "Mairiporã", "Mauá", "Mogi das Cruzes", "Osasco", "Pirapora do Bom Jesus", "Poá", "Ribeirão Pires", "Rio Grande da Serra", "Salesópolis", "Santa Isabel", "Santana de Parnaíba", "Santo André", "São Bernardo do Campo", "São Caetano do Sul", "São Lourenço da Serra", "São Paulo", "Suzano", "Taboão da Serra", "Vargem Grande Paulista"])
+distritos_sp = [" "] + sorted(["Água Rasa", "Alto de Pinheiros", "Anhanguera", "Aricanduva", "Artur Alvim", "Barra Funda", "Bela Vista", "Belém", "Bom Retiro", "Brasilândia", "Butantã", "Cachoeirinha", "Cambuci", "Campo Belo", "Campo Grande", "Campo Limpo", "Cangaíba", "Capão Redondo", "Carrão", "Casa Verde", "Cidade Ademar", "Cidade Dutra", "Cidade Líder", "Cidade Tiradentes", "Consolação", "Cursino", "Ermelino Matarazzo", "Freguesia do Ó", "Grajaú", "Guaianases", "Iguatemi", "Ipiranga", "Itaim Bibi", "Itaim Paulista", "Itaquera", "Jabaquara", "Jaçanã", "Jaguara", "Jaguaré", "Jaraguá", "Jardim Ângela", "Jardim Helena", "Jardim Paulista", "Jardim São Luís", "Lapa", "Liberdade", "Limão", "Mandaqui", "Marsilac", "Moema", "Mooca", "Morumbi", "Parelheiros", "Pari", "Parque do Carmo", "Pedreira", "Penha", "Perdizes", "Perus", "Pinheiros", "Pirituba", "Ponte Rasa", "Raposo Tavares", "República", "Rio Pequeno", "Sacomã", "Santa Cecília", "Santana", "Santo Amaro", "São Domingos", "São Lucas", "São Mateus", "São Miguel", "São Rafael", "Sapopemba", "Saúde", "Sé", "Socorro", "Tatuapé", "Tremembé", "Tucuruvi", "Vila Andrade", "Vila Curuçá", "Vila Formosa", "Vila Guilherme", "Vila Jacuí", "Vila Leopoldina", "Vila Maria", "Vila Mariana", "Vila Matilde", "Vila Medeiros", "Vila Prudente", "Vila Sônia"])
 
-st.markdown('<div class="main-container">', unsafe_allow_html=True)
-st.title("📊 CALCULADORA DO TRECHO")
-st.subheader("Quanto de tempo e de dinheiro são consumidos no seu deslocamento diário?")
+# TÍTULO E SUBTÍTULO COM CLASSES REFORÇADAS
+st.markdown('<div class="locked-title">📊 CALCULADORA DO TRECHO</div>', unsafe_allow_html=True)
+st.markdown('<div class="locked-subheader">Quanto de tempo e de dinheiro são consumidos no seu deslocamento diário?</div>', unsafe_allow_html=True)
 
 # 3. ENTRADA DE DADOS
 st.markdown("### 👤 PERFIL")
-col_p1, col_p2, col_p3 = st.columns(3)
-idade = col_p1.number_input("👤 IDADE", min_value=14, value=30)
-escolaridade = col_p2.selectbox("🎓 ESCOLARIDADE", ["Fundamental Incompleto", "Fundamental Completo", "Médio Incompleto", "Médio Completo", "Técnico", "Superior Incompleto", "Superior Completo", "Pós-Graduação", "Mestrado", "Doutorado"])
-setor = col_p3.selectbox("💼 SETOR DE ATIVIDADE", ["Serviços", "Comércio", "Indústria", "Educação", "Saúde", "TI/Tecnologia", "Construção Civil", "Transportes", "Administração Pública", "Outros"])
+cp1, cp2, cp3 = st.columns(3)
+idade = cp1.number_input("👤 IDADE", min_value=14, value=30)
+escolaridade = cp2.selectbox("🎓 ESCOLARIDADE", ["Fundamental Incompleto", "Fundamental Completo", "Médio Incompleto", "Médio Completo", "Técnico", "Superior Incompleto", "Superior Completo", "Pós-Graduação", "Mestrado", "Doutorado"])
+setor = cp3.selectbox("💼 SETOR DE ATIVIDADE", ["Serviços", "Comércio", "Indústria", "Educação", "Saúde", "TI/Tecnologia", "Construção Civil", "Transportes", "Administração Pública", "Outros"])
 
 st.markdown("---")
 st.markdown("### 🏠 LOCAL DE MORADIA")
-col_m1, col_m2 = st.columns(2)
-mun_moradia = col_m1.selectbox("MUNICÍPIO (Moradia)", municipios_rmsp, index=None, placeholder="Escolha a cidade")
+cm1, cm2 = st.columns(2)
+mun_moradia = cm1.selectbox("MUNICÍPIO (Moradia)", municipios_rmsp, index=0)
 if mun_moradia == "São Paulo":
-    dist_moradia = col_m2.selectbox("DISTRITO (Moradia)", distritos_sp, index=None, placeholder="Escolha o distrito")
+    dist_moradia = cm2.selectbox("DISTRITO (Moradia)", distritos_sp, index=0)
 else:
-    dist_moradia = col_m2.text_input("BAIRRO/DISTRITO (Moradia)", placeholder="Digite seu bairro")
+    dist_moradia = cm2.text_input("BAIRRO/DISTRITO (Moradia)", placeholder="Digite seu bairro")
 
 st.markdown("### 🏢 LOCAL DE TRABALHO")
-col_t1, col_t2, col_t3 = st.columns(3)
-mun_trabalho = col_t1.selectbox("MUNICÍPIO (Trabalho)", municipios_rmsp, index=None, placeholder="Escolha a cidade")
+ct1, ct2, ct3 = st.columns(3)
+mun_trabalho = ct1.selectbox("MUNICÍPIO (Trabalho)", municipios_rmsp, index=0)
 if mun_trabalho == "São Paulo":
-    dist_trabalho = col_t2.selectbox("DISTRITO (Trabalho)", distritos_sp, index=None, placeholder="Escolha o distrito")
+    dist_trabalho = ct2.selectbox("DISTRITO (Trabalho)", distritos_sp, index=0)
 else:
-    dist_trabalho = col_t2.text_input("BAIRRO/DISTRITO (Trabalho)", placeholder="Digite o bairro")
-h_dia = col_t3.number_input("⏳ HORAS NO TRECHO (Ida/Volta)", value=2.0, step=0.5)
+    dist_trabalho = ct2.text_input("BAIRRO/DISTRITO (Trabalho)", placeholder="Digite o bairro de trabalho")
+h_dia = ct3.number_input("⏳ HORAS NO TRECHO (Ida/Volta)", value=2.0, step=0.5)
 
 st.markdown("---")
 st.markdown("### 🚌 CUSTOS DIÁRIOS E RENDIMENTOS")
@@ -69,13 +94,12 @@ sal = r1.number_input("💰 SALÁRIO BRUTO (R$)", min_value=0.0)
 c_vida = r2.number_input("🏠 CUSTO DE VIDA (R$)", min_value=0.0, help="Soma de: Aluguel, Comida, Energia, Água e Internet.")
 dias = r3.number_input("📅 DIAS TRABALHADOS/MÊS", value=22)
 
-st.markdown("</div>", unsafe_allow_html=True) # Fim do container
+st.markdown("<br>", unsafe_allow_html=True)
 
-# 4. BOTÃO E LÓGICA
+# 4. BOTÃO
 if st.button("EFETUAR DIAGNÓSTICO"):
-    # Validação manual para manter o botão "acesso" mas exigir preenchimento
-    if mun_moradia is None or mun_trabalho is None:
-        st.error("⚠️ ERRO: Selecione os municípios de moradia e trabalho para prosseguir.")
+    if mun_moradia == " " or mun_trabalho == " ":
+        st.warning("⚠️ Por favor, selecione os municípios para gerar o diagnóstico.")
     else:
         gasto_d = g_on + g_me + g_tr + g_ap + g_ca
         custo_m = gasto_d * dias

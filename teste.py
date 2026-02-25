@@ -45,12 +45,12 @@ distritos_sp = [" "] + sorted(["Água Rasa", "Alto de Pinheiros", "Anhanguera", 
 
 st.markdown('<div class="main-header-container"><h1>📊 CALCULADORA DO TRECHO</h1><div class="subheader-text">Quanto de tempo e de dinheiro são consumidos no seu deslocamento diário?</div></div>', unsafe_allow_html=True)
 
-# 3. ENTRADA DE DADOS
+# 6. ENTRADA DE DADOS: PERFIL DO USUÁRIO (RESTAURADO)
 st.markdown("### 👤 PERFIL")
 p1, p2, p3 = st.columns(3)
-idade = p1.number_input("👤 IDADE", min_value=14, value=30)
-escolaridade = p2.selectbox("🎓 ESCOLARIDADE", ["Fundamental", "Médio", "Técnico", "Superior", "Pós/Mestrado/Doutorado"])
-setor = p3.selectbox("💼 SETOR DE ATIVIDADE", ["Serviços", "Comércio", "Indústria", "Educação", "Saúde", "TI", "Construção", "Outros"])
+idade = p1.number_input("IDADE", min_value=14, step=1, value=None)
+escolaridade = p2.selectbox("ESCOLARIDADE", ["Fundamental Incompleto", "Fundamental Completo", "Médio Incompleto", "Médio Completo", "Técnico", "Superior Incompleto", "Superior Completo", "Pós-Graduação"])
+setor = p3.selectbox("SETOR DE ATIVIDADE", ["Comércio", "Construção Civil", "Educação", "Indústria", "Serviços", "Saúde", "Outros"])
 
 st.markdown("---")
 st.markdown("### 🏠 LOCAL DE MORADIA")

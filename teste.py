@@ -1,76 +1,76 @@
+
 import streamlit as st
 
-# 1. IDENTIDADE VISUAL E CONFIGURAÇÃO ULTRA REFORÇADA
+# 1. IDENTIDADE VISUAL E CONFIGURAÇÃO
 st.set_page_config(page_title="Calculadora do Trecho", layout="wide")
 
 st.markdown("""
     <style>
-    /* 1. ELIMINAÇÃO DA FAIXA BRANCA/AMARELA DO TOPO E STATUS */
-    header, [data-testid="stHeader"], [data-testid="stStatusWidget"] {
-        visibility: hidden !important;
+    /* 1. MATA A FAIXA DO TOPO SEM AFETAR O CLIQUE DOS CAMPOS */
+    [data-testid="stHeader"] {
         display: none !important;
-        height: 0px !important;
     }
-
-    /* 2. FUNDO PRETO ABSOLUTO */
-    .stApp { background-color: #000000 !important; color: #FFFFFF !important; }
     
-    /* 3. SUBIR O CONTEÚDO (Remove o espaço vazio do topo) */
+    /* 2. FUNDO PRETO E AJUSTE DE MARGEM */
+    .stApp { 
+        background-color: #000000 !important; 
+    }
     .block-container { 
-        padding-top: 0rem !important; 
-        margin-top: -30px !important;
+        padding-top: 2rem !important; 
     }
 
-    /* 4. TÍTULOS E LABELS EM AMARELO */
-    h1 { color: #FFCC00 !important; font-family: 'Arial Black', sans-serif; font-weight: 800; text-align: center; }
-    label, p, span { color: #FFCC00 !important; font-weight: bold !important; }
+    /* 3. CAMPOS: FUNDO ESCURO MAS TOTALMENTE CLICÁVEIS */
+    /* Usamos #111 (quase preto) para você enxergar onde clicar */
+    div[data-baseweb="input"], div[data-baseweb="select"], .stSelectbox, .stNumberInput {
+        background-color: #111 !important;
+        border: none !important;
+        border-bottom: 2px solid #333 !important;
+        border-radius: 4px !important;
+        color: white !important;
+    }
 
-    /* 5. CORREÇÃO DO BOTÃO (Texto nunca fica encoberto) */
+    /* ACENDE A LINHA QUANDO CLICA */
+    div[data-baseweb="input"]:focus-within {
+        border-bottom: 2px solid #FFCC00 !important;
+    }
+
+    /* TEXTO DIGITADO: FORÇA O BRANCO */
+    input { 
+        color: #FFFFFF !important; 
+        -webkit-text-fill-color: #FFFFFF !important;
+    }
+
+    /* 4. LABELS E TÍTULOS */
+    label, p, h1, h2, h3, span { 
+        color: #FFCC00 !important; 
+        font-family: 'Arial Black', sans-serif !important; 
+    }
+
+    /* 5. BOTÃO DE DIAGNÓSTICO (ESTILO FIXO) */
     .stButton>button { 
         background-color: #FFCC00 !important; 
         color: #000000 !important; 
         font-weight: 900 !important; 
-        width: 100% !important; 
-        height: 4.5em !important;
-        border: 2px solid #FFCC00 !important;
-        font-size: 1.2rem !important;
-        text-transform: uppercase !important;
-        z-index: 9999 !important; /* Garante que fique na frente */
-        opacity: 1 !important;
-        display: block !important;
+        width: 100%; 
+        height: 3.5em;
+        border: 2px solid #E63946 !important;
+        text-transform: uppercase;
+        margin-top: 10px;
     }
-    .stButton>button:hover { background-color: #E63946 !important; color: #FFFFFF !important; border-color: #E63946 !important; }
-
-    /* 6. CAMPOS SEM BORDAS - APENAS LINHA INFERIOR DISCRETA */
-    div[data-baseweb="input"], div[data-baseweb="select"], .stSelectbox, .stNumberInput {
-        border: none !important;
-        border-bottom: 1px solid #333 !important;
-        border-radius: 0px !important;
-        background-color: transparent !important;
-    }
-    
-    /* Força o texto digitado a ser branco */
-    input { color: #FFFFFF !important; -webkit-text-fill-color: #FFFFFF !important; }
-    
-    /* Setas dos Selectboxes Amarelas */
-    svg[viewBox="0 0 24 24"] { fill: #FFCC00 !important; }
     </style>
     """, unsafe_allow_html=True)
 
-# 2. INSERÇÃO DO LOGO (No topo de tudo)
-# Se o arquivo estiver no seu GitHub:
-# st.image("logo.png", width=180) 
-# Se preferir centralizar o logo, use colunas:
-col_l1, col_l2, col_l3 = st.columns([1,1,1])
-with col_l2:
-    # st.image("logo.png", use_container_width=True)
-    pass
+# 2. ONDE INSERIR O LOGO (Centralizado e funcional)
+# Substitua pelo seu arquivo
+# st.image("logo.png", width=200)
 
 st.title("⚖️ CALCULADORA DO TRECHO")
-st.markdown("<p style='text-align: center; color: #FFCC00;'>Diagnóstico de Expropriação e Jornada Não Paga</p>", unsafe_allow_html=True)
 
-# --- DAQUI PARA BAIXO SEGUE A LOCALIZAÇÃO ---
-# 3. LOCALIZAÇÃO GEOGRÁFICA (Segue abaixo...)
+# 3. TESTE DE LOCALIZAÇÃO (Verifique se as setas funcionam)
+st.markdown("### 🏠 LOCALIZAÇÃO")
+c1, c2 = st.columns(2)
+mun_m = c1.selectbox("MUNICÍPIO (Moradia)", ["São Paulo", "Guarulhos", "Osasco"], key="m1")
+loc_m = c2.text_input("BAIRRO (Moradia)", key="m2", placeholder="Digite aqui...")
 # 2. BANCO DE DADOS GEOGRÁFICO
 municipios_rmsp = [" "] + sorted(["Arujá", "Barueri", "Biritiba-Mirim", "Caieiras", "Cajamar", "Carapicuíba", "Cotia", "Diadema", "Embu das Artes", "Embu-Guaçu", "Ferraz de Vasconcelos", "Francisco Morato", "Franco da Rocha", "Guararema", "Guarulhos", "Itapecerica da Serra", "Itapevi", "Itaquaquecetuba", "Jandira", "Juquitiba", "Mairiporã", "Mauá", "Mogi das Cruzes", "Osasco", "Pirapora do Bom Jesus", "Poá", "Ribeirão Pires", "Rio Grande da Serra", "Salesópolis", "Santa Isabel", "Santana de Parnaíba", "Santo André", "São Bernardo do Campo", "São Caetano do Sul", "São Lourenço da Serra", "São Paulo", "Suzano", "Taboão da Serra", "Vargem Grande Paulista"])
 distritos_sp = [" "] + sorted(["Água Rasa", "Alto de Pinheiros", "Anhanguera", "Aricanduva", "Artur Alvim", "Barra Funda", "Bela Vista", "Belém", "Bom Retiro", "Brasilândia", "Butantã", "Cachoeirinha", "Cambuci", "Campo Belo", "Campo Grande", "Campo Limpo", "Cangaíba", "Capão Redondo", "Carrão", "Casa Verde", "Cidade Ademar", "Cidade Dutra", "Cidade Líder", "Cidade Tiradentes", "Consolação", "Cursino", "Ermelino Matarazzo", "Freguesia do Ó", "Grajaú", "Guaianases", "Iguatemi", "Ipiranga", "Itaim Bibi", "Itaim Paulista", "Itaquera", "Jabaquara", "Jaçanã", "Jaguara", "Jaguaré", "Jaraguá", "Jardim Ângela", "Jardim Helena", "Jardim Paulista", "Jardim São Luís", "Lapa", "Liberdade", "Limão", "Mandaqui", "Marsilac", "Moema", "Mooca", "Morumbi", "Parelheiros", "Pari", "Parque do Carmo", "Pedreira", "Penha", "Perdizes", "Perus", "Pinheiros", "Pirituba", "Ponte Rasa", "Raposo Tavares", "República", "Rio Pequeno", "Sacomã", "Santa Cecília", "Santana", "Santo Amaro", "São Domingos", "São Lucas", "São Mateus", "São Miguel", "São Rafael", "Sapopemba", "Saúde", "Sé", "Socorro", "Tatuapé", "Tremembé", "Tucuruvi", "Vila Andrade", "Vila Curuçá", "Vila Formosa", "Vila Guilherme", "Vila Jacuí", "Vila Leopoldina", "Vila Maria", "Vila Mariana", "Vila Matilde", "Vila Medeiros", "Vila Prudente", "Vila Sônia"])

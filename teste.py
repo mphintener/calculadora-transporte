@@ -84,35 +84,33 @@ idade = p1.number_input("IDADE", min_value=14, step=1, value=None)
 escolaridade = p2.selectbox("ESCOLARIDADE", ["Fundamental Incompleto", "Fundamental Completo", "Médio Incompleto", "Médio Completo", "Técnico", "Superior Incompleto", "Superior Completo", "Pós-Graduação"])
 setor = p3.selectbox("SETOR DE ATIVIDADE", ["Comércio", "Construção Civil", "Educação", "Indústria", "Serviços", "Saúde", "Outros"])
 
-# 7. LOCALIZAÇÃO (MORADIA E TRABALHO)
-# ========================================================= 
-st.markdown("---")
-st.markdown("### 🏠 LOCAL DE MORADIA")
+# --- MORADIA ---
 m1, m2 = st.columns(2)
+
+# 1. Município
 mun_moradia = m1.selectbox("MUNICÍPIO (Moradia)", municipios, key="mun_mor_final")
 
-# Criamos um espaço vazio na coluna m2 para a troca de campos
-col_moradia = m2.container()
-
+# 2. Lógica do Bairro com Memória (Session State)
 if mun_moradia == "São Paulo":
-    # Usamos o container para desenhar
-    dist_moradia = col_moradia.selectbox("DISTRITO (Moradia)", distritos, key="dist_mor_sel")
+    dist_moradia = m2.selectbox("DISTRITO (Moradia)", distritos, key="dist_mor_sp")
 else:
-    # O container limpa o selectbox e coloca o text_input
-    dist_moradia = col_moradia.text_input("BAIRRO/DISTRITO (Moradia)", placeholder="Digite seu bairro", key="dist_mor_txt")
+    # O segredo: adicionamos uma key fixa que o Streamlit não vai resetar
+    dist_moradia = m2.text_input("BAIRRO/CIDADE (Moradia)", key="bairro_mor_input")
 
+st.markdown("---")
+
+# --- TRABALHO ---
 st.markdown("### 💼 LOCAL DE TRABALHO")
 t1, t2, t3 = st.columns(3)
 
+# 1. Município Trabalho
 mun_trabalho = t1.selectbox("MUNICÍPIO (Trabalho)", municipios, key="mun_trab_final")
 
-# Usamos um container dentro da coluna t2 para alternar entre lista e texto
-with t2.container():
-    if mun_trabalho == "São Paulo":
-        dist_trabalho = st.selectbox("DISTRITO (Trabalho)", distritos, key="dist_trab_sel")
-    else:
-        dist_trabalho = st.text_input("BAIRRO/DISTRITO (Trabalho)", placeholder="Digite o bairro", key="dist_trab_txt")
-
+# 2. Bairro Trabalho
+if mun_trabalho == "São Paulo":
+    dist_trabalho = t2.selectbox("DISTRITO (Trabalho)", distritos, key="dist_trab_sp")
+else:
+    dist_trabalho = t2.text_input("BAIRRO/CIDADE (Trabalho)", key="bairro_trab_input")
 st.markdown("### ⏳ TRECHO DE DESLOCAMENTO")
 # Criamos as colunas novamente para garantir que elas existam neste ponto do código
 col_tempo, col_dias = st.columns(2)

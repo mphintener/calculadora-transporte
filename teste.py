@@ -105,10 +105,13 @@ st.markdown("### 💼 LOCAL DE TRABALHO")
 t1, t2, t3 = st.columns(3)
 mun_trabalho = t1.selectbox("MUNICÍPIO (Trabalho)", municipios, key="mun_trab_final")
 
+# Criamos um espaço vazio na coluna t2
+col_trabalho = t2.container()
+
 if mun_trabalho == "São Paulo":
-    dist_trabalho = t2.selectbox("DISTRITO (Trabalho)", distritos, key="dist_trab_sel")
+    dist_trabalho = col_trabalho.selectbox("DISTRITO (Trabalho)", distritos, key="dist_trab_sel")
 else:
-    dist_trabalho = t2.text_input("BAIRRO/DISTRITO (Trabalho)", placeholder="Digite o bairro", key="dist_trab_txt")
+    dist_trabalho = col_trabalho.text_input("BAIRRO/DISTRITO (Trabalho)", placeholder="Digite o bairro", key="dist_trab_txt")
 
 h_dia = t3.number_input("HORAS NO TRECHO (Ida/Volta)", value=2.0, step=0.5)
 st.markdown("---")

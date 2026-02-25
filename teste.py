@@ -111,11 +111,10 @@ with t2.container():
     if mun_trabalho == "São Paulo":
         dist_trabalho = st.selectbox("DISTRITO (Trabalho)", distritos, key="dist_trab_sel")
     else:
-        dist_trabalho = st.text_input("BAIRRO/DISTRITO (Trabalho)", placeholder="Digite o bairro", key="dist_trab_txt"))
+        dist_trabalho = st.text_input("BAIRRO/DISTRITO (Trabalho)", placeholder="Digite o bairro", key="dist_trab_txt")
 
 t.markdown("### ⏳ TRECHO DE DESLOCAMENTO")
 tr1, tr2 = st.columns(2)
-
 # Tempo gasto diariamente (Ida + Volta)
 h_dia = tr1.number_input("HORAS NO TRECHO (Diário - Ida e Volta)", min_value=0.0, max_value=24.0, step=0.5, key="horas_trecho")
 

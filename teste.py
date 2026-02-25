@@ -1,60 +1,40 @@
-import streamlit as st
-
-# 1. IDENTIDADE VISUAL E PROTEÇÃO DE INTERFACE
+# 1. IDENTIDADE VISUAL E CONFIGURAÇÃO
 st.set_page_config(page_title="Calculadora do Trecho", layout="wide")
 
 st.markdown("""
     <style>
-    /* 1. RESET E FUNDO */
+    /* FUNDO E CORES BÁSICAS */
     .stApp { background-color: #000000; color: #FFFFFF; }
     header {visibility: hidden;}
-    footer {visibility: hidden;}
     
-    /* 2. REMOVE A FAIXA AMARELA E EMPURRA O CONTEÚDO */
-    .block-container { 
-        padding-top: 5rem !important; 
-        max-width: 950px;
-    }
+    /* ESPAÇAMENTO PARA O TÍTULO NÃO SUMIR */
+    .main-block { padding-top: 60px; }
+    
+    /* TÍTULO */
+    .title-text { color: #FFCC00; text-align: center; font-size: 2.5rem; font-weight: bold; margin-bottom: 5px; }
+    .subtitle-text { color: #FFCC00; text-align: center; font-size: 1.1rem; margin-bottom: 30px; }
 
-    /* 3. TÍTULO E SUBTÍTULO - SEMPRE VISÍVEIS */
-    .header-fix { 
-        color: #FFCC00 !important; 
-        text-align: center; 
-        padding-bottom: 20px;
-    }
-    h1 { font-size: 2.5rem !important; font-weight: 800 !important; margin: 0; }
-    .subheader-text { color: #FFCC00 !important; text-align: center; font-size: 1.1rem; margin-bottom: 40px; }
-
-    /* 4. RESTAURANDO AS BORDAS DOS CAMPOS (O QUE TINHA SUMIDO) */
-    .stNumberInput div, .stSelectbox div, .stTextInput div {
+    /* BORDAS DOS CAMPOS - VISIBILIDADE GARANTIDA */
+    .stNumberInput input, .stTextInput input, .stSelectbox div[data-baseweb="select"] {
         background-color: #111 !important;
-        border: 1px solid #FFCC00 !important; /* Borda amarela fixa */
-        border-radius: 5px !important;
-    }
-    
-    /* Remove o efeito de foco que cria a mancha amarela */
-    div[data-baseweb="input"], div[data-baseweb="select"] {
-        outline: none !important;
-        box-shadow: none !important;
+        color: #FFFFFF !important;
+        border: 1px solid #FFCC00 !important;
+        border-radius: 4px;
     }
 
-    /* 5. BOTÃO GERAR DIAGNÓSTICO - ULTRA DESTAQUE */
+    /* LABEL DOS CAMPOS */
+    label p { color: #FFCC00 !important; font-weight: bold !important; }
+
+    /* BOTÃO GERAR DIAGNÓSTICO */
     .stButton>button { 
-        background-color: #FFCC00 !important; 
-        color: #000000 !important; 
-        font-weight: 900 !important; 
-        width: 100%; 
-        height: 4.5em; 
-        border: none !important;
-        font-size: 1.4rem !important;
-        text-transform: uppercase;
-        margin-top: 30px;
+        background-color: #FFCC00 !important; color: #000000 !important; 
+        font-weight: bold !important; width: 100%; height: 3.5em; 
+        border: none; font-size: 1.3rem; margin-top: 20px;
     }
     .stButton>button:hover { background-color: #E63946 !important; color: #FFFFFF !important; }
 
-    /* 6. RESULTADOS */
+    /* CAIXA DE RESULTADOS */
     .report-box { background:#111; padding:25px; border:2px solid #FFCC00; border-radius:10px; margin-top:20px; }
-    label { color: #FFCC00 !important; font-weight: bold !important; margin-bottom: 5px !important; }
     </style>
     """, unsafe_allow_html=True)
 

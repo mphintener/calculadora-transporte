@@ -85,26 +85,27 @@ idade = p1.number_input("IDADE", min_value=14, step=1, value=None)
 escolaridade = p2.selectbox("ESCOLARIDADE", ["Fundamental Incompleto", "Fundamental Completo", "Médio Incompleto", "Médio Completo", "Técnico", "Superior Incompleto", "Superior Completo", "Pós-Graduação"])
 setor = p3.selectbox("SETOR DE ATIVIDADE", ["Comércio", "Construção Civil", "Educação", "Indústria", "Serviços", "Saúde", "TI"])
 
-# 5. LOCALIZAÇÃO (REVISADO: MORADIA E TRABALHO)
-st.markdown("### 🏠 LOCALIZAÇÃO E TRAJETO")
-col_moradia, col_trabalho, col_horas = st.columns(3)
+# 5. LOCALIZAÇÃO E TRAJETO (CORREÇÃO DA SYNTAXE)
+st.markdown("---")
+st.markdown("### 🏠 LOCAL DE MORADIA")
+m1, m2 = st.columns(2)
+mun_moradia = m1.selectbox("MUNICÍPIO (Moradia)", municipios_rmsp, key="mun_m")
 
-with col_moradia:
-    mun_m = st.selectbox("MUNICÍPIO (MORADIA)", municipios, key="mun_m")
-    if mun_m == "São Paulo":
-        label_m = st.selectbox("DISTRITO/BAIRRO (MORADIA)", distritos, key="dist_m")
-    else:
-        label_m = mun_m
+if mun_moradia == "São Paulo":
+    dist_moradia = m2.selectbox("DISTRITO (Moradia)", distritos_sp, key="dist_m_select")
+else:
+    dist_moradia = m2.text_input("BAIRRO/DISTRITO (Moradia)", placeholder="Digite seu bairro", key="dist_m_text")
 
-with col_trabalho:
-    mun_t = st.selectbox("MUNICÍPIO (TRABALHO)", municipios, key="mun_t")
-    if mun_t == "São Paulo":
-        label_t = st.selectbox("DISTRITO/BAIRRO (TRABALHO)", distritos, key="dist_t")
-    else:
-        label_t = mun_t
+st.markdown("### 💼 LOCAL DE TRABALHO")
+t1, t2, t3 = st.columns(3)
+mun_trabalho = t1.selectbox("MUNICÍPIO (Trabalho)", municipios_rmsp, key="mun_t")
 
-with col_horas:
-    h_dia = st.number_input("HORAS NO TRECHO (IDA+VOLTA)", min_value=0.0, step=0.5, value=None)
+if mun_trabalho == "São Paulo":
+    dist_trabalho = t2.selectbox("DISTRITO (Trabalho)", distritos_sp, key="dist_t_select")
+else:
+    dist_trabalho = t2.text_input("BAIRRO/DISTRITO (Trabalho)", placeholder="Digite o bairro de trabalho", key="dist_t_text")
+
+h_dia = t3.number_input("HORAS NO TRECHO (Ida/Volta)", value=2.0, step=0.5) 
 
 st.markdown("---")
 st.markdown("### 💰 RENDIMENTO E CUSTO")

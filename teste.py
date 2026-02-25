@@ -77,7 +77,14 @@ st.markdown("""
         Quanto de tempo e de dinheiro são consumidos no seu deslocamento diário?
     </div>
     """, unsafe_allow_html=True)
-# 5. LOCALIZAÇÃO (MORADIA E TRABALHO)
+# 6. ENTRADA DE DADOS: PERFIL DO USUÁRIO (RESTAURADO)
+st.markdown("### 👤 PERFIL")
+p1, p2, p3 = st.columns(3)
+idade = p1.number_input("IDADE", min_value=14, step=1, value=None)
+escolaridade = p2.selectbox("ESCOLARIDADE", ["Fundamental Incompleto", "Fundamental Completo", "Médio Incompleto", "Médio Completo", "Técnico", "Superior Incompleto", "Superior Completo", "Pós-Graduação"])
+setor = p3.selectbox("SETOR DE ATIVIDADE", ["Comércio", "Construção Civil", "Educação", "Indústria", "Serviços", "Saúde"])
+
+# 7. LOCALIZAÇÃO (MORADIA E TRABALHO)
 # =========================================================
 st.markdown("---")
 st.markdown("### 🏠 LOCAL DE MORADIA")
@@ -114,7 +121,7 @@ g_tr = g3.number_input("🚆 TREM", min_value=0.0)
 g_ap = g4.number_input("🚗 APP", min_value=0.0)
 g_ca = g5.number_input("⛽ CARRO/COMBUSTÍVEL", min_value=0.0)
 
-# 7. DIAGNÓSTICO
+# 8. DIAGNÓSTICO
 if st.button("EFETUAR DIAGNÓSTICO"):
     if sal and h_dia:
         tarifa_m = (g_on + g_me + g_tr + g_ap + g_ca) * dias

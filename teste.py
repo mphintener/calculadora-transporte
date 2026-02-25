@@ -1,56 +1,44 @@
 import streamlit as st
 
-# 1. CONFIGURAÇÃO E LIMPEZA (Sempre o primeiro)
-st.set_page_config(page_title="Diagnóstico de Expropriação", layout="wide")
+# 1. IDENTIDADE VISUAL E CONFIGURAÇÃO (CSS ULTRA REFORÇADO)
+st.set_page_config(page_title="Calculadora do Trecho", layout="wide")
 
 st.markdown("""
     <style>
-    /* ELIMINA A FAIXA AMARELA E O HEADER */
-    header, [data-testid="stHeader"], [data-testid="stStatusWidget"] {
-        visibility: hidden !important;
-        display: none !important;
+    .stApp { background-color: #000000; color: #FFFFFF; }
+    
+    /* Proteção do Cabeçalho contra faixas do sistema */
+    .main-header-container {
+        padding-top: 40px !important;
+        margin-bottom: 20px;
+        position: relative;
+        z-index: 9999;
     }
+    
+    h1 { color: #FFCC00 !important; font-family: 'Arial', sans-serif; font-weight: 800; text-align: center; }
+    .subheader-text { color: #FFCC00 !important; text-align: center; font-size: 1.2rem; margin-bottom: 40px; }
 
-    /* FUNDO DO APP TOTALMENTE PRETO */
-    .stApp { background-color: #000000 !important; }
-
-    /* MATA O FUNDO BRANCO DOS CAMPOS (TEXTO E NÚMERO) */
-    /* Este seletor ataca a div interna que o Streamlit cria */
-    div[data-baseweb="input"], div[data-baseweb="select"] > div {
-        background-color: transparent !important;
-        border-radius: 0px !important;
-        border: none !important;
-        border-bottom: 2px solid #333 !important; /* Linha discreta */
+    .stButton>button { 
+        background-color: #FFCC00 !important; 
+        color: #000000 !important; 
+        font-weight: bold !important; 
+        width: 100%; 
+        border-radius: 5px; 
+        height: 4.5em; 
+        border: 2px solid #FFCC00;
+        font-size: 1.4rem !important;
+        margin-top: 20px;
+        box-shadow: 0px 5px 15px rgba(255, 204, 0, 0.3);
     }
+    .stButton>button:hover { background-color: #E63946 !important; color: #FFFFFF !important; border-color: #E63946; }
 
-    /* FORÇA O FUNDO PRETO DENTRO DA CAIXA QUANDO CLICADO */
-    input, select, textarea {
-        background-color: transparent !important;
-        color: #FFFFFF !important;
-        -webkit-text-fill-color: #FFFFFF !important;
-    }
-
-    /* DESTAQUE PARA OS TÍTULOS E LABELS */
-    h1, h2, h3, label, p, span { 
-        color: #FFCC00 !important; 
-        font-family: 'Arial Black', sans-serif !important; 
-    }
-
-    /* SETAS DOS SELECTBOXES EM AMARELO */
-    svg[viewBox="0 0 24 24"] { fill: #FFCC00 !important; }
-
-    /* REMOVE BORDAS AZUIS DO STREAMLIT AO CLICAR */
-    div[data-baseweb="input"]:focus-within {
-        border-bottom: 2px solid #FFCC00 !important;
-        box-shadow: none !important;
-    }
+    .report-box { background:#111; padding:30px; border:2px solid #FFCC00; border-radius:10px; margin-top:20px; }
+    label, p { color: #FFCC00 !important; font-weight: bold; }
+    input, select, .stSelectbox { background-color: #111 !important; color: white !important; border: 1px solid #444 !important; }
+    
+    .block-container { padding-top: 1rem !important; }
     </style>
     """, unsafe_allow_html=True)
-
-# 2. LOGO E TÍTULO (Antes da Geografia)
-# st.image("logo.png", width=200)
-st.title("⚖️ DIAGNÓSTICO DE EXPROPRIAÇÃO")
-
 # 3. LOCALIZAÇÃO GEOGRÁFICA (Segue abaixo...)
 # 2. BANCO DE DADOS GEOGRÁFICO
 municipios_rmsp = [" "] + sorted(["Arujá", "Barueri", "Biritiba-Mirim", "Caieiras", "Cajamar", "Carapicuíba", "Cotia", "Diadema", "Embu das Artes", "Embu-Guaçu", "Ferraz de Vasconcelos", "Francisco Morato", "Franco da Rocha", "Guararema", "Guarulhos", "Itapecerica da Serra", "Itapevi", "Itaquaquecetuba", "Jandira", "Juquitiba", "Mairiporã", "Mauá", "Mogi das Cruzes", "Osasco", "Pirapora do Bom Jesus", "Poá", "Ribeirão Pires", "Rio Grande da Serra", "Salesópolis", "Santa Isabel", "Santana de Parnaíba", "Santo André", "São Bernardo do Campo", "São Caetano do Sul", "São Lourenço da Serra", "São Paulo", "Suzano", "Taboão da Serra", "Vargem Grande Paulista"])

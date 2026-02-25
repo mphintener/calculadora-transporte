@@ -84,7 +84,7 @@ idade = p1.number_input("IDADE", min_value=14, step=1, value=None)
 escolaridade = p2.selectbox("ESCOLARIDADE", ["Fundamental Incompleto", "Fundamental Completo", "Médio Incompleto", "Médio Completo", "Técnico", "Superior Incompleto", "Superior Completo", "Pós-Graduação"])
 setor = p3.selectbox("SETOR DE ATIVIDADE", ["Comércio", "Construção Civil", "Educação", "Indústria", "Serviços", "Saúde", "Outros"])
 
-t.markdown("---")
+st.markdown("---")
 st.markdown("### 🏠 LOCAL DE MORADIA")
 m1, m2 = st.columns(2)
 # Usamos chaves únicas para garantir que o Streamlit salve os dados

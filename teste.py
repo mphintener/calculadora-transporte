@@ -71,7 +71,7 @@ st.markdown('<p style="text-align: center; color: #FFCC00; font-size: 1.2rem; fo
 st.markdown("### 👤 PERFIL")
 p1, p2, p3 = st.columns(3)
 idade = p1.number_input("👤 IDADE", min_value=14, value=None, placeholder="Digite")
-escolaridade = p2.selectbox("🎓 ESCOLARIDADE", ["Fundamental Incompleto", "Fundamental Completo" "Médio Incompleto", "Médio Completo" "Técnico", "Superior", "Pós/Mestrado/Doutorado"], index=None, placeholder="Selecione")
+escolaridade = p2.selectbox("🎓 ESCOLARIDADE", ["Fundamental Incompleto", "Fundamental Completo", "Médio Incompleto", "Médio Completo", "Técnico", "Superior", "Pós/Mestrado/Doutorado"], index=None, placeholder="Selecione")
 setor = p3.selectbox("💼 SETOR", ["Serviços", "Comércio", "Indústria", "Educação", "Saúde", "Construção Civil", "Outros"], index=None, placeholder="Selecione")
 
 st.markdown("---")

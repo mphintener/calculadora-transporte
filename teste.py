@@ -312,7 +312,8 @@ if st.button("EFETUAR DIAGNÓSTICO"):
 
         # --- A PARTIR DAQUI SEGUE A SUA NOTA TÉCNICA ---
         st.markdown("""<div class='nota-tecnica'>...""", unsafe_allow_html=True)
-       # NOTA TÉCNICA - VERSÃO COM VISIBILIDADE MÁXIMA E SEM ERRO
+       
+        # NOTA TÉCNICA - VERSÃO COM VISIBILIDADE MÁXIMA E SEM ERRO
         # Primeiro, preparamos o texto para não ter erro de símbolo
         depre_nota = f"{depre:.1f}"
         
@@ -366,7 +367,6 @@ try:
     
 except Exception as e:
     # Se der erro (ex: falta de internet ou permissão), o app não trava
-    pass
-        
-        relatorio = f"DIAGNÓSTICO TÉCNICO\nFLUXO: {label_m} -> {label_t}\nCONFISCO: R$ {confi:.2f}\nSALÁRIO LÍQUIDO (-TRANSPORTE): R$ {sal_liq_transp:.2f}"
-        st.download_button("📥 BAIXAR NOTA TÉCNICA", relatorio, file_name="diagnostico_trecho.txt")
+pass    
+relatorio = f"DIAGNÓSTICO TÉCNICO\nFLUXO: {label_m} -> {label_t}\nCONFISCO: R$ {confi:.2f}\nSALÁRIO LÍQUIDO (-TRANSPORTE): R$ {sal_liq_transp:.2f}"
+st.download_button("📥 BAIXAR NOTA TÉCNICA", relatorio, file_name="diagnostico_trecho.txt")

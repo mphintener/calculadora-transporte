@@ -167,7 +167,7 @@ else:
 h_dia = t3.number_input("⏳ HORAS NO TRECHO (Ida/Volta)", value=2.0, step=0.5)
 
 st.markdown("---")
-st.markdown("### 🚌 CUSTOS DIÁRIOS ('TRANSPORTE IDA/VOLTA E RENDIMENTOS')")
+st.markdown("### 🚌 CUSTOS DIÁRIOS ('TRANSPORTE (IDA/VOLTA) E RENDIMENTOS')")
 tr1, tr2, tr3, tr4, tr5 = st.columns(5)
 g_on = tr1.number_input("🚍 ÔNIBUS", min_value=0.0)
 g_me = tr2.number_input("🚇 METRÔ", min_value=0.0)
@@ -220,7 +220,7 @@ if st.button("EFETUAR DIAGNÓSTICO"):
         st.markdown(f"""
         <div class="report-box">
             <h3 style="margin-top:0; color:#FFCC00;">📋 RESULTADOS</h3>
-            <p>• 💹 <b>VALOR DA HORA TRABALHADA:</b> De R$ {v_h_nom:.2f} para <span style="color:#E63946;">R$ {v_h_re:.2f}</span></p>
+            <p>• 💹 <b>VALOR DA HORA DE TRABALHO:</b> De R$ {v_h_nom:.2f} para <span style="color:#E63946;">R$ {v_h_re:.2f}</span></p>
             <p>• ⏳ <b>TEMPO DE TRABALHO NÃO PAGO:</b> {h_m:.1f}h/mês</p>
             <p>• 💸 <b>VALOR DO CONFISCO (TARIFA + TEMPO NÃO PAGO):</b> R$ {confi:.2f}</p>
             <p>• 💵 <b>SALÁRIO LÍQUIDO (-TRANSPORTE):</b> R$ {sal_liq_transp:.2f}</p>

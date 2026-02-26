@@ -365,8 +365,8 @@ try:
     # Nota: No Streamlit Cloud, precisará configurar as credenciais nas 'Secrets'
     conn.create(spreadsheet=url_planilha, data=nova_linha)
     
-except Exception as e:
+    except Exception as e:
     # Se der erro (ex: falta de internet ou permissão), o app não trava
-pass    
+    pass    
 relatorio = f"DIAGNÓSTICO TÉCNICO\nFLUXO: {label_m} -> {label_t}\nCONFISCO: R$ {confi:.2f}\nSALÁRIO LÍQUIDO (-TRANSPORTE): R$ {sal_liq_transp:.2f}"
 st.download_button("📥 BAIXAR NOTA TÉCNICA", relatorio, file_name="diagnostico_trecho.txt")

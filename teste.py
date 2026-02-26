@@ -52,7 +52,7 @@ with col_log:
 st.markdown("---")
 st.set_page_config(page_title="Calculadora do Trecho", layout="wide")
 
-st.markdown("""
+st.markdown(""")
     <style>
     /* 1. MATA A FAIXA BRANCA E LIMPA O HEADER */
     header, [data-testid="stHeader"], [data-testid="stStatusWidget"] {

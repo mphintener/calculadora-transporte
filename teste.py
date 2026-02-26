@@ -211,7 +211,7 @@ else:
 h_dia = t3.number_input("⏳ HORAS NO TRECHO (Ida/Volta)", value=2.0, step=0.5)
 
 st.markdown("---")
-st.markdown("### 🚌 CUSTOS DIÁRIOS ('TRANSPORTE IDA/VOLTA E RENDIMENTOS')")
+st.markdown("### 🚌 CUSTOS DIÁRIOS ('TRANSPORTE (IDA/VOLTA) E RENDIMENTOS')")
 tr1, tr2, tr3, tr4, tr5 = st.columns(5)
 g_on = tr1.number_input("🚍 ÔNIBUS", min_value=0.0)
 g_me = tr2.number_input("🚇 METRÔ", min_value=0.0)
@@ -264,7 +264,7 @@ if st.button("EFETUAR DIAGNÓSTICO"):
         st.markdown(f"""
         <div class="report-box">
             <h3 style="margin-top:0; color:#FFCC00;">📋 RESULTADOS</h3>
-            <p>• 💹 <b>VALOR DA HORA TRABALHADA:</b> De R$ {v_h_nom:.2f} para <span style="color:#E63946;">R$ {v_h_re:.2f}</span></p>
+            <p>• 💹 <b>VALOR DA HORA DE TRABALH0:</b> De R$ {v_h_nom:.2f} para <span style="color:#E63946;">R$ {v_h_re:.2f}</span></p>
             <p>• ⏳ <b>TEMPO DE TRABALHO NÃO PAGO:</b> {h_m:.1f}h/mês</p>
             <p>• 💸 <b>VALOR DO CONFISCO (TARIFA + TEMPO NÃO PAGO):</b> R$ {confi:.2f}</p>
             <p>• 💵 <b>SALÁRIO LÍQUIDO (-TRANSPORTE):</b> R$ {sal_liq_transp:.2f}</p>
@@ -276,7 +276,7 @@ if st.button("EFETUAR DIAGNÓSTICO"):
       # NOTA TÉCNICA - ESTILO PAPEL TIMBRADO (MÁXIMO CONTRASTE)
         st.markdown(f"""
         <div style="background-color: #FFFFFF; padding: 25px; border-left: 10px solid #FFCC00; border: 1px solid #DDD; margin-top: 25px; color: #000000; box-shadow: 5px 5px 15px rgba(0,0,0,0.1);">
-            <b style="color: #000000; font-size: 1.3rem; font-family: 'Arial Black'; display: block; margin-bottom: 10px;">📝 NOTA TÉCNICA DE EXPROPRIAÇÃO</b>
+            <b style="color: #000000; font-size: 1.3rem; font-family: 'Arial Black'; display: block; margin-bottom: 10px;">📝 NOTA TÉCNICA</b>
             <div style="color: #000000; font-size: 1.1rem; line-height: 1.6; font-family: sans-serif;">
                 O <b>"Confisco"</b> reflete o valor total subtraído do rendimento real do trabalhador. 
                 Ele soma o gasto direto em tarifas ao valor monetário do tempo de deslocamento (calculado sobre o valor da hora nominal). 

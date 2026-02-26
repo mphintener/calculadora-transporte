@@ -1,9 +1,84 @@
+import streamlit as st
 
+# 1. SETUP E ESTILO (ESTA É A "MARRETA" CONTRA A FAIXA FANTASMA)
+st.set_page_config(page_title="Calculadora do Trecho", layout="wide")
+
+st.markdown("""
+    <style>
+    /* MATA A FAIXA BRANCA/FANTASMA DO TOPO E O STATUS */
+    header, [data-testid="stHeader"], [data-testid="stStatusWidget"] {
+        visibility: hidden !important;
+        display: none !important;
+        height: 0px !important;
+    }
+    
+    /* FUNDO PRETO ABSOLUTO */
+    .stApp { background-color: #000000 !important; }
+    
+    /* REMOVE O ESPAÇO VAZIO QUE SOBRA NO TOPO */
+    .block-container { 
+        padding-top: 0rem !important; 
+        margin-top: -50px !important; 
+    }
+
+    /* TÍTULO EM AMARELO VIBRANTE */
+    .titulo-principal { 
+        color: #FFCC00 !important; 
+        font-family: 'Arial Black', sans-serif !important; 
+        text-align: left !important;
+        font-size: 2.5rem !important;
+        margin-bottom: 0px !important;
+    }
+
+    .frase-impacto {
+        color: #FFCC00 !important;
+        text-align: left !important;
+        font-size: 1.1rem !important;
+        margin-top: -10px !important;
+        margin-bottom: 30px !important;
+    }
+
+    /* LABELS DOS CAMPOS EM AMARELO */
+    label, p, span { color: #FFCC00 !important; font-weight: bold !important; }
+
+    /* ESTILO DOS CAMPOS (HÍBRIDO) */
+    .stSelectbox div[data-baseweb="select"] {
+        background-color: #FFFFFF !important;
+        color: #000000 !important;
+        border-radius: 4px !important;
+    }
+    
+    .stTextInput input, .stNumberInput input {
+        background-color: #000000 !important;
+        color: #FFFFFF !important;
+        border: none !important;
+        border-bottom: 2px solid #FFCC00 !important;
+        border-radius: 0px !important;
+        -webkit-text-fill-color: #FFFFFF !important;
+    }
+    </style>
+    """, unsafe_allow_html=True)
+
+# 2. CABEÇALHO: TÍTULO À ESQUERDA E LOGO À DIREITA
+col_titulo, col_logo = st.columns([3, 1])
+
+with col_titulo:
+    st.markdown('<h1 class="titulo-principal">⚖️ CALCULADORA DO TRECHO</h1>', unsafe_allow_html=True)
+    st.markdown('<p class="frase-impacto">Quanto de tempo e de dinheiro são consumidos no seu deslocamento diário?</p>', unsafe_allow_html=True)
+
+with col_logo:
+    try:
+        # Tenta carregar o logo à direita
+        st.image("logo.png", use_container_width=True)
+    except:
+        st.markdown("<p style='text-align:right; color:#333; padding-top:20px;'>[Logo]</p>", unsafe_allow_html=True)
+
+# ---------------------------------------------------------
+# PARE DE COLAR AQUI. O QUE VEM ABAIXO É O SEU CÓDIGO O.K.
+# ---------------------------------------------------------
 # 2. BANCO DE DADOS GEOGRÁFICO
 municipios_rmsp = [" "] + sorted(["Arujá", "Barueri", "Biritiba-Mirim", "Caieiras", "Cajamar", "Carapicuíba", "Cotia", "Diadema", "Embu das Artes", "Embu-Guaçu", "Ferraz de Vasconcelos", "Francisco Morato", "Franco da Rocha", "Guararema", "Guarulhos", "Itapecerica da Serra", "Itapevi", "Itaquaquecetuba", "Jandira", "Juquitiba", "Mairiporã", "Mauá", "Mogi das Cruzes", "Osasco", "Pirapora do Bom Jesus", "Poá", "Ribeirão Pires", "Rio Grande da Serra", "Salesópolis", "Santa Isabel", "Santana de Parnaíba", "Santo André", "São Bernardo do Campo", "São Caetano do Sul", "São Lourenço da Serra", "São Paulo", "Suzano", "Taboão da Serra", "Vargem Grande Paulista"])
 distritos_sp = [" "] + sorted(["Água Rasa", "Alto de Pinheiros", "Anhanguera", "Aricanduva", "Artur Alvim", "Barra Funda", "Bela Vista", "Belém", "Bom Retiro", "Brasilândia", "Butantã", "Cachoeirinha", "Cambuci", "Campo Belo", "Campo Grande", "Campo Limpo", "Cangaíba", "Capão Redondo", "Carrão", "Casa Verde", "Cidade Ademar", "Cidade Dutra", "Cidade Líder", "Cidade Tiradentes", "Consolação", "Cursino", "Ermelino Matarazzo", "Freguesia do Ó", "Grajaú", "Guaianases", "Iguatemi", "Ipiranga", "Itaim Bibi", "Itaim Paulista", "Itaquera", "Jabaquara", "Jaçanã", "Jaguara", "Jaguaré", "Jaraguá", "Jardim Ângela", "Jardim Helena", "Jardim Paulista", "Jardim São Luís", "Lapa", "Liberdade", "Limão", "Mandaqui", "Marsilac", "Moema", "Mooca", "Morumbi", "Parelheiros", "Pari", "Parque do Carmo", "Pedreira", "Penha", "Perdizes", "Perus", "Pinheiros", "Pirituba", "Ponte Rasa", "Raposo Tavares", "República", "Rio Pequeno", "Sacomã", "Santa Cecília", "Santana", "Santo Amaro", "São Domingos", "São Lucas", "São Mateus", "São Miguel", "São Rafael", "Sapopemba", "Saúde", "Sé", "Socorro", "Tatuapé", "Tremembé", "Tucuruvi", "Vila Andrade", "Vila Curuçá", "Vila Formosa", "Vila Guilherme", "Vila Jacuí", "Vila Leopoldina", "Vila Maria", "Vila Mariana", "Vila Matilde", "Vila Medeiros", "Vila Prudente", "Vila Sônia"])
-
-st.markdown('<div class="main-header-container"><h1>📊 CAimport streamlit as st
 
 # 1. SETUP E ESTILO (O ESCUDO DEFINITIVO)
 st.set_page_config(page_title="Calculadora do Trecho", layout="wide")

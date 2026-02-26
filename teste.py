@@ -56,20 +56,33 @@ st.markdown("""
     </style>
     """, unsafe_allow_html=True)
 
-# 2. CABEÇALHO: TÍTULO À ESQUERDA E LOGO À DIREITA
-col_titulo, col_logo = st.columns([3, 1])
+# 2. CABEÇALHO: TÍTULO COM RESPIRO E LOGO REDUZIDO
+# Aumentamos a proporção para 4:1 para o logo ficar menor
+col_titulo, col_logo = st.columns([4, 1])
 
 with col_titulo:
-    st.markdown('<div class="titulo-container"><h1>⚖️ CALCULADORA DO TRECHO</h1></div>', unsafe_allow_html=True)
-    st.markdown('<p class="frase-impacto">Quanto de tempo e de dinheiro são consumidos no seu deslocamento diário?</p>', unsafe_allow_html=True)
+    # Adicionamos 'padding-top' para descer o título
+    st.markdown("""
+        <div style="padding-top: 25px;">
+            <h1 style="color: #FFCC00 !important; font-family: 'Arial Black', sans-serif !important; margin-bottom: 0px !important; font-size: 2.2rem !important; text-align: left !important;">
+                ⚖️ CALCULADORA DO TRECHO
+            </h1>
+            <p style="color: #FFCC00 !important; font-size: 1.1rem !important; margin-top: 5px !important; text-align: left !important;">
+                Quanto de tempo e de dinheiro são consumidos no seu deslocamento diário?
+            </p>
+        </div>
+    """, unsafe_allow_html=True)
 
 with col_logo:
     try:
-        # Tenta carregar o logo.png do seu GitHub
-        st.image("logo.png", use_container_width=True)
+        # 'width=120' garante que o logo não fique gigante
+        st.image("logo.png", width=120) 
     except:
-        # Se não achar o logo, deixa um espaço vazio para não estragar o layout
         st.markdown("<div style='height:80px;'></div>", unsafe_allow_html=True)
+
+# ------------------------------------------------------------------
+# PROSSIGA COM O SEU CÓDIGO DE LOCALIZAÇÃO ABAIXO
+# ------------------------------------------------------------------
 
 # ------------------------------------------------------------------
 # ATENÇÃO: ABAIXO COMEÇA O SEU CÓDIGO ORIGINAL. 

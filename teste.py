@@ -297,7 +297,6 @@ if st.button("EFETUAR DIAGNÓSTICO"):
                 Consideramos o trecho como <b>"trabalho não pago"</b> pois é um tempo obrigatório para a reprodução da força de trabalho, mas não é remunerado pelo capital.
             </div>
         </div>
-        """
         st.markdown(nota_html, unsafe_allow_html=True)
 
         relatorio = f"DIAGNÓSTICO TÉCNICO\nFLUXO: {label_m} -> {label_t}\nCONFISCO: R$ {confi:.2f}\nSALÁRIO LÍQUIDO (-TRANSPORTE): R$ {sal_liq_transp:.2f}"

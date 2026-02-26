@@ -1,5 +1,50 @@
 
+import streamlit as st
 
+# 1. ESTILO E CONFIGURAÇÃO (O ESCUDO VISUAL)
+st.set_page_config(page_title="Calculadora do Trecho", layout="wide")
+
+st.markdown("""
+    <style>
+    /* REMOVE A FAIXA DO TOPO E DEFINE O FUNDO PRETO */
+    header, [data-testid="stHeader"] { visibility: hidden; display: none; }
+    .stApp { background-color: #000000 !important; }
+    .block-container { padding-top: 0rem !important; margin-top: -30px !important; }
+
+    /* TEXTOS EM AMARELO */
+    h1, h2, h3, label, p, span { color: #FFCC00 !important; font-family: 'Arial Black', sans-serif !important; }
+
+    /* BOTÃO: TEXTO PRETO E FUNDO AMARELO (RESOLVIDO) */
+    .stButton>button { 
+        background-color: #FFCC00 !important; 
+        color: #000000 !important; 
+        font-weight: 900 !important; 
+        width: 100%; height: 4.5em;
+        text-transform: uppercase; border: 2px solid #000;
+        font-size: 1.2rem !important;
+    }
+    .stButton>button div p { color: #000000 !important; font-weight: 900 !important; }
+
+    /* CAMPOS DE SELEÇÃO (BRANCO PARA LEITURA) */
+    .stSelectbox div[data-baseweb="select"] { background-color: #FFFFFF !important; color: #000000 !important; }
+    
+    /* CAMPOS DE NÚMERO (ESTILO DARK) */
+    .stNumberInput input { background-color: #000 !important; color: #FFF !important; border-bottom: 2px solid #FFCC00 !important; }
+    </style>
+""", unsafe_allow_html=True)
+
+# 2. CABEÇALHO (TÍTULO À ESQUERDA E LOGO À DIREITA)
+col_tit, col_log = st.columns([4, 1])
+with col_tit:
+    st.markdown("<h1 style='margin-top:20px;'>⚖️ CALCULADORA DO TRECHO</h1>", unsafe_allow_html=True)
+    st.write("Análise crítica da expropriação de tempo e renda no deslocamento.")
+with col_log:
+    try:
+        st.image("logo.png", width=120)
+    except:
+        st.markdown("<p style='text-align:right; color:#444;'>[Logo]</p>", unsafe_allow_html=True)
+
+st.markdown("---")
 # 2. BANCO DE DADOS GEOGRÁFICO
 municipios_rmsp = [" "] + sorted(["Arujá", "Barueri", "Biritiba-Mirim", "Caieiras", "Cajamar", "Carapicuíba", "Cotia", "Diadema", "Embu das Artes", "Embu-Guaçu", "Ferraz de Vasconcelos", "Francisco Morato", "Franco da Rocha", "Guararema", "Guarulhos", "Itapecerica da Serra", "Itapevi", "Itaquaquecetuba", "Jandira", "Juquitiba", "Mairiporã", "Mauá", "Mogi das Cruzes", "Osasco", "Pirapora do Bom Jesus", "Poá", "Ribeirão Pires", "Rio Grande da Serra", "Salesópolis", "Santa Isabel", "Santana de Parnaíba", "Santo André", "São Bernardo do Campo", "São Caetano do Sul", "São Lourenço da Serra", "São Paulo", "Suzano", "Taboão da Serra", "Vargem Grande Paulista"])
 distritos_sp = [" "] + sorted(["Água Rasa", "Alto de Pinheiros", "Anhanguera", "Aricanduva", "Artur Alvim", "Barra Funda", "Bela Vista", "Belém", "Bom Retiro", "Brasilândia", "Butantã", "Cachoeirinha", "Cambuci", "Campo Belo", "Campo Grande", "Campo Limpo", "Cangaíba", "Capão Redondo", "Carrão", "Casa Verde", "Cidade Ademar", "Cidade Dutra", "Cidade Líder", "Cidade Tiradentes", "Consolação", "Cursino", "Ermelino Matarazzo", "Freguesia do Ó", "Grajaú", "Guaianases", "Iguatemi", "Ipiranga", "Itaim Bibi", "Itaim Paulista", "Itaquera", "Jabaquara", "Jaçanã", "Jaguara", "Jaguaré", "Jaraguá", "Jardim Ângela", "Jardim Helena", "Jardim Paulista", "Jardim São Luís", "Lapa", "Liberdade", "Limão", "Mandaqui", "Marsilac", "Moema", "Mooca", "Morumbi", "Parelheiros", "Pari", "Parque do Carmo", "Pedreira", "Penha", "Perdizes", "Perus", "Pinheiros", "Pirituba", "Ponte Rasa", "Raposo Tavares", "República", "Rio Pequeno", "Sacomã", "Santa Cecília", "Santana", "Santo Amaro", "São Domingos", "São Lucas", "São Mateus", "São Miguel", "São Rafael", "Sapopemba", "Saúde", "Sé", "Socorro", "Tatuapé", "Tremembé", "Tucuruvi", "Vila Andrade", "Vila Curuçá", "Vila Formosa", "Vila Guilherme", "Vila Jacuí", "Vila Leopoldina", "Vila Maria", "Vila Mariana", "Vila Matilde", "Vila Medeiros", "Vila Prudente", "Vila Sônia"])
@@ -52,7 +97,7 @@ with col_log:
 st.markdown("---")
 st.set_page_config(page_title="Calculadora do Trecho", layout="wide")
 
-st.markdown(""")
+st.markdown("""
     <style>
     /* 1. MATA A FAIXA BRANCA E LIMPA O HEADER */
     header, [data-testid="stHeader"], [data-testid="stStatusWidget"] {

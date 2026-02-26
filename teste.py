@@ -267,51 +267,35 @@ if st.button("EFETUAR DIAGNÓSTICO"):
             <p>• 💸 <b>VALOR DO CONFISCO (TARIFA + TEMPO NÃO PAGO):</b> R$ {confi:.2f}</p>
             <p>• 💵 <b>SALÁRIO LÍQUIDO (-TRANSPORTE):</b> R$ {sal_liq_transp:.2f}</p>
             <p>• 📉 <b>{label_sobra}:</b> R$ {sobra:.2f}</p>
-         # 1. VARIÁVEIS DE TEXTO (FORMATADAS FORA DO HTML)
-        d_txt = f"{depre:.1f}"
-        v_hr_txt = f"{v_h_re:.2f}"
-        v_hn_txt = f"{v_h_nom:.2f}"
-        conf_txt = f"{confi:.2f}"
-        sl_txt = f"{sal_liq_transp:.2f}"
-        sob_txt = f"{sobra:.2f}"
+        # 1. PREPARAÇÃO DOS DADOS
+        d_txt = f"{depre:.1f}%"
+        v_hr_txt = f"R$ {v_h_re:.2f}"
+        v_hn_txt = f"R$ {v_h_nom:.2f}"
+        conf_txt = f"R$ {confi:.2f}"
+        sl_txt = f"R$ {sal_liq_transp:.2f}"
+        sob_txt = f"R$ {sobra:.2f}"
 
-        # 2. CONSTRUÇÃO DO HTML (USANDO VARIÁVEIS SIMPLES)
-        res_html = f"""
-        <div class="report-box" style="background-color: #FFFFFF; padding: 25px; border: 5px solid #FFCC00; border-radius: 10px; color: #000000 !important;">
-            <h3 style="margin-top:0; color:#000000; border-bottom: 2px solid #000; padding-bottom:10px;">&#128221; RESULTADOS DO DIAGNÓSTICO</h3>
-            <p style="color:#000000;">&bull; &#128200; <b>VALOR DA HORA TRABALHADA:</b> De R$ {v_hn_txt} para <span style="color:#E63946; font-weight:900;">R$ {v_hr_txt}</span></p>
-            <p style="color:#000000;">&bull; &#9203; <b>TEMPO DE TRABALHO NÃO PAGO:</b> {h_m:.1f} h/mês</p>
-            <p style="color:#000000;">&bull; &#128184; <b>VALOR DO CONFISCO (TARIFA + TEMPO):</b> R$ {conf_txt}</p>
-            <p style="color:#000000;">&bull; &#128181; <b>SALÁRIO LÍQUIDO (-TRANSPORTE):</b> R$ {sl_txt}</p>
-            <p style="color:#000000;">&bull; &#128201; <b>{label_sobra}:</b> R$ {sob_txt}</p>
-            <p style="color:#000000; margin-bottom: 5px;">&bull; &#128201; <b>DEPRECIAÇÃO DA FORÇA DE TRABALHO:</b> 
-                <span style="color:#E63946; font-size: 1.5rem; font-weight: 900;">{d_txt}%</span>
-            </p>
-            <div style="background: #FFF3F3; border-left: 4px solid #E63946; padding: 10px; margin-top: 10px;">
-                <small style="color: #333; display: block; line-height: 1.2;">
-                    <b>ANALISE CRITICA:</b> O deslocamento atua como jornada extra compulsoria, 
-                    reduzindo o valor da sua força de trabalho em <b>{d_txt}%</b>.
-                </small>
-            </div>
-        </div>
-        """
+        # 2. RESULTADOS (USANDO CONCATENAÇÃO SIMPLES PARA EVITAR ERROS)
+        res_html = '<div class="report-box" style="background-color: #FFFFFF; padding: 25px; border: 5px solid #FFCC00; border-radius: 10px; color: #000000 !important;">'
+        res_html += '<h3 style="margin-top:0; color:#000000; border-bottom: 2px solid #000; padding-bottom:10px;">&#128221; RESULTADOS DO DIAGNOSTICO</h3>'
+        res_html += '<p style="color:#000000;">&bull; &#128200; <b>VALOR DA HORA:</b> De ' + v_hn_txt + ' para <span style="color:#E63946; font-weight:900;">' + v_hr_txt + '</span></p>'
+        res_html += '<p style="color:#000000;">&bull; &#9203; <b>TEMPO NAO PAGO:</b> ' + str(h_m) + ' h/mes</p>'
+        res_html += '<p style="color:#000000;">&bull; &#128184; <b>VALOR DO CONFISCO:</b> ' + conf_txt + '</p>'
+        res_html += '<p style="color:#000000;">&bull; &#128181; <b>SALARIO LIQUIDO:</b> ' + sl_txt + '</p>'
+        res_html += '<p style="color:#000000;">&bull; &#128201; <b>' + str(label_sobra) + ':</b> ' + sob_txt + '</p>'
+        res_html += '<p style="color:#000000; margin-bottom: 5px;">&bull; &#128201; <b>DEPRECIACAO:</b> <span style="color:#E63946; font-size: 1.5rem; font-weight: 900;">' + d_txt + '</span></p>'
+        res_html += '<div style="background: #FFF3F3; border-left: 4px solid #E63946; padding: 10px; margin-top: 10px;">'
+        res_html += '<small style="color: #333; display: block;"><b>ANALISE:</b> O deslocamento atua como jornada extra, reduzindo sua hora em ' + d_txt + '.</small></div></div>'
+        
         st.markdown(res_html, unsafe_allow_html=True)
 
-        # 3. CONSTRUÇÃO DA NOTA TÉCNICA
-        nota_html = f"""
-        <div style="background-color: #FFFFFF; padding: 25px; border-left: 10px solid #FFCC00; border: 1px solid #DDD; margin-top: 25px; color: #000000;">
-            <b style="color: #000000; font-size: 1.3rem; font-family: 'Arial Black'; display: block; margin-bottom: 10px;">
-                &#128221; NOTA TECNICA DE EXPROPRIACAO
-            </b>
-            <div style="color: #000000; font-size: 1.1rem; line-height: 1.6; font-family: sans-serif;">
-                O <b>"Confisco"</b> reflete o valor total subtraido do rendimento real do trabalhador. 
-                Soma o gasto em tarifas ao valor monetario do tempo de deslocamento. 
-                Consideramos o trecho como <b>"trabalho nao pago"</b>.
-            </div>
-        </div>
-        """
+        # 3. NOTA TECNICA
+        nota_html = '<div style="background-color: #FFFFFF; padding: 25px; border-left: 10px solid #FFCC00; border: 1px solid #DDD; margin-top: 25px; color: #000000;">'
+        nota_html += '<b style="color: #000000; font-size: 1.3rem; font-family: Arial Black; display: block; margin-bottom: 10px;">&#128221; NOTA TECNICA</b>'
+        nota_html += '<div style="color: #000000; font-size: 1.1rem; line-height: 1.6;">O <b>Confisco</b> reflete o valor subtraido do rendimento real. Soma tarifas ao tempo de deslocamento.</div></div>'
+        
         st.markdown(nota_html, unsafe_allow_html=True)
 
         # 4. BOTAO DE DOWNLOAD
-        rel_f = f"DIAGNOSTICO\nCONFISCO: R$ {conf_txt}\nDEPRECIACAO: {d_txt}%"
+        rel_f = "DIAGNOSTICO\nCONFISCO: " + conf_txt + "\nDEPRECIACAO: " + d_txt
         st.download_button("BAIXAR NOTA TECNICA", rel_f, file_name="diagnostico.txt")

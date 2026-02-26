@@ -269,9 +269,10 @@ if st.button("EFETUAR DIAGNÓSTICO"):
             <p>• 💸 <b>VALOR DO CONFISCO (TARIFA + TEMPO NÃO PAGO):</b> R$ {confi:.2f}</p>
             <p>• 💵 <b>SALÁRIO LÍQUIDO (-TRANSPORTE):</b> R$ {sal_liq_transp:.2f}</p>
             <p>• 📉 <b>{label_sobra}:</b> R$ {sobra:.2f}</p>
-           # 1. CRIAMOS A VARIÁVEL FORMATADA FORA DO HTML PARA EVITAR ERRO DE SINTAXE
+           # 1. PREPARAÇÃO DOS DADOS (EVITA ERROS DE SINTAXE)
         depre_exibicao = f"{depre:.1f}"
-        # 2. AGORA PASSAMOS ELA PARA O MARKDOWN SEM SÍMBOLOS COMPLEXOS DENTRO DAS CHAVES
+        
+        # 2. EXIBIÇÃO DA DEPRECIAÇÃO
         st.markdown(f"""
             <p style="color:#000000; margin-bottom: 5px;">&bull; &#128201; <b>DEPRECIAÇÃO DA FORÇA DE TRABALHO:</b> 
                 <span style="color:#E63946; font-size: 1.5rem; font-weight: 900;">{depre_exibicao}%</span>
@@ -285,7 +286,7 @@ if st.button("EFETUAR DIAGNÓSTICO"):
         </div>
         """, unsafe_allow_html=True)
 
-    # NOTA TÉCNICA - VERSÃO FINAL SEM ERRO DE ASPAS
+        # 3. NOTA TÉCNICA (ESTILO PAPEL)
         nota_html = f"""
         <div style="background-color: #FFFFFF; padding: 25px; border-left: 10px solid #FFCC00; border: 1px solid #DDD; margin-top: 25px; color: #000000;">
             <b style="color: #000000; font-size: 1.3rem; font-family: 'Arial Black'; display: block; margin-bottom: 10px;">
@@ -297,7 +298,9 @@ if st.button("EFETUAR DIAGNÓSTICO"):
                 Consideramos o trecho como <b>"trabalho não pago"</b> pois é um tempo obrigatório para a reprodução da força de trabalho, mas não é remunerado pelo capital.
             </div>
         </div>
+        """
         st.markdown(nota_html, unsafe_allow_html=True)
 
-        relatorio = f"DIAGNÓSTICO TÉCNICO\nFLUXO: {label_m} -> {label_t}\nCONFISCO: R$ {confi:.2f}\nSALÁRIO LÍQUIDO (-TRANSPORTE): R$ {sal_liq_transp:.2f}"
-        st.download_button("📥 BAIXAR NOTA TÉCNICA", relatorio, file_name="diagnostico_trecho.txt")
+        # 4. BOTÃO DE DOWNLOAD (FIM DO ARQUIVO)
+        relatorio_txt = f"DIAGNÓSTICO TÉCNICO\nFLUXO: {label_m} -> {label_t}\nCONFISCO: R$ {confi:.2f}"
+        st.download_button("📥 BAIXAR NOTA TÉCNICA", relatorio_txt, file_name="diagnostico_trecho.txt")

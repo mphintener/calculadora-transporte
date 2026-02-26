@@ -1,3 +1,4 @@
+# Atualização de dependências
 import streamlit as st 
 # No topo do arquivo
 from streamlit_gsheets import GSheetsConnection

@@ -129,25 +129,32 @@ st.markdown("""
         -webkit-text-fill-color: #FFFFFF !important;
     }
 
-    /* 5. BOTÃO GERAR DIAGNÓSTICO - CONTRASTE MÁXIMO */
+    /* FORÇAR TEXTO PRETO NO BOTÃO - SOLUÇÃO FINAL */
     .stButton>button { 
         background-color: #FFCC00 !important; 
-        color: #000000 !important; 
-        font-weight: 900 !important; 
-        width: 100%; 
-        height: 4em;
         border: 2px solid #000000 !important;
-        text-transform: uppercase;
-        font-size: 1.2rem !important;
-    } /* <--- ESSA CHAVE É ESSENCIAL */
+        border-radius: 5px !important;
+        width: 100% !important;
+        height: 4.5em !important;
+        margin-top: 20px !important;
+        /* As 3 linhas abaixo garantem que o texto apareça */
+        color: #000000 !important;
+        font-weight: 900 !important;
+        font-size: 1.4rem !important;
+    }
 
+    /* Garante que o texto continue preto mesmo se o Streamlit tentar mudar */
+    .stButton>button div p {
+        color: #000000 !important;
+        font-weight: 900 !important;
+    }
+
+    /* Efeito ao passar o mouse */
     .stButton>button:hover {
         background-color: #E63946 !important;
         color: #FFFFFF !important;
+        border-color: #E63946 !important;
     }
-    </style>
-    """, unsafe_allow_html=True)
-
 # 6. ENTRADA DE DADOS: PERFIL DO USUÁRIO (RESTAURADO)
 st.markdown("### 👤 PERFIL DO USUÁRIO")
 p1, p2, p3 = st.columns(3)

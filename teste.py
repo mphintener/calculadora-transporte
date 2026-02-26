@@ -2,7 +2,6 @@ import streamlit as st
 
 # 1. SETUP E ESTILO (ESTA É A "MARRETA" CONTRA A FAIXA FANTASMA)
 st.set_page_config(page_title="Calculadora do Trecho", layout="wide")
-
 st.markdown("""
     <style>
     /* MATA A FAIXA BRANCA/FANTASMA DO TOPO E O STATUS */

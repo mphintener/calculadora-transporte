@@ -1,4 +1,12 @@
 import streamlit as st
+# No topo do arquivo
+from streamlit_gsheets import GSheetsConnection
+
+# Criar a conexão (o Streamlit vai buscar as credenciais nas Secrets)
+conn = st.connection("gsheets", type=GSheetsConnection)
+
+# URL da sua planilha que você acabou de criar
+URL_PLANILHA = "https://docs.google.com/spreadsheets/d/1VBatkCYcuBFLcLkiTAiD99EREaHbJfKpeXrc-MPx0xQ/edit?gid=0#gid=0"
 
 # 1. SETUP E ESTILO (O "ESCUDO" CONTRA A FAIXA FANTASMA)
 st.set_page_config(page_title="Calculadora do Trecho", layout="wide")
@@ -274,7 +282,36 @@ if st.button("EFETUAR DIAGNÓSTICO"):
         <i>*Isso significa que sua força de trabalho vale {depre:.1f}% menos devido ao custo e tempo de deslocamento.</i>
     </p>
 """, unsafe_allow_html=True)
+# --- MOTOR DE DADOS: SALVAMENTO NA PLANILHA ---
+        try:
+            import pandas as pd
+            from datetime import datetime
+            
+            # Prepara a linha com as variáveis que você já calculou acima
+            nova_entrada = pd.DataFrame([{
+                "Data": datetime.now().strftime("%d/%m/%Y %H:%M"),
+                "Genero": genero,
+                "Idade": idade,
+                "Escolaridade": escolaridade,
+                "Residencia": onde_mora,
+                "Trabalho": onde_trabalha,
+                "Transporte": meio_transporte,
+                "Salario_Nominal": f"{v_sal:.2f}",
+                "Tempo_Total": f"{h_m:.1f}",
+                "Custo_Mensal": f"{v_t:.2f}",
+                "Depreciacao_Percentual": f"{depre:.1f}",
+                "Confisco_Total": f"{confi:.2f}"
+            }])
 
+            # Envia para o Google Sheets usando a conexão do topo do arquivo
+            conn.create(spreadsheet=URL_PLANILHA, data=nova_entrada)
+            
+        except Exception as e:
+            # Se der erro de conexão, o usuário não é interrompido
+            pass 
+
+        # --- A PARTIR DAQUI SEGUE A SUA NOTA TÉCNICA ---
+        st.markdown("""<div class='nota-tecnica'>...""", unsafe_allow_html=True)
        # NOTA TÉCNICA - VERSÃO COM VISIBILIDADE MÁXIMA E SEM ERRO
         # Primeiro, preparamos o texto para não ter erro de símbolo
         depre_nota = f"{depre:.1f}"
@@ -298,5 +335,38 @@ if st.button("EFETUAR DIAGNÓSTICO"):
             </div>
         """, unsafe_allow_html=True)
 
+# --- LÓGICA PARA SALVAR NA FOLHA DE CÁLCULO ---
+try:
+    # URL da sua planilha que acabou de criar
+    url_planilha = "https://docs.google.com/spreadsheets/d/1VBatkCYcuBFLcLkiTAiD99EREaHbJfKpeXrc-MPx0xQ/edit?gid=0#gid=0"
+    
+    # Criar um DataFrame com os dados atuais
+    import pandas as pd
+    from datetime import datetime
+    
+    nova_linha = pd.DataFrame([{
+        "Data": datetime.now().strftime("%d/%m/%Y %H:%M"),
+        "Genero": genero,
+        "Idade": idade,
+        "Escolaridade": escolaridade,
+        "Residencia": onde_mora,
+        "Trabalho": onde_trabalha,
+        "Transporte": meio_transporte,
+        "Salario_Nominal": sal_nom,
+        "Tempo_Total": t_total,
+        "Custo_Mensal": custo_mensal,
+        "Depreciacao_Percentual": f"{depre:.1f}%",
+        "Confisco_Total": f"R$ {confi:.2f}"
+    }])
+
+    # Conectar e Atualizar
+    conn = st.connection("gsheets", type=GSheetsConnection)
+    # Nota: No Streamlit Cloud, precisará configurar as credenciais nas 'Secrets'
+    conn.create(spreadsheet=url_planilha, data=nova_linha)
+    
+except Exception as e:
+    # Se der erro (ex: falta de internet ou permissão), o app não trava
+    pass
+        
         relatorio = f"DIAGNÓSTICO TÉCNICO\nFLUXO: {label_m} -> {label_t}\nCONFISCO: R$ {confi:.2f}\nSALÁRIO LÍQUIDO (-TRANSPORTE): R$ {sal_liq_transp:.2f}"
         st.download_button("📥 BAIXAR NOTA TÉCNICA", relatorio, file_name="diagnostico_trecho.txt")

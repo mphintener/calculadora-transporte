@@ -156,7 +156,7 @@ st.markdown("""
         margin-bottom: 0px !important;
     }
 
-    /* ESTILO DA NOTA TÉCNICA (PAPEL BRANCO) */
+    /* ESTILO DA NOTA TÉCNICA (PAPEL PRETO) */
     .report-box {
         background-color: #FFFFFF !important;
         padding: 30px;

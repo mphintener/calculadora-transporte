@@ -35,6 +35,24 @@ st.markdown("""
         margin-bottom: 25px !important;
     }
 
+/* MANTENHA O SEU E ADICIONE ISTO ABAIXO: */
+    
+    .report-box {
+        background-color: #FFFFFF !important;
+        padding: 25px;
+        border: 5px solid #FFCC00;
+        border-radius: 10px;
+    }
+
+    /* FORÇA O PRETO EM TUDO QUE ESTIVER DENTRO DA CAIXA DE RESULTADOS */
+    .report-box h3, 
+    .report-box p, 
+    .report-box b, 
+    .report-box span,
+    .report-box div {
+        color: #000000 !important;
+    }
+    
     /* LABELS EM AMARELO */
     label, p, span { color: #FFCC00 !important; font-weight: bold !important; }
 

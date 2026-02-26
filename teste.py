@@ -335,37 +335,30 @@ if st.button("EFETUAR DIAGNÓSTICO"):
                 
             </div>
         """, unsafe_allow_html=True)
+        # --- BLOCO DE SEGURANÇA E DADOS ---
+        try:
+            import pandas as pd
+            from datetime import datetime
+            
+            nova_entrada = pd.DataFrame([{
+                "Data": datetime.now().strftime("%d/%m/%Y %H:%M"),
+                "Genero": genero,
+                "Idade": idade,
+                "Escolaridade": escolaridade,
+                "Residencia": onde_mora,
+                "Trabalho": onde_trabalha,
+                "Transporte": meio_transporte,
+                "Salario_Nominal": f"{v_sal:.2f}",
+                "Tempo_Total": f"{h_m:.1f}",
+                "Custo_Mensal": f"{v_t:.2f}",
+                "Depreciacao_Percentual": f"{depre:.1f}",
+                "Confisco_Total": f"{confi:.2f}"
+            }])
+            conn.create(spreadsheet=URL_PLANILHA, data=nova_entrada)
+        except Exception as e:
+            pass
 
-# --- LÓGICA PARA SALVAR NA FOLHA DE CÁLCULO ---
-try:
-    # URL da sua planilha que acabou de criar
-    url_planilha = "https://docs.google.com/spreadsheets/d/1VBatkCYcuBFLcLkiTAiD99EREaHbJfKpeXrc-MPx0xQ/edit?gid=0#gid=0"
-    
-   # Criar um DataFrame com os dados atuais
-    import pandas as pd
-    from datetime import datetime
+        # --- GERAÇÃO DO ARQUIVO PARA DOWNLOAD ---
+        relatorio = f"DIAGNÓSTICO TÉCNICO\nFLUXO: {label_m} -> {label_t}\nCONFISCO: R$ {confi:.2f}"
+        st.download_button("📥 BAIXAR NOTA TÉCNICA", relatorio, file_name="diagnostico_trecho.txt")
 
-    try:
-        # 1. Monta a linha com os dados
-        nova_entrada = pd.DataFrame([{
-            "Data": datetime.now().strftime("%d/%m/%Y %H:%M"),
-            "Genero": genero,
-            "Idade": idade,
-            "Escolaridade": escolaridade,
-            "Residencia": onde_mora,
-            "Trabalho": onde_trabalha,
-            "Transporte": meio_transporte,
-            "Salario_Nominal": f"{v_sal:.2f}",
-            "Tempo_Total": f"{h_m:.1f}",
-            "Custo_Mensal": f"{v_t:.2f}",
-            "Depreciacao_Percentual": f"{depre:.1f}",
-            "Confisco_Total": f"{confi:.2f}"
-        }])
-
-        # 2. Envia para a planilha usando a URL que definimos no topo
-        conn.create(spreadsheet=URL_PLANILHA, data=nova_entrada)
-    except Exception as e:
-        # Se der erro de conexão, o app não trava e segue para o relatório
-        pass
-    relatorio = f"DIAGNÓSTICO TÉCNICO\nFLUXO: {label_m} -> {label_t}\nCONFISCO: R$ {confi:.2f}\nSALÁRIO LÍQUIDO (-TRANSPORTE): R$ {sal_liq_transp:.2f}"
-    st.download_button("📥 BAIXAR NOTA TÉCNICA", relatorio, file_name="diagnostico_trecho.txt")

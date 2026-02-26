@@ -285,13 +285,15 @@ if st.button("EFETUAR DIAGNÓSTICO"):
         </div>
         """, unsafe_allow_html=True)
 
-      # NOTA TÉCNICA - ESTILO PAPEL TIMBRADO (MÁXIMO CONTRASTE)
+     # NOTA TÉCNICA - VERSÃO BLINDADA CONTRA SYNTAXERROR
         st.markdown(f"""
         <div style="background-color: #FFFFFF; padding: 25px; border-left: 10px solid #FFCC00; border: 1px solid #DDD; margin-top: 25px; color: #000000; box-shadow: 5px 5px 15px rgba(0,0,0,0.1);">
-            <b style="color: #000000; font-size: 1.3rem; font-family: 'Arial Black'; display: block; margin-bottom: 10px;">📝 NOTA TÉCNICA</b>
+            <b style="color: #000000; font-size: 1.3rem; font-family: 'Arial Black'; display: block; margin-bottom: 10px;">
+                &#128221; NOTA TÉCNICA DE EXPROPRIAÇÃO
+            </b>
             <div style="color: #000000; font-size: 1.1rem; line-height: 1.6; font-family: sans-serif;">
                 O <b>"Confisco"</b> reflete o valor total subtraído do rendimento real do trabalhador. 
-                Ele soma o gasto direto em tarifas ao valor monetário do tempo de deslocamento (calculado sobre o valor da hora nominal). 
+                Ele soma o gasto direto em tarifas ao valor monetário do tempo de deslocamento. 
                 Consideramos o trecho como <b>"trabalho não pago"</b> pois é um tempo obrigatório para a reprodução da força de trabalho, mas não é remunerado pelo capital.
             </div>
         </div>

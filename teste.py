@@ -364,7 +364,6 @@ try:
 
         # 2. Envia para a planilha usando a URL que definimos no topo
         conn.create(spreadsheet=URL_PLANILHA, data=nova_entrada)
-        
     except Exception as e:
         # Se der erro de conexão, o app não trava e segue para o relatório
         pass

@@ -220,13 +220,11 @@ if st.button("EFETUAR DIAGNÓSTICO"):
         label_m = d_mor if mun_moradia == mun_trabalho else f"{mun_moradia.upper()} ({d_mor})"
         label_t = d_tra if mun_moradia == mun_trabalho else f"{mun_trabalho.upper()} ({d_tra})"
         
-        st.markdown(f"""
-        <div style="background:#000; padding:25px; border:2px solid #E63946; text-align:center; margin: 20px 0;">
-            <div style="color:#FFCC00; font-weight:bold; font-size:1.6rem;">
-                🏠 {label_m} ———▶ 💼 {label_t}
-            </div>
-        </div>
-        """, unsafe_allow_html=True)
+       st.markdown(f"""
+    <div style="text-align: center; font-size: 1.5rem; color: #000000;">
+        🏠 {label_m} ———▶ 💼 {label_t}
+    </div>
+""", unsafe_allow_html=True)
 
         st.markdown("""<div style="background-color: #E63946; color: white; padding: 15px; text-align: center; font-weight: bold; border-radius: 5px;">🚨 ALERTA DE EXPROPRIAÇÃO MENSAL</div>""", unsafe_allow_html=True)
 

@@ -267,41 +267,49 @@ if st.button("EFETUAR DIAGNÓSTICO"):
             <p>• 💸 <b>VALOR DO CONFISCO (TARIFA + TEMPO NÃO PAGO):</b> R$ {confi:.2f}</p>
             <p>• 💵 <b>SALÁRIO LÍQUIDO (-TRANSPORTE):</b> R$ {sal_liq_transp:.2f}</p>
             <p>• 📉 <b>{label_sobra}:</b> R$ {sobra:.2f}</p>
-           # --- BLOCO FINAL DE RESULTADOS E NOTA ---
-        # 1. Formata a depreciação para evitar erro de símbolo
+          # 1. FORMATAÇÃO PRÉVIA DAS VARIÁVEIS
         depre_txt = f"{depre:.1f}"
+        v_h_re_txt = f"{v_h_re:.2f}"
+        v_h_nom_txt = f"{v_h_nom:.2f}"
+        confi_txt = f"{confi:.2f}"
+        sal_liq_txt = f"{sal_liq_transp:.2f}"
+        sobra_txt = f"{sobra:.2f}"
 
-        # 2. Caixa de Depreciação
+        # 2. CAIXA DE RESULTADOS (BRANCO E PRETO)
         st.markdown(f"""
+        <div class="report-box" style="background-color: #FFFFFF; padding: 25px; border: 5px solid #FFCC00; border-radius: 10px; color: #000000 !important;">
+            <h3 style="margin-top:0; color:#000000; border-bottom: 2px solid #000; padding-bottom:10px;">&#128221; RESULTADOS DO DIAGNÓSTICO</h3>
+            <p style="color:#000000;">&bull; 💹 <b>VALOR DA HORA TRABALHADA:</b> De R$ {v_h_nom_txt} para <span style="color:#E63946; font-weight:900;">R$ {v_h_re_txt}</span></p>
+            <p style="color:#000000;">&bull; ⏳ <b>TEMPO DE TRABALHO NÃO PAGO:</b> {h_m:.1f} h/mês</p>
+            <p style="color:#000000;">&bull; 💸 <b>VALOR DO CONFISCO (TARIFA + TEMPO):</b> R$ {confi_txt}</p>
+            <p style="color:#000000;">&bull; 💵 <b>SALÁRIO LÍQUIDO (-TRANSPORTE):</b> R$ {sal_liq_txt}</p>
+            <p style="color:#000000;">&bull; 📉 <b>{label_sobra}:</b> R$ {sobra_txt}</p>
             <p style="color:#000000; margin-bottom: 5px;">&bull; &#128201; <b>DEPRECIAÇÃO DA FORÇA DE TRABALHO:</b> 
                 <span style="color:#E63946; font-size: 1.5rem; font-weight: 900;">{depre_txt}%</span>
             </p>
-            <div style="background: #FFF3F3; border-left: 4px solid #E63946; padding: 10px; margin-left: 20px; margin-bottom: 20px;">
+            <div style="background: #FFF3F3; border-left: 4px solid #E63946; padding: 10px; margin-top: 10px;">
                 <small style="color: #333; display: block; line-height: 1.2;">
-                    <b>ANÁLISE CRÍTICA:</b> Cada hora de deslocamento atua como uma jornada extraordinária compulsória, 
-                    reduzindo o valor líquido da sua hora vendida em <b>{depre_txt}%</b> em relação ao contrato nominal.
+                    <b>ANÁLISE CRÍTICA:</b> O deslocamento atua como jornada extra compulsória, 
+                    reduzindo o valor da sua força de trabalho em <b>{depre_txt}%</b>.
                 </small>
             </div>
         </div>
         """, unsafe_allow_html=True)
 
-        # 3. Nota Técnica (Texto simples em variável para evitar SyntaxError)
-        html_nota = f"""
+        # 3. NOTA TÉCNICA (CAIXA SEPARADA)
+        st.markdown(f"""
         <div style="background-color: #FFFFFF; padding: 25px; border-left: 10px solid #FFCC00; border: 1px solid #DDD; margin-top: 25px; color: #000000;">
             <b style="color: #000000; font-size: 1.3rem; font-family: 'Arial Black'; display: block; margin-bottom: 10px;">
                 &#128221; NOTA TÉCNICA DE EXPROPRIAÇÃO
             </b>
             <div style="color: #000000; font-size: 1.1rem; line-height: 1.6; font-family: sans-serif;">
                 O <b>"Confisco"</b> reflete o valor total subtraído do rendimento real do trabalhador. 
-                Ele soma o gasto direto em tarifas ao valor monetário do tempo de deslocamento. 
-                Consideramos o trecho como <b>"trabalho não pago"</b> pois é um tempo obrigatório para a reprodução da força de trabalho, mas não é remunerado pelo capital.
+                Soma o gasto direto em tarifas ao valor monetário do tempo de deslocamento. 
+                Consideramos o trecho como <b>"trabalho não pago"</b>.
             </div>
         </div>
-        """
-        st.markdown(html_nota, unsafe_allow_html=True)
+        """, unsafe_allow_html=True)
 
-        # 4. Botão de Download
-        relatorio = f"DIAGNÓSTICO TÉCNICO\nCONFISCO: R$ {confi:.2f}\nDEPRECIAÇÃO: {depre_txt}%"
-        st.download_button("📥 BAIXAR NOTA TÉCNICA", relatorio, file_name="diagnostico.txt")
-
-# FIM DO ARQUIVO (Certifique-se de que não há aspas sobrando abaixo desta linha)
+        # 4. BOTÃO DE DOWNLOAD
+        relatorio_final = f"DIAGNÓSTICO TÉCNICO\nCONFISCO: R$ {confi_txt}\nDEPRECIAÇÃO: {depre_txt}%"
+        st.download_button("📥 BAIXAR NOTA TÉCNICA", relatorio_final, file_name="diagnostico.txt")

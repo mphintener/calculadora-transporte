@@ -285,9 +285,9 @@ if st.button("EFETUAR DIAGNÓSTICO"):
         </div>
         """, unsafe_allow_html=True)
 
-     # NOTA TÉCNICA - VERSÃO BLINDADA CONTRA SYNTAXERROR
-        st.markdown(f"""
-        <div style="background-color: #FFFFFF; padding: 25px; border-left: 10px solid #FFCC00; border: 1px solid #DDD; margin-top: 25px; color: #000000; box-shadow: 5px 5px 15px rgba(0,0,0,0.1);">
+    # NOTA TÉCNICA - VERSÃO FINAL SEM ERRO DE ASPAS
+        nota_html = f"""
+        <div style="background-color: #FFFFFF; padding: 25px; border-left: 10px solid #FFCC00; border: 1px solid #DDD; margin-top: 25px; color: #000000;">
             <b style="color: #000000; font-size: 1.3rem; font-family: 'Arial Black'; display: block; margin-bottom: 10px;">
                 &#128221; NOTA TÉCNICA DE EXPROPRIAÇÃO
             </b>
@@ -297,7 +297,8 @@ if st.button("EFETUAR DIAGNÓSTICO"):
                 Consideramos o trecho como <b>"trabalho não pago"</b> pois é um tempo obrigatório para a reprodução da força de trabalho, mas não é remunerado pelo capital.
             </div>
         </div>
-        """, unsafe_allow_html=True)
+        """
+        st.markdown(nota_html, unsafe_allow_html=True)
 
         relatorio = f"DIAGNÓSTICO TÉCNICO\nFLUXO: {label_m} -> {label_t}\nCONFISCO: R$ {confi:.2f}\nSALÁRIO LÍQUIDO (-TRANSPORTE): R$ {sal_liq_transp:.2f}"
         st.download_button("📥 BAIXAR NOTA TÉCNICA", relatorio, file_name="diagnostico_trecho.txt")

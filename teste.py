@@ -261,42 +261,22 @@ if st.button("EFETUAR DIAGNÓSTICO"):
         st.markdown(f"""
         <div class="report-box">
             <h3 style="margin-top:0; color:#FFCC00;">📋 RESULTADOS</h3>
-            <p>• 💹 <b>VALOR DA HORA DE TRABALH0:</b> De R$ {v_h_nom:.2f} para <span style="color:#E63946;">R$ {v_h_re:.2f}</span></p>
+            <p>• 💹 <b>VALOR DA HORA TRABALHADA:</b> De R$ {v_h_nom:.2f} para <span style="color:#E63946;">R$ {v_h_re:.2f}</span></p>
             <p>• ⏳ <b>TEMPO DE TRABALHO NÃO PAGO:</b> {h_m:.1f}h/mês</p>
             <p>• 💸 <b>VALOR DO CONFISCO (TARIFA + TEMPO NÃO PAGO):</b> R$ {confi:.2f}</p>
             <p>• 💵 <b>SALÁRIO LÍQUIDO (-TRANSPORTE):</b> R$ {sal_liq_transp:.2f}</p>
             <p>• 📉 <b>{label_sobra}:</b> R$ {sobra:.2f}</p>
-       # --- BLOCO FINAL RECONSTRUÍDO ---
-        # 1. FORMATAMOS OS VALORES ANTES (Evita erros de símbolos no HTML)
-        txt_depre = f"{depre:.1f}%"
-        txt_v_hr = f"R$ {v_h_re:.2f}"
-        txt_v_hn = f"R$ {v_h_nom:.2f}"
-        txt_conf = f"R$ {confi:.2f}"
-        txt_liq = f"R$ {sal_liq_transp:.2f}"
-        txt_sobra = f"R$ {sobra:.2f}"
+            <p>• 📉 <b>DEPRECIAÇÃO DA FORÇA DE TRABALHO:</b> <span style="color:#E63946;">{depre:.1f}%</span></p>
+        </div>
+        """, unsafe_allow_html=True)
 
-        # 2. RESULTADOS (USANDO STRINGS SIMPLES PARA NÃO QUEBRAR)
-        st.subheader("Resultados do Diagnóstico")
-        
-        # Criamos a caixa branca usando uma string única e limpa
-        html_res = f"<div style='background-color:#FFFFFF; padding:20px; border:5px solid #FFCC00; border-radius:10px; color:#000000;'>"
-        html_res += f"<p style='color:#000000;'>&bull; <b>HORA NOMINAL:</b> {txt_v_hn}</p>"
-        html_res += f"<p style='color:#000000;'>&bull; <b>HORA REAL:</b> <span style='color:#E63946;'>{txt_v_hr}</span></p>"
-        html_res += f"<p style='color:#000000;'>&bull; <b>TRABALHO NÃO PAGO:</b> {h_m:.1f} h/mês</p>"
-        html_res += f"<p style='color:#000000;'>&bull; <b>CONFISCO TOTAL:</b> {txt_conf}</p>"
-        html_res += f"<p style='color:#000000;'>&bull; <b>{label_sobra}:</b> {txt_sobra}</p>"
-        html_res += f"<p style='color:#000000;'>&bull; <b>DEPRECIAÇÃO:</b> <span style='color:#E63946; font-size:1.2rem; font-weight:bold;'>{txt_depre}</span></p>"
-        html_res += "</div>"
-        
-        st.markdown(html_res, unsafe_allow_html=True)
+        # NOTA TÉCNICA
+        st.markdown(f"""
+        <div style="background-color: #111; padding: 20px; border-left: 5px solid #FFCC00; margin-top: 25px;">
+            <b style="color: #FFCC00;">NOTA TÉCNICA:</b><br>
+            O "Confisco" reflete o valor total subtraído do rendimento real do trabalhador. Ele soma o gasto direto em tarifas ao valor monetário do tempo de deslocamento (calculado sobre o valor da hora nominal). Consideramos o trecho como "trabalho não pago" pois é um tempo obrigatório para a reprodução da força de trabalho, mas não remunerado.
+        </div>
+        """, unsafe_allow_html=True)
 
-        # 3. NOTA TÉCNICA (CAIXA BRANCA SEPARADA)
-        html_nota = "<div style='background-color:#FFFFFF; padding:20px; border-left:10px solid #FFCC00; border:1px solid #DDD; margin-top:20px; color:#000000;'>"
-        html_nota += "<b style='color:#000000;'>📝 NOTA TÉCNICA</b><br>"
-        html_nota += "<p style='color:#000000; font-size:0.9rem;'>O Confisco soma a tarifa ao valor do tempo de deslocamento. É o trabalho não pago exigido pela reprodução da força de trabalho.</p></div>"
-        
-        st.markdown(html_nota, unsafe_allow_html=True)
-
-        # 4. BOTÃO DE DOWNLOAD
-        st.download_button("BAIXAR DIAGNÓSTICO", f"Confisco: {txt_conf}\nDepreciação: {txt_depre}", file_name="diagnostico.txt")
-
+        relatorio = f"DIAGNÓSTICO TÉCNICO\nFLUXO: {label_m} -> {label_t}\nCONFISCO: R$ {confi:.2f}\nSALÁRIO LÍQUIDO (-TRANSPORTE): R$ {sal_liq_transp:.2f}"
+        st.download_button("📥 BAIXAR NOTA TÉCNICA", relatorio, file_name="diagnostico_trecho.txt")

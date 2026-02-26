@@ -1,9 +1,11 @@
-import streamlit as st 
-# No topo do arquivo
+import streamlit as st
 from streamlit_gsheets import GSheetsConnection
-[connections.gsheets]
-spreadsheet = "https://docs.google.com/spreadsheets/d/1VBatkCYcuBFLcLkiTAiD99EREaHbJfKpeXrc-MPx0xQ/edit#gid=0"
-type = "gsheets"
+import pandas as pd
+from datetime import datetime
+# 1. CRIAR A CONEXÃO (A linha que você mandou)
+conn = st.connection("gsheets", type=GSheetsConnection)
+# 2. DEFINIR A URL (Para o comando conn.create usar depois)
+URL_PLANILHA = "https://docs.google.com/spreadsheets/d/1VBatkCYcuBFLcLkiTAiD99EREaHbJfKpeXrc-MPx0xQ/edit#gid=0"
 
 # 1. SETUP E ESTILO (O "ESCUDO" CONTRA A FAIXA FANTASMA)
 st.set_page_config(page_title="Calculadora do Trecho", layout="wide")

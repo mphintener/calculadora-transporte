@@ -275,15 +275,15 @@ if st.button("EFETUAR DIAGNÓSTICO"):
         sal_liq_txt = f"{sal_liq_transp:.2f}"
         sobra_txt = f"{sobra:.2f}"
 
-        # 2. CAIXA DE RESULTADOS (BRANCO E PRETO)
+        # 2. CAIXA DE RESULTADOS (COM CÓDIGOS HTML NO LUGAR DE EMOJIS)
         st.markdown(f"""
         <div class="report-box" style="background-color: #FFFFFF; padding: 25px; border: 5px solid #FFCC00; border-radius: 10px; color: #000000 !important;">
             <h3 style="margin-top:0; color:#000000; border-bottom: 2px solid #000; padding-bottom:10px;">&#128221; RESULTADOS DO DIAGNÓSTICO</h3>
-            <p style="color:#000000;">&bull; 💹 <b>VALOR DA HORA TRABALHADA:</b> De R$ {v_h_nom_txt} para <span style="color:#E63946; font-weight:900;">R$ {v_h_re_txt}</span></p>
-            <p style="color:#000000;">&bull; ⏳ <b>TEMPO DE TRABALHO NÃO PAGO:</b> {h_m:.1f} h/mês</p>
-            <p style="color:#000000;">&bull; 💸 <b>VALOR DO CONFISCO (TARIFA + TEMPO):</b> R$ {confi_txt}</p>
-            <p style="color:#000000;">&bull; 💵 <b>SALÁRIO LÍQUIDO (-TRANSPORTE):</b> R$ {sal_liq_txt}</p>
-            <p style="color:#000000;">&bull; 📉 <b>{label_sobra}:</b> R$ {sobra_txt}</p>
+            <p style="color:#000000;">&bull; &#128200; <b>VALOR DA HORA TRABALHADA:</b> De R$ {v_h_nom_txt} para <span style="color:#E63946; font-weight:900;">R$ {v_h_re_txt}</span></p>
+            <p style="color:#000000;">&bull; &#9203; <b>TEMPO DE TRABALHO NÃO PAGO:</b> {h_m:.1f} h/mês</p>
+            <p style="color:#000000;">&bull; &#128184; <b>VALOR DO CONFISCO (TARIFA + TEMPO):</b> R$ {confi_txt}</p>
+            <p style="color:#000000;">&bull; &#128181; <b>SALÁRIO LÍQUIDO (-TRANSPORTE):</b> R$ {sal_liq_txt}</p>
+            <p style="color:#000000;">&bull; &#128201; <b>{label_sobra}:</b> R$ {sobra_txt}</p>
             <p style="color:#000000; margin-bottom: 5px;">&bull; &#128201; <b>DEPRECIAÇÃO DA FORÇA DE TRABALHO:</b> 
                 <span style="color:#E63946; font-size: 1.5rem; font-weight: 900;">{depre_txt}%</span>
             </p>
@@ -310,6 +310,6 @@ if st.button("EFETUAR DIAGNÓSTICO"):
         </div>
         """, unsafe_allow_html=True)
 
-        # 4. BOTÃO DE DOWNLOAD
+        # 4. BOTÃO DE DOWNLOAD (TAMBÉM SEM EMOJI NO TEXTO DO CÓDIGO)
         relatorio_final = f"DIAGNÓSTICO TÉCNICO\nCONFISCO: R$ {confi_txt}\nDEPRECIAÇÃO: {depre_txt}%"
-        st.download_button("📥 BAIXAR NOTA TÉCNICA", relatorio_final, file_name="diagnostico.txt")
+        st.download_button("BAIXAR NOTA TECNICA", relatorio_final, file_name="diagnostico.txt")

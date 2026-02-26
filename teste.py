@@ -1,6 +1,6 @@
 import streamlit as st
-from streamlit_gsheets import GSheetsConnection
 import pandas as pd
+from streamlit_gsheets import GSheetsConnection
 from datetime import datetime
 # 1. CRIAR A CONEXÃO (A linha que você mandou)
 conn = st.connection("gsheets", type=GSheetsConnection)

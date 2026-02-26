@@ -57,8 +57,8 @@ st.markdown("""
     """, unsafe_allow_html=True)
 
 # 2. CABEÇALHO: TÍTULO COM RESPIRO E LOGO REDUZIDO
-# Aumentamos a proporção para 5:1 para o logo ficar menor
-col_titulo, col_logo = st.columns([5, 1])
+# Aumentamos a proporção para 6:1 para o logo ficar menor
+col_titulo, col_logo = st.columns([6, 1])
 with col_titulo:
     # Adicionamos 'padding-top' para descer o título
     st.markdown("""

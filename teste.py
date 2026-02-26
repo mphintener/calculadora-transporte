@@ -221,7 +221,7 @@ if st.button("EFETUAR DIAGNÓSTICO"):
         label_t = d_tra if mun_moradia == mun_trabalho else f"{mun_trabalho.upper()} ({d_tra})"
         
        st.markdown(f"""
-    <div style="text-align: center; font-size: 1.5rem; color: #000000;">
+    <div style="text-align: center; font-size: 1.4rem; color: #000000; font-weight: bold; padding: 10px;">
         🏠 {label_m} ———▶ 💼 {label_t}
     </div>
 """, unsafe_allow_html=True)

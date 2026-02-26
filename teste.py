@@ -149,19 +149,17 @@ st.markdown("""
         box-shadow: none !important;
     }
     
-    /* ESSA LINHA ABAIXO "DESENCOBRE" O TEXTO */
-    .stButton>button div p { 
-        color: #000000 !important; 
-        font-weight: 900 !important;
-        margin-bottom: 0px !important;
-    }
-
-    /* ESTILO DA NOTA TÉCNICA (PAPEL PRETO) */
+    /* CAIXA DE RESULTADOS - TEXTO PRETO PARA LEGIBILIDADE */
     .report-box {
         background-color: #FFFFFF !important;
-        padding: 30px;
-        border: 6px solid #FFCC00;
-        border-radius: 12px;
+        padding: 25px;
+        border: 5px solid #FFCC00;
+        border-radius: 10px;
+        color: #000000 !important; /* Texto Preto */
+    }
+    
+    /* Garante que todos os itens da lista fiquem pretos */
+    .report-box p, .report-box b, .report-box span {
         color: #000000 !important;
     }
     </style>

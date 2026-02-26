@@ -1,89 +1,55 @@
-import streamlit as st
 
-# 1. SETUP E ESTILO (O "ESCUDO" CONTRA A FAIXA FANTASMA)
-st.set_page_config(page_title="Calculadora do Trecho", layout="wide")
-
-st.markdown("""
-    <style>
-    /* REMOVE A FAIXA BRANCA/FANTASMA DO TOPO */
-    header, [data-testid="stHeader"], [data-testid="stStatusWidget"] {
-        visibility: hidden !important;
-        display: none !important;
-        height: 0px !important;
-    }
-    
-    /* FUNDO PRETO ABSOLUTO */
-    .stApp { background-color: #000000 !important; }
-    
-    /* AJUSTE DE ESPAÇO NO TOPO */
-    .block-container { 
-        padding-top: 1rem !important; 
-        margin-top: -40px !important; 
-    }
-
-    /* ESTILO DO TÍTULO E FRASE (AMARELO) */
-    .titulo-container h1 { 
-        color: #FFCC00 !important; 
-        font-family: 'Arial Black', sans-serif !important; 
-        margin-bottom: 0px !important;
-        font-size: 2.2rem !important;
-    }
-    .frase-impacto {
-        color: #FFCC00 !important;
-        font-size: 1.1rem !important;
-        margin-top: -5px !important;
-        margin-bottom: 25px !important;
-    }
-
-    /* LABELS EM AMARELO */
-    label, p, span { color: #FFCC00 !important; font-weight: bold !important; }
-
-    /* ESTILO DOS CAMPOS (HÍBRIDO) */
-    .stSelectbox div[data-baseweb="select"] {
-        background-color: #FFFFFF !important;
-        color: #000000 !important;
-        border-radius: 4px !important;
-    }
-    
-    .stTextInput input, .stNumberInput input {
-        background-color: #000000 !important;
-        color: #FFFFFF !important;
-        border: none !important;
-        border-bottom: 2px solid #FFCC00 !important;
-        border-radius: 0px !important;
-        -webkit-text-fill-color: #FFFFFF !important;
-    }
-    </style>
-    """, unsafe_allow_html=True)
-
-# 2. CABEÇALHO: TÍTULO COM RESPIRO E LOGO REDUZIDO
-# Aumentamos a proporção para 6:1 para o logo ficar menor
-col_titulo, col_logo = st.columns([6, 1])
-with col_titulo:
-    # Adicionamos 'padding-top' para descer o título
-    st.markdown("""
-        <div style="padding-top: 25px;">
-            <h1 style="color: #FFCC00 !important; font-family: 'Arial Black', sans-serif !important; margin-bottom: 0px !important; font-size: 2.2rem !important; text-align: left !important;">
-                ⚖️ CALCULADORA DO TRECHO
-            </h1>
-            <p style="color: #FFCC00 !important; font-size: 1.1rem !important; margin-top: 5px !important; text-align: left !important;">
-                Quanto de tempo e de dinheiro são consumidos no seu deslocamento diário?
-            </p>
-        </div>
-    """, unsafe_allow_html=True)
-
-with col_logo:
-    try:
-        # 'width=120' garante que o logo não fique gigante
-        st.image("logo.png", width=220) 
-    except:
-        st.markdown("<div style='height:80px;'></div>", unsafe_allow_html=True)
 
 # 2. BANCO DE DADOS GEOGRÁFICO
 municipios_rmsp = [" "] + sorted(["Arujá", "Barueri", "Biritiba-Mirim", "Caieiras", "Cajamar", "Carapicuíba", "Cotia", "Diadema", "Embu das Artes", "Embu-Guaçu", "Ferraz de Vasconcelos", "Francisco Morato", "Franco da Rocha", "Guararema", "Guarulhos", "Itapecerica da Serra", "Itapevi", "Itaquaquecetuba", "Jandira", "Juquitiba", "Mairiporã", "Mauá", "Mogi das Cruzes", "Osasco", "Pirapora do Bom Jesus", "Poá", "Ribeirão Pires", "Rio Grande da Serra", "Salesópolis", "Santa Isabel", "Santana de Parnaíba", "Santo André", "São Bernardo do Campo", "São Caetano do Sul", "São Lourenço da Serra", "São Paulo", "Suzano", "Taboão da Serra", "Vargem Grande Paulista"])
 distritos_sp = [" "] + sorted(["Água Rasa", "Alto de Pinheiros", "Anhanguera", "Aricanduva", "Artur Alvim", "Barra Funda", "Bela Vista", "Belém", "Bom Retiro", "Brasilândia", "Butantã", "Cachoeirinha", "Cambuci", "Campo Belo", "Campo Grande", "Campo Limpo", "Cangaíba", "Capão Redondo", "Carrão", "Casa Verde", "Cidade Ademar", "Cidade Dutra", "Cidade Líder", "Cidade Tiradentes", "Consolação", "Cursino", "Ermelino Matarazzo", "Freguesia do Ó", "Grajaú", "Guaianases", "Iguatemi", "Ipiranga", "Itaim Bibi", "Itaim Paulista", "Itaquera", "Jabaquara", "Jaçanã", "Jaguara", "Jaguaré", "Jaraguá", "Jardim Ângela", "Jardim Helena", "Jardim Paulista", "Jardim São Luís", "Lapa", "Liberdade", "Limão", "Mandaqui", "Marsilac", "Moema", "Mooca", "Morumbi", "Parelheiros", "Pari", "Parque do Carmo", "Pedreira", "Penha", "Perdizes", "Perus", "Pinheiros", "Pirituba", "Ponte Rasa", "Raposo Tavares", "República", "Rio Pequeno", "Sacomã", "Santa Cecília", "Santana", "Santo Amaro", "São Domingos", "São Lucas", "São Mateus", "São Miguel", "São Rafael", "Sapopemba", "Saúde", "Sé", "Socorro", "Tatuapé", "Tremembé", "Tucuruvi", "Vila Andrade", "Vila Curuçá", "Vila Formosa", "Vila Guilherme", "Vila Jacuí", "Vila Leopoldina", "Vila Maria", "Vila Mariana", "Vila Matilde", "Vila Medeiros", "Vila Prudente", "Vila Sônia"])
 
-# 1. SETUP E ESTILO (O ESCUDO DEFINITIVO)
+# 1. SETUP E ESTILO (O ESCUDO DEFINITIVO)import streamlit as st
+
+# 1. SETUP E ESTILO (O ESCUDO CONTRA O BRANCO)
+st.set_page_config(page_title="Calculadora do Trecho", layout="wide")
+
+st.markdown("""
+    <style>
+    /* ELIMINA A FAIXA DO TOPO */
+    header, [data-testid="stHeader"] { visibility: hidden; display: none; }
+    .stApp { background-color: #000000 !important; }
+    .block-container { padding-top: 0rem !important; margin-top: -30px !important; }
+
+    /* TEXTOS EM AMARELO */
+    h1, label, p, span { color: #FFCC00 !important; font-family: 'Arial Black', sans-serif !important; }
+
+    /* CAMPOS: SELEÇÃO (BRANCO) / DIGITAÇÃO (PRETO) */
+    .stSelectbox div[data-baseweb="select"] { background-color: #FFFFFF !important; color: #000000 !important; }
+    .stTextInput input, .stNumberInput input {
+        background-color: #000000 !important; color: #FFFFFF !important;
+        border: none !important; border-bottom: 2px solid #FFCC00 !important;
+    }
+
+    /* BOTÃO: TEXTO PRETO E FUNDO AMARELO (MÁXIMA LEGIBILIDADE) */
+    .stButton>button { 
+        background-color: #FFCC00 !important; color: #000000 !important; 
+        font-weight: 900 !important; width: 100%; height: 4em;
+        text-transform: uppercase; border: 2px solid #000;
+    }
+    /* Força o texto do botão a ser preto absoluto */
+    .stButton>button div p { color: #000000 !important; font-weight: 900 !important; font-size: 1.2rem !important; }
+    </style>
+    """, unsafe_allow_html=True)
+
+# 2. CABEÇALHO: TÍTULO À ESQUERDA E LOGO À DIREITA
+col_tit, col_log = st.columns([4, 1])
+with col_tit:
+    st.markdown("<h1 style='margin-top:20px;'>⚖️ CALCULADORA DO TRECHO</h1>", unsafe_allow_html=True)
+    st.markdown("<p style='color:#FFCC00; margin-top:-15px; font-size:1.1rem;'>Quanto de tempo e de dinheiro são consumidos no seu deslocamento diário?</p>", unsafe_allow_html=True)
+with col_log:
+    try:
+        # Tenta carregar o logo à direita (ajuste o width se precisar)
+        st.image("logo.png", width=120)
+    except:
+        st.write("") # Fica vazio se não achar o logo
+
+st.markdown("---")
 st.set_page_config(page_title="Calculadora do Trecho", layout="wide")
 
 st.markdown("""

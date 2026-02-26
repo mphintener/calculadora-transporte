@@ -274,32 +274,25 @@ if st.button("EFETUAR DIAGNÓSTICO"):
     </p>
 """, unsafe_allow_html=True)
 
-        # --- NOTA TÉCNICA COM VISIBILIDADE MÁXIMA ---
+       # NOTA TÉCNICA - VERSÃO COM VISIBILIDADE MÁXIMA E SEM ERRO
+        # Primeiro, preparamos o texto para não ter erro de símbolo
+        depre_nota = f"{depre:.1f}"
+        
         st.markdown(f"""
-            <div style="background-color: #FFFFFF; 
-                        padding: 30px; 
-                        border-left: 12px solid #FFCC00; 
-                        border: 1px solid #E0E0E0; 
-                        border-radius: 8px; 
-                        margin-top: 30px; 
-                        box-shadow: 0px 4px 12px rgba(0,0,0,0.1);">
-                
-                <h2 style="color: #000000; font-family: 'Arial Black', sans-serif; font-size: 1.4rem; margin-top: 0; border-bottom: 2px solid #FFCC00; padding-bottom: 10px;">
-                    &#128221; NOTA TÉCNICA
+            <div style='background-color: #FFFFFF; padding: 30px; border-left: 12px solid #FFCC00; border: 1px solid #E0E0E0; border-radius: 8px; margin-top: 30px; box-shadow: 0px 4px 12px rgba(0,0,0,0.1);'>
+                <h2 style='color: #000000; font-family: sans-serif; font-size: 1.4rem; margin-top: 0; border-bottom: 2px solid #FFCC00; padding-bottom: 10px;'>
+                    &#128221; NOTA TÉCNICA DE EXPROPRIAÇÃO
                 </h2>
-                
-                <div style="color: #333333; font-family: 'Georgia', serif; font-size: 1.1rem; line-height: 1.8; text-align: justify;">
+                <div style='color: #333333; font-family: serif; font-size: 1.1rem; line-height: 1.8; text-align: justify;'>
                     O <b>"Confisco"</b> calculado neste diagnóstico reflete o valor total subtraído do rendimento real do trabalhador. 
                     Ele não considera apenas a tarifa, mas o <b>valor monetário do tempo de vida</b> convertido em deslocamento. 
                     <br><br>
                     Na perspectiva da economia política, o trecho é <b>"trabalho não pago"</b>: um tempo obrigatório para a 
                     reprodução da força de trabalho que não é remunerado, gerando uma depreciação real de 
-                    <span style="color: #E63946; font-weight: bold;">{depre:.1f}%</span> no valor da sua hora contratada.
+                    <span style='color: #E63946; font-weight: bold;'>{depre_nota}%</span> no valor da sua hora contratada.
                 </div>
-                
-                <hr style="border: 0; border-top: 1px solid #EEE; margin: 20px 0;">
-                
-                <small style="color: #777; font-style: italic; display: block; text-align: center;">
+                <hr style='border: 0; border-top: 1px solid #EEE; margin: 20px 0;'>
+                <small style='color: #777; font-style: italic; display: block; text-align: center;'>
                     Documento gerado para fins de análise sociológica e econômica.
                 </small>
             </div>

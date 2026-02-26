@@ -293,7 +293,7 @@ if st.button("EFETUAR DIAGNÓSTICO"):
                 <hr style='border: 0; border-top: 1px solid #EEE; margin: 20px 0;'>
                 <small style='color: #777; font-style: italic; display: block; text-align: center;'>
         
-                </small>
+                
             </div>
         """, unsafe_allow_html=True)
 

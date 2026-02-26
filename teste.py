@@ -76,7 +76,7 @@ with col_titulo:
 with col_logo:
     try:
         # 'width=120' garante que o logo não fique gigante
-        st.image("logo.png", width=180) 
+        st.image("logo.png", width=220) 
     except:
         st.markdown("<div style='height:80px;'></div>", unsafe_allow_html=True)
 

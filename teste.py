@@ -269,7 +269,7 @@ if st.button("EFETUAR DIAGNÓSTICO"):
             <p>• 💸 <b>VALOR DO CONFISCO (TARIFA + TEMPO NÃO PAGO):</b> R$ {confi:.2f}</p>
             <p>• 💵 <b>SALÁRIO LÍQUIDO (-TRANSPORTE):</b> R$ {sal_liq_transp:.2f}</p>
             <p>• 📉 <b>{label_sobra}:</b> R$ {sobra:.2f}</p>
-            # DEPRECIAÇÃO COM INDICADOR DE IMPACTO - VERSÃO BLINDADA CONTRA ERROS
+           # DEPRECIAÇÃO COM INDICADOR DE IMPACTO - CORREÇÃO DE LITERAL DECIMAL
         st.markdown(f"""
             <p style="color:#000000; margin-bottom: 5px;">&bull; &#128201; <b>DEPRECIAÇÃO DA FORÇA DE TRABALHO:</b> 
                 <span style="color:#E63946; font-size: 1.5rem; font-weight: 900;">{depre:.1f}%</span>

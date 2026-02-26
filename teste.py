@@ -138,14 +138,31 @@ st.markdown("""
         -webkit-text-fill-color: #FFFFFF !important;
     }
 
-    /* 5. BOTÃO GERAR DIAGNÓSTICO */
+   /* 5. BOTÃO GERAR DIAGNÓSTICO - VERSÃO CORRIGIDA */
     .stButton>button { 
         background-color: #FFCC00 !important; 
         color: #000000 !important; 
         font-weight: 900 !important; 
         width: 100%; height: 4em;
-        border: 2px solid #E63946 !important;
+        border: 3px solid #000000 !important; /* Borda preta para destacar */
         text-transform: uppercase;
+        box-shadow: none !important;
+    }
+    
+    /* ESSA LINHA ABAIXO "DESENCOBRE" O TEXTO */
+    .stButton>button div p { 
+        color: #000000 !important; 
+        font-weight: 900 !important;
+        margin-bottom: 0px !important;
+    }
+
+    /* ESTILO DA NOTA TÉCNICA (PAPEL BRANCO) */
+    .report-box {
+        background-color: #FFFFFF !important;
+        padding: 30px;
+        border: 6px solid #FFCC00;
+        border-radius: 12px;
+        color: #000000 !important;
     }
     </style>
     """, unsafe_allow_html=True)

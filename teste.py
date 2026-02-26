@@ -189,7 +189,7 @@ st.markdown("""
 st.markdown("### 👤 PERFIL DO USUÁRIO")
 p1, p2, p3, p4 = st.columns(4)
 idade = p1.number_input("IDADE", min_value=14, step=1, value=None)
-genero = p2.selectbox("Género", ["Masculino", "Feminino", "Não-binário", "Outro", "Prefiro não responder"])
+genero = p2.selectbox("Gênero", ["Masculino", "Feminino", "Não-binário", "Outro", "Prefiro não responder"])
 escolaridade = p3.selectbox("ESCOLARIDADE", ["Fundamental Incompleto", "Fundamental Completo", "Médio Incompleto", "Médio Completo", "Técnico", "Superior Incompleto", "Superior Completo", "Pós-Graduação"])
 setor = p4.selectbox("SETOR DE ATIVIDADE", ["Comércio", "Construção Civil", "Educação", "Indústria", "Serviços", "Saúde", "Outros"])
 

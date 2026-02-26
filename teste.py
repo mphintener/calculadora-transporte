@@ -1,27 +1,47 @@
-import streamlit as st
 
-# 1. SETUP E ESTILO HÍBRIDO (O "ESCUDO")
+# 2. BANCO DE DADOS GEOGRÁFICO
+municipios_rmsp = [" "] + sorted(["Arujá", "Barueri", "Biritiba-Mirim", "Caieiras", "Cajamar", "Carapicuíba", "Cotia", "Diadema", "Embu das Artes", "Embu-Guaçu", "Ferraz de Vasconcelos", "Francisco Morato", "Franco da Rocha", "Guararema", "Guarulhos", "Itapecerica da Serra", "Itapevi", "Itaquaquecetuba", "Jandira", "Juquitiba", "Mairiporã", "Mauá", "Mogi das Cruzes", "Osasco", "Pirapora do Bom Jesus", "Poá", "Ribeirão Pires", "Rio Grande da Serra", "Salesópolis", "Santa Isabel", "Santana de Parnaíba", "Santo André", "São Bernardo do Campo", "São Caetano do Sul", "São Lourenço da Serra", "São Paulo", "Suzano", "Taboão da Serra", "Vargem Grande Paulista"])
+distritos_sp = [" "] + sorted(["Água Rasa", "Alto de Pinheiros", "Anhanguera", "Aricanduva", "Artur Alvim", "Barra Funda", "Bela Vista", "Belém", "Bom Retiro", "Brasilândia", "Butantã", "Cachoeirinha", "Cambuci", "Campo Belo", "Campo Grande", "Campo Limpo", "Cangaíba", "Capão Redondo", "Carrão", "Casa Verde", "Cidade Ademar", "Cidade Dutra", "Cidade Líder", "Cidade Tiradentes", "Consolação", "Cursino", "Ermelino Matarazzo", "Freguesia do Ó", "Grajaú", "Guaianases", "Iguatemi", "Ipiranga", "Itaim Bibi", "Itaim Paulista", "Itaquera", "Jabaquara", "Jaçanã", "Jaguara", "Jaguaré", "Jaraguá", "Jardim Ângela", "Jardim Helena", "Jardim Paulista", "Jardim São Luís", "Lapa", "Liberdade", "Limão", "Mandaqui", "Marsilac", "Moema", "Mooca", "Morumbi", "Parelheiros", "Pari", "Parque do Carmo", "Pedreira", "Penha", "Perdizes", "Perus", "Pinheiros", "Pirituba", "Ponte Rasa", "Raposo Tavares", "República", "Rio Pequeno", "Sacomã", "Santa Cecília", "Santana", "Santo Amaro", "São Domingos", "São Lucas", "São Mateus", "São Miguel", "São Rafael", "Sapopemba", "Saúde", "Sé", "Socorro", "Tatuapé", "Tremembé", "Tucuruvi", "Vila Andrade", "Vila Curuçá", "Vila Formosa", "Vila Guilherme", "Vila Jacuí", "Vila Leopoldina", "Vila Maria", "Vila Mariana", "Vila Matilde", "Vila Medeiros", "Vila Prudente", "Vila Sônia"])
+
+st.markdown('<div class="main-header-container"><h1>📊 CAimport streamlit as st
+
+# 1. SETUP E ESTILO (O ESCUDO DEFINITIVO)
 st.set_page_config(page_title="Calculadora do Trecho", layout="wide")
 
 st.markdown("""
     <style>
-    /* ELIMINA A FAIXA DO TOPO */
-    header, [data-testid="stHeader"] { display: none !important; }
+    /* 1. MATA A FAIXA BRANCA E LIMPA O HEADER */
+    header, [data-testid="stHeader"], [data-testid="stStatusWidget"] {
+        display: none !important;
+    }
+    
+    /* 2. FUNDO PRETO ABSOLUTO */
     .stApp { background-color: #000000 !important; }
-    .block-container { padding-top: 0rem !important; margin-top: -40px !important; }
+    .block-container { padding-top: 1rem !important; margin-top: -20px !important; }
 
-    /* TEXTOS E LABELS */
-    h1, label, p, span { color: #FFCC00 !important; font-family: 'Arial Black', sans-serif !important; }
+    /* 3. TÍTULO E TEXTOS (ALINHADOS À ESQUERDA PARA HARMONIZAR COM LOGO À DIREITA) */
+    h1 { 
+        color: #FFCC00 !important; 
+        font-family: 'Arial Black', sans-serif !important; 
+        text-align: left !important;
+        margin-top: 0px !important;
+        padding-top: 10px !important;
+    }
+    .frase-impacto {
+        color: #FFCC00 !important;
+        text-align: left !important;
+        font-size: 1.1rem !important;
+        margin-bottom: 30px !important;
+    }
+    label, p, span { color: #FFCC00 !important; font-weight: bold !important; }
 
-    /* ESTILO A: BOX BRANCO (Para Selectboxes de Município e Distrito) */
+    /* 4. ESTILO DOS CAMPOS (HÍBRIDO) */
     .stSelectbox div[data-baseweb="select"] {
         background-color: #FFFFFF !important;
         color: #000000 !important;
         border-radius: 4px !important;
     }
-    .stSelectbox div[data-baseweb="select"] span { color: #000000 !important; }
-
-    /* ESTILO B: ESTÉTICA ESCURA (Para Bairro, Salário, Horas, Dias e Custos) */
+    
     .stTextInput input, .stNumberInput input {
         background-color: #000000 !important;
         color: #FFFFFF !important;
@@ -31,7 +51,7 @@ st.markdown("""
         -webkit-text-fill-color: #FFFFFF !important;
     }
 
-    /* BOTÃO GERAR DIAGNÓSTICO */
+    /* 5. BOTÃO GERAR DIAGNÓSTICO */
     .stButton>button { 
         background-color: #FFCC00 !important; 
         color: #000000 !important; 
@@ -43,21 +63,24 @@ st.markdown("""
     </style>
     """, unsafe_allow_html=True)
 
-# 2. LOGO E TÍTULO
-col_l1, col_l2, col_l3 = st.columns([1, 1, 1])
-with col_l2:
-    try: st.image("logo.png", use_container_width=True)
-    except: pass
+# 2. CABEÇALHO: TÍTULO À ESQUERDA E LOGO À DIREITA
+# Criamos duas colunas: a primeira (75% da largura) e a segunda (25% para o logo)
+col_titulo, col_logo = st.columns([3, 1])
 
-st.title("⚖️ CALCULADORA DO TRECHO")
+with col_titulo:
+    st.markdown("<h1>⚖️ CALCULADORA DO TRECHO</h1>", unsafe_allow_html=True)
+    st.markdown("<p class='frase-impacto'>Quanto de tempo e de dinheiro são consumidos no seu deslocamento diário?</p>", unsafe_allow_html=True)
 
-# >>> PARE DE COLAR AQUI <<<
-# O que vem abaixo já é a sua Localização Geográfica que está O.K.
-# 2. BANCO DE DADOS GEOGRÁFICO
-municipios_rmsp = [" "] + sorted(["Arujá", "Barueri", "Biritiba-Mirim", "Caieiras", "Cajamar", "Carapicuíba", "Cotia", "Diadema", "Embu das Artes", "Embu-Guaçu", "Ferraz de Vasconcelos", "Francisco Morato", "Franco da Rocha", "Guararema", "Guarulhos", "Itapecerica da Serra", "Itapevi", "Itaquaquecetuba", "Jandira", "Juquitiba", "Mairiporã", "Mauá", "Mogi das Cruzes", "Osasco", "Pirapora do Bom Jesus", "Poá", "Ribeirão Pires", "Rio Grande da Serra", "Salesópolis", "Santa Isabel", "Santana de Parnaíba", "Santo André", "São Bernardo do Campo", "São Caetano do Sul", "São Lourenço da Serra", "São Paulo", "Suzano", "Taboão da Serra", "Vargem Grande Paulista"])
-distritos_sp = [" "] + sorted(["Água Rasa", "Alto de Pinheiros", "Anhanguera", "Aricanduva", "Artur Alvim", "Barra Funda", "Bela Vista", "Belém", "Bom Retiro", "Brasilândia", "Butantã", "Cachoeirinha", "Cambuci", "Campo Belo", "Campo Grande", "Campo Limpo", "Cangaíba", "Capão Redondo", "Carrão", "Casa Verde", "Cidade Ademar", "Cidade Dutra", "Cidade Líder", "Cidade Tiradentes", "Consolação", "Cursino", "Ermelino Matarazzo", "Freguesia do Ó", "Grajaú", "Guaianases", "Iguatemi", "Ipiranga", "Itaim Bibi", "Itaim Paulista", "Itaquera", "Jabaquara", "Jaçanã", "Jaguara", "Jaguaré", "Jaraguá", "Jardim Ângela", "Jardim Helena", "Jardim Paulista", "Jardim São Luís", "Lapa", "Liberdade", "Limão", "Mandaqui", "Marsilac", "Moema", "Mooca", "Morumbi", "Parelheiros", "Pari", "Parque do Carmo", "Pedreira", "Penha", "Perdizes", "Perus", "Pinheiros", "Pirituba", "Ponte Rasa", "Raposo Tavares", "República", "Rio Pequeno", "Sacomã", "Santa Cecília", "Santana", "Santo Amaro", "São Domingos", "São Lucas", "São Mateus", "São Miguel", "São Rafael", "Sapopemba", "Saúde", "Sé", "Socorro", "Tatuapé", "Tremembé", "Tucuruvi", "Vila Andrade", "Vila Curuçá", "Vila Formosa", "Vila Guilherme", "Vila Jacuí", "Vila Leopoldina", "Vila Maria", "Vila Mariana", "Vila Matilde", "Vila Medeiros", "Vila Prudente", "Vila Sônia"])
+with col_logo:
+    try:
+        # O logo agora fica no canto direito
+        st.image("logo.png", use_container_width=True)
+    except Exception:
+        st.markdown("<p style='text-align:right; color:#555; padding-top:20px;'>[Logo]</p>", unsafe_allow_html=True)
 
-st.markdown('<div class="main-header-container"><h1>📊 CALCULADORA DO TRECHO</h1><div class="subheader-text">Quanto de tempo e de dinheiro são consumidos no seu deslocamento diário?</div></div>', unsafe_allow_html=True)
+# ---------------------------------------------------------
+# PARE DE COLAR AQUI. O QUE VEM ABAIXO É O SEU CÓDIGO O.K.
+# ---------------------------------------------------------LCULADORA DO TRECHO</h1><div class="subheader-text">Quanto de tempo e de dinheiro são consumidos no seu deslocamento diário?</div></div>', unsafe_allow_html=True)
 
 # 6. ENTRADA DE DADOS: PERFIL DO USUÁRIO (RESTAURADO)
 st.markdown("### 👤 PERFIL DO USUÁRIO")

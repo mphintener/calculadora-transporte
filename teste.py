@@ -258,6 +258,7 @@ if st.button("EFETUAR DIAGNÓSTICO"):
         """, unsafe_allow_html=True)
         st.markdown("""<div style="background-color: #E63946; color: white; padding: 15px; text-align: center; font-weight: bold; border-radius: 5px;">🚨 ALERTA DE EXPROPRIAÇÃO MENSAL</div>""", unsafe_allow_html=True)
         # RESULTADOS
+        cor_alerta = "#E63946" if depre > 20 else "#000000" # Vermelho se perder mais de 20% do valor da hora
         st.markdown(f"""
         <div class="report-box">
             <h3 style="margin-top:0; color:#FFCC00;">📋 RESULTADOS</h3>
@@ -266,9 +267,12 @@ if st.button("EFETUAR DIAGNÓSTICO"):
             <p>• 💸 <b>VALOR DO CONFISCO (TARIFA + TEMPO NÃO PAGO):</b> R$ {confi:.2f}</p>
             <p>• 💵 <b>SALÁRIO LÍQUIDO (-TRANSPORTE):</b> R$ {sal_liq_transp:.2f}</p>
             <p>• 📉 <b>{label_sobra}:</b> R$ {sobra:.2f}</p>
-            <p>• 📉 <b>DEPRECIAÇÃO DA FORÇA DE TRABALHO:</b> <span style="color:#E63946;">{depre:.1f}%</span></p>
-        </div>
-        """, unsafe_allow_html=True)
+           <p style="color:#000000;">• 📉 <b>DEPRECIAÇÃO REAL DO VALOR/HORA:</b> 
+    <span style="color:{cor_alerta}; font-weight:900; font-size:1.4rem;">{depre:.1f}%</span></p>
+    <p style="font-size:0.8rem; color:#666; margin-left: 20px;">
+        <i>*Isso significa que sua força de trabalho vale {depre:.1f}% menos devido ao custo e tempo de deslocamento.</i>
+    </p>
+""", unsafe_allow_html=True)
 
         # NOTA TÉCNICA
         st.markdown(f"""

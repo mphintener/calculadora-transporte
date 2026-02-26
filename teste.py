@@ -129,14 +129,21 @@ st.markdown("""
         -webkit-text-fill-color: #FFFFFF !important;
     }
 
-    /* 5. BOTÃO GERAR DIAGNÓSTICO */
+    /* 5. BOTÃO GERAR DIAGNÓSTICO - CONTRASTE MÁXIMO */
     .stButton>button { 
         background-color: #FFCC00 !important; 
         color: #000000 !important; 
         font-weight: 900 !important; 
-        width: 100%; height: 4em;
-        border: 2px solid #E63946 !important;
+        width: 100%; 
+        height: 4em;
+        border: 2px solid #000000 !important;
         text-transform: uppercase;
+        font-size: 1.2rem !important;
+    } /* <--- ESSA CHAVE É ESSENCIAL */
+
+    .stButton>button:hover {
+        background-color: #E63946 !important;
+        color: #FFFFFF !important;
     }
     </style>
     """, unsafe_allow_html=True)

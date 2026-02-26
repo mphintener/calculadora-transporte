@@ -137,25 +137,6 @@ st.markdown("""
     </style>
     """, unsafe_allow_html=True)
 
-# 2. CABEÇALHO: TÍTULO À ESQUERDA E LOGO À DIREITA
-# Criamos duas colunas: a primeira (75% da largura) e a segunda (25% para o logo)
-col_titulo, col_logo = st.columns([3, 1])
-
-with col_titulo:
-    st.markdown("<h1>⚖️ CALCULADORA DO TRECHO</h1>", unsafe_allow_html=True)
-    st.markdown("<p class='frase-impacto'>Quanto de tempo e de dinheiro são consumidos no seu deslocamento diário?</p>", unsafe_allow_html=True)
-
-with col_logo:
-    try:
-        # O logo agora fica no canto direito
-        st.image("logo.png", use_container_width=True)
-    except Exception:
-        st.markdown("<p style='text-align:right; color:#555; padding-top:20px;'>[Logo]</p>", unsafe_allow_html=True)
-
-# ---------------------------------------------------------
-# PARE DE COLAR AQUI. O QUE VEM ABAIXO É O SEU CÓDIGO O.K.
-# ---------------------------------------------------------LCULADORA DO TRECHO</h1><div class="subheader-text">Quanto de tempo e de dinheiro são consumidos no seu deslocamento diário?</div></div>', unsafe_allow_html=True)
-
 # 6. ENTRADA DE DADOS: PERFIL DO USUÁRIO (RESTAURADO)
 st.markdown("### 👤 PERFIL DO USUÁRIO")
 p1, p2, p3 = st.columns(3)

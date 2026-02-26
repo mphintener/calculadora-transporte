@@ -1,6 +1,6 @@
 import streamlit as st
 # No topo do arquivo
-from streamlit_gsheets import GSheetsConnection
+from streamlit_gsheets import GSheetsConnection 
 
 # Criar a conexão (o Streamlit vai buscar as credenciais nas Secrets)
 conn = st.connection("gsheets", type=GSheetsConnection)

@@ -257,9 +257,7 @@ if st.button("EFETUAR DIAGNÓSTICO"):
             </div>
         </div>
         """, unsafe_allow_html=True)
-
         st.markdown("""<div style="background-color: #E63946; color: white; padding: 15px; text-align: center; font-weight: bold; border-radius: 5px;">🚨 ALERTA DE EXPROPRIAÇÃO MENSAL</div>""", unsafe_allow_html=True)
-
         # RESULTADOS
         st.markdown(f"""
         <div class="report-box">
@@ -269,25 +267,26 @@ if st.button("EFETUAR DIAGNÓSTICO"):
             <p>• 💸 <b>VALOR DO CONFISCO (TARIFA + TEMPO NÃO PAGO):</b> R$ {confi:.2f}</p>
             <p>• 💵 <b>SALÁRIO LÍQUIDO (-TRANSPORTE):</b> R$ {sal_liq_transp:.2f}</p>
             <p>• 📉 <b>{label_sobra}:</b> R$ {sobra:.2f}</p>
-           # 1. PREPARAÇÃO DOS DADOS (EVITA ERROS DE SINTAXE)
-        depre_exibicao = f"{depre:.1f}"
-        
-        # 2. EXIBIÇÃO DA DEPRECIAÇÃO
+           # --- BLOCO FINAL DE RESULTADOS E NOTA ---
+        # 1. Formata a depreciação para evitar erro de símbolo
+        depre_txt = f"{depre:.1f}"
+
+        # 2. Caixa de Depreciação
         st.markdown(f"""
             <p style="color:#000000; margin-bottom: 5px;">&bull; &#128201; <b>DEPRECIAÇÃO DA FORÇA DE TRABALHO:</b> 
-                <span style="color:#E63946; font-size: 1.5rem; font-weight: 900;">{depre_exibicao}%</span>
+                <span style="color:#E63946; font-size: 1.5rem; font-weight: 900;">{depre_txt}%</span>
             </p>
             <div style="background: #FFF3F3; border-left: 4px solid #E63946; padding: 10px; margin-left: 20px; margin-bottom: 20px;">
                 <small style="color: #333; display: block; line-height: 1.2;">
                     <b>ANÁLISE CRÍTICA:</b> Cada hora de deslocamento atua como uma jornada extraordinária compulsória, 
-                    reduzindo o valor líquido da sua hora vendida em <b>{depre_exibicao}%</b> em relação ao contrato nominal.
+                    reduzindo o valor líquido da sua hora vendida em <b>{depre_txt}%</b> em relação ao contrato nominal.
                 </small>
             </div>
         </div>
         """, unsafe_allow_html=True)
 
-        # 3. NOTA TÉCNICA (ESTILO PAPEL)
-        nota_html = f"""
+        # 3. Nota Técnica (Texto simples em variável para evitar SyntaxError)
+        html_nota = f"""
         <div style="background-color: #FFFFFF; padding: 25px; border-left: 10px solid #FFCC00; border: 1px solid #DDD; margin-top: 25px; color: #000000;">
             <b style="color: #000000; font-size: 1.3rem; font-family: 'Arial Black'; display: block; margin-bottom: 10px;">
                 &#128221; NOTA TÉCNICA DE EXPROPRIAÇÃO
@@ -299,8 +298,10 @@ if st.button("EFETUAR DIAGNÓSTICO"):
             </div>
         </div>
         """
-        st.markdown(nota_html, unsafe_allow_html=True)
+        st.markdown(html_nota, unsafe_allow_html=True)
 
-        # 4. BOTÃO DE DOWNLOAD (FIM DO ARQUIVO)
-        relatorio_txt = f"DIAGNÓSTICO TÉCNICO\nFLUXO: {label_m} -> {label_t}\nCONFISCO: R$ {confi:.2f}"
-        st.download_button("📥 BAIXAR NOTA TÉCNICA", relatorio_txt, file_name="diagnostico_trecho.txt")
+        # 4. Botão de Download
+        relatorio = f"DIAGNÓSTICO TÉCNICO\nCONFISCO: R$ {confi:.2f}\nDEPRECIAÇÃO: {depre_txt}%"
+        st.download_button("📥 BAIXAR NOTA TÉCNICA", relatorio, file_name="diagnostico.txt")
+
+# FIM DO ARQUIVO (Certifique-se de que não há aspas sobrando abaixo desta linha)

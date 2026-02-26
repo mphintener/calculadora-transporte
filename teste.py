@@ -1,4 +1,4 @@
-import streamlit as st
+import streamlit as st 
 # No topo do arquivo
 from streamlit_gsheets import GSheetsConnection  
 

@@ -1,324 +1,251 @@
-import { useState } from "react";
-import { BarChart, Bar, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from "recharts";
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Trabalhista</title>
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://unpkg.com/recharts/umd/Recharts.js"></script>
+    <style>
+        body { margin: 0; padding: 0; background: #0a1628; }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
 
-const evolucao = [
-  { ano: "2016", processos: 2.76 },
-  { ano: "2017", processos: 2.65 },
-  { ano: "2018", processos: 1.75 },
-  { ano: "2019", processos: 1.60 },
-  { ano: "2020", processos: 1.40 },
-  { ano: "2021", processos: 1.78 },
-  { ano: "2022", processos: 1.89 },
-  { ano: "2023", processos: 2.10 },
-  { ano: "2024", processos: 2.40 },
-  { ano: "2025", processos: 2.47 },
-];
+    <script type="text/babel">
+        // Importamos as ferramentas do Recharts de forma que o navegador entenda
+        const { useState } = React;
+        const { 
+            BarChart, Bar, LineChart, Line, XAxis, YAxis, 
+            CartesianGrid, Tooltip, ResponsiveContainer, Legend 
+        } = Recharts;
 
-const pedidos = [
-  { tema: "Verbas rescisórias", pct: 30, cor: "#e63946" },
-  { tema: "Dano moral", pct: 25.8, cor: "#f4a261" },
-  { tema: "Horas extras", pct: 22.8, cor: "#2a9d8f" },
-  { tema: "Insalubridade", pct: 20, cor: "#457b9d" },
-  { tema: "FGTS", pct: 9.5, cor: "#6a4c93" },
-];
+        // --- SEU CÓDIGO COMEÇA AQUI ---
+        const evolucao = [
+          { ano: "2016", processos: 2.76 }, { ano: "2017", processos: 2.65 }, { ano: "2018", processos: 1.75 },
+          { ano: "2019", processos: 1.60 }, { ano: "2020", processos: 1.40 }, { ano: "2021", processos: 1.78 },
+          { ano: "2022", processos: 1.89 }, { ano: "2023", processos: 2.10 }, { ano: "2024", processos: 2.40 },
+          { ano: "2025", processos: 2.47 },
+        ];
 
-const regioes = [
-  { trt: "TRT-15 (SP interior)", processos: 300642, valor: 6.5, estado: "São Paulo" },
-  { trt: "TRT-5 (BA)", processos: 213832, valor: 3.1, estado: "Bahia" },
-  { trt: "TRT-4 (RS)", processos: 153544, valor: 5.55, estado: "Rio Grande do Sul" },
-  { trt: "TRT-2 (SP capital)", processos: 290000, valor: 5.2, estado: "São Paulo" },
-  { trt: "TRT-1 (RJ)", processos: 185000, valor: 4.1, estado: "Rio de Janeiro" },
-  { trt: "TRT-12 (SC)", processos: 86300, valor: 2.1, estado: "Santa Catarina" },
-];
+        const pedidos = [
+          { tema: "Verbas rescisórias", pct: 30, cor: "#e63946" },
+          { tema: "Dano moral", pct: 25.8, cor: "#f4a261" },
+          { tema: "Horas extras", pct: 22.8, cor: "#2a9d8f" },
+          { tema: "Insalubridade", pct: 20, cor: "#457b9d" },
+          { tema: "FGTS", pct: 9.5, cor: "#6a4c93" },
+        ];
 
-const empresas = [
-  { nome: "Correios (ECT)", setor: "Estatal", processos: 9660, tipo: "Estatal" },
-  { nome: "Caixa Econômica Federal", setor: "Banco público", processos: 8900, tipo: "Banco Público" },
-  { nome: "Bradesco", setor: "Banco privado", processos: 7200, tipo: "Banco Privado" },
-  { nome: "Banco do Brasil", setor: "Banco público", processos: 6800, tipo: "Banco Público" },
-  { nome: "Petrobras", setor: "Estatal", processos: 5900, tipo: "Estatal" },
-  { nome: "Itaú Unibanco", setor: "Banco privado", processos: 5400, tipo: "Banco Privado" },
-  { nome: "BRF/Sadia/Perdigão", setor: "Alimentos", processos: 4100, tipo: "Indústria" },
-  { nome: "Seara / JBS", setor: "Alimentos", processos: 3800, tipo: "Indústria" },
-];
+        const regioes = [
+          { trt: "TRT-15 (SP interior)", processos: 300642, valor: 6.5, estado: "São Paulo" },
+          { trt: "TRT-5 (BA)", processos: 213832, valor: 3.1, estado: "Bahia" },
+          { trt: "TRT-4 (RS)", processos: 153544, valor: 5.55, estado: "Rio Grande do Sul" },
+          { trt: "TRT-2 (SP capital)", processos: 290000, valor: 5.2, estado: "São Paulo" },
+          { trt: "TRT-1 (RJ)", processos: 185000, valor: 4.1, estado: "Rio de Janeiro" },
+          { trt: "TRT-12 (SC)", processos: 86300, valor: 2.1, estado: "Santa Catarina" },
+        ];
 
-const TABS = ["Evolução Histórica", "Pedidos Mais Frequentes", "Por Região", "Empresas Mais Acionadas"];
+        const empresas = [
+          { nome: "Correios (ECT)", setor: "Estatal", processos: 9660, tipo: "Estatal" },
+          { nome: "Caixa Econômica Federal", setor: "Banco público", processos: 8900, tipo: "Banco Público" },
+          { nome: "Bradesco", setor: "Banco privado", processos: 7200, tipo: "Banco Privado" },
+          { nome: "Banco do Brasil", setor: "Banco público", processos: 6800, tipo: "Banco Público" },
+          { nome: "Petrobras", setor: "Estatal", processos: 5900, tipo: "Estatal" },
+          { nome: "Itaú Unibanco", setor: "Banco privado", processos: 5400, tipo: "Banco Privado" },
+          { nome: "BRF/Sadia/Perdigão", setor: "Alimentos", processos: 4100, tipo: "Indústria" },
+          { nome: "Seara / JBS", setor: "Alimentos", processos: 3800, tipo: "Indústria" },
+        ];
 
-const corTipo = {
-  "Estatal": "#e63946",
-  "Banco Público": "#2a9d8f",
-  "Banco Privado": "#457b9d",
-  "Indústria": "#f4a261",
-};
+        const TABS = ["Evolução Histórica", "Pedidos Mais Frequentes", "Por Região", "Empresas Mais Acionadas"];
 
-const CustomTooltipLine = ({ active, payload, label }) => {
-  if (active && payload && payload.length) {
-    const isReforma = label === "2017" || label === "2018";
-    return (
-      <div style={{ background: "#0d1b2a", border: "1px solid #2a9d8f", borderRadius: 8, padding: "10px 16px" }}>
-        <p style={{ color: "#8ecae6", margin: 0, fontSize: 13 }}>{label}</p>
-        <p style={{ color: "#fff", margin: 0, fontSize: 16, fontWeight: 700 }}>{payload[0].value}M processos</p>
-        {isReforma && <p style={{ color: "#f4a261", margin: 0, fontSize: 11 }}>⚑ Reforma Trabalhista</p>}
-      </div>
-    );
-  }
-  return null;
-};
+        const corTipo = {
+          "Estatal": "#e63946",
+          "Banco Público": "#2a9d8f",
+          "Banco Privado": "#457b9d",
+          "Indústria": "#f4a261",
+        };
 
-const ReformaDot = (props) => {
-  const { cx, cy, payload } = props;
-  if (payload.ano === "2017" || payload.ano === "2018") {
-    return <circle cx={cx} cy={cy} r={7} fill="#f4a261" stroke="#fff" strokeWidth={2} />;
-  }
-  return <circle cx={cx} cy={cy} r={4} fill="#2a9d8f" stroke="#0d1b2a" strokeWidth={2} />;
-};
+        const CustomTooltipLine = ({ active, payload, label }) => {
+          if (active && payload && payload.length) {
+            const isReforma = label === "2017" || label === "2018";
+            return (
+              <div style={{ background: "#0d1b2a", border: "1px solid #2a9d8f", borderRadius: 8, padding: "10px 16px" }}>
+                <p style={{ color: "#8ecae6", margin: 0, fontSize: 13 }}>{label}</p>
+                <p style={{ color: "#fff", margin: 0, fontSize: 16, fontWeight: 700 }}>{payload[0].value}M processos</p>
+                {isReforma && <p style={{ color: "#f4a261", margin: 0, fontSize: 11 }}>⚑ Reforma Trabalhista</p>}
+              </div>
+            );
+          }
+          return null;
+        };
 
-export default function Dashboard() {
-  const [tab, setTab] = useState(0);
+        const ReformaDot = (props) => {
+          const { cx, cy, payload } = props;
+          if (payload.ano === "2017" || payload.ano === "2018") {
+            return <circle cx={cx} cy={cy} r={7} fill="#f4a261" stroke="#fff" strokeWidth={2} />;
+          }
+          return <circle cx={cx} cy={cy} r={4} fill="#2a9d8f" stroke="#0d1b2a" strokeWidth={2} />;
+        };
 
-  return (
-    <div style={{
-      background: "#0a1628",
-      minHeight: "100vh",
-      fontFamily: "'Georgia', serif",
-      color: "#e8e8e8",
-      padding: "0 0 40px 0",
-    }}>
-      {/* Header */}
-      <div style={{
-        background: "linear-gradient(135deg, #0d1b2a 0%, #1a2f4a 100%)",
-        borderBottom: "2px solid #2a9d8f",
-        padding: "32px 40px 24px",
-      }}>
-        <div style={{ maxWidth: 960, margin: "0 auto" }}>
-          <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 6 }}>
-            <div style={{ width: 4, height: 32, background: "#e63946", borderRadius: 2 }} />
-            <p style={{ color: "#8ecae6", margin: 0, fontSize: 12, letterSpacing: 3, textTransform: "uppercase" }}>
-              Mapeamento · Justiça do Trabalho · Brasil
-            </p>
-          </div>
-          <h1 style={{ margin: 0, fontSize: 28, fontWeight: 700, color: "#fff", lineHeight: 1.2 }}>
-            Processos Trabalhistas Pós-Reforma
-          </h1>
-          <p style={{ margin: "8px 0 0", color: "#8ecae6", fontSize: 14 }}>
-            Lei 13.467/2017 → 2025 · Dados: TST, CNJ, TRTs
-          </p>
-        </div>
-      </div>
+        function Dashboard() {
+          const [tab, setTab] = useState(0);
 
-      {/* KPIs */}
-      <div style={{ maxWidth: 960, margin: "24px auto 0", padding: "0 40px" }}>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 16, marginBottom: 28 }}>
-          {[
-            { label: "Processos em 2025", valor: "2,47M", delta: "+8,5% vs 2024", cor: "#e63946" },
-            { label: "Queda pós-reforma (2018)", valor: "−31,2%", delta: "maior queda da série histórica", cor: "#2a9d8f" },
-            { label: "Pago às partes em 2025", valor: "R$ 50,7bi", delta: "primeiro ano acima de R$50bi", cor: "#f4a261" },
-            { label: "Tempo médio até sentença", valor: "197 dias", delta: "−8,4% desde 2020", cor: "#8ecae6" },
-          ].map((k, i) => (
-            <div key={i} style={{
-              background: "#0d1b2a",
-              border: `1px solid ${k.cor}33`,
-              borderTop: `3px solid ${k.cor}`,
-              borderRadius: 10,
-              padding: "16px 18px",
+          return (
+            <div style={{
+              background: "#0a1628",
+              minHeight: "100vh",
+              fontFamily: "'Georgia', serif",
+              color: "#e8e8e8",
+              padding: "0 0 40px 0",
             }}>
-              <p style={{ margin: 0, fontSize: 11, color: "#8ecae6", letterSpacing: 1, textTransform: "uppercase" }}>{k.label}</p>
-              <p style={{ margin: "6px 0 4px", fontSize: 22, fontWeight: 700, color: "#fff" }}>{k.valor}</p>
-              <p style={{ margin: 0, fontSize: 11, color: k.cor }}>{k.delta}</p>
-            </div>
-          ))}
-        </div>
-
-        {/* Tabs */}
-        <div style={{ display: "flex", gap: 4, marginBottom: 24, borderBottom: "1px solid #1e3a5f" }}>
-          {TABS.map((t, i) => (
-            <button key={i} onClick={() => setTab(i)} style={{
-              background: tab === i ? "#2a9d8f" : "transparent",
-              color: tab === i ? "#fff" : "#8ecae6",
-              border: "none",
-              borderRadius: "8px 8px 0 0",
-              padding: "10px 18px",
-              fontSize: 13,
-              cursor: "pointer",
-              fontFamily: "Georgia, serif",
-              fontWeight: tab === i ? 700 : 400,
-              transition: "all 0.2s",
-            }}>{t}</button>
-          ))}
-        </div>
-
-        {/* Tab 0 — Evolução */}
-        {tab === 0 && (
-          <div style={{ background: "#0d1b2a", borderRadius: 12, padding: "28px 24px", border: "1px solid #1e3a5f" }}>
-            <h2 style={{ margin: "0 0 6px", fontSize: 18, color: "#fff" }}>Novos Processos por Ano (em milhões)</h2>
-            <p style={{ margin: "0 0 24px", fontSize: 13, color: "#8ecae6" }}>
-              Pontos em laranja marcam o impacto imediato da Reforma Trabalhista (2017–2018)
-            </p>
-            <ResponsiveContainer width="100%" height={320}>
-              <LineChart data={evolucao} margin={{ top: 10, right: 20, bottom: 0, left: 0 }}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#1e3a5f" />
-                <XAxis dataKey="ano" stroke="#8ecae6" tick={{ fontSize: 12 }} />
-                <YAxis stroke="#8ecae6" tick={{ fontSize: 12 }} domain={[1.2, 3.0]}
-                  tickFormatter={v => `${v}M`} />
-                <Tooltip content={<CustomTooltipLine />} />
-                <Line
-                  type="monotone" dataKey="processos" stroke="#2a9d8f" strokeWidth={2.5}
-                  dot={<ReformaDot />} activeDot={{ r: 7, fill: "#fff" }}
-                />
-              </LineChart>
-            </ResponsiveContainer>
-            <div style={{ display: "flex", gap: 24, marginTop: 16, flexWrap: "wrap" }}>
-              {[
-                { cor: "#f4a261", txt: "Pico pré-reforma (2016): 2,76M" },
-                { cor: "#e63946", txt: "Mínima histórica (2020): 1,40M" },
-                { cor: "#2a9d8f", txt: "Novo recorde pós-reforma (2025): 2,47M" },
-              ].map((l, i) => (
-                <div key={i} style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                  <div style={{ width: 10, height: 10, borderRadius: "50%", background: l.cor }} />
-                  <span style={{ fontSize: 12, color: "#8ecae6" }}>{l.txt}</span>
+              {/* Header */}
+              <div style={{
+                background: "linear-gradient(135deg, #0d1b2a 0%, #1a2f4a 100%)",
+                borderBottom: "2px solid #2a9d8f",
+                padding: "32px 40px 24px",
+              }}>
+                <div style={{ maxWidth: 960, margin: "0 auto" }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 6 }}>
+                    <div style={{ width: 4, height: 32, background: "#e63946", borderRadius: 2 }} />
+                    <p style={{ color: "#8ecae6", margin: 0, fontSize: 12, letterSpacing: 3, textTransform: "uppercase" }}>
+                      Mapeamento · Justiça do Trabalho · Brasil
+                    </p>
+                  </div>
+                  <h1 style={{ margin: 0, fontSize: 28, fontWeight: 700, color: "#fff", lineHeight: 1.2 }}>
+                    Processos Trabalhistas Pós-Reforma
+                  </h1>
+                  <p style={{ margin: "8px 0 0", color: "#8ecae6", fontSize: 14 }}>
+                    Lei 13.467/2017 → 2025 · Dados: TST, CNJ, TRTs
+                  </p>
                 </div>
-              ))}
-            </div>
-          </div>
-        )}
+              </div>
 
-        {/* Tab 1 — Pedidos */}
-        {tab === 1 && (
-          <div style={{ background: "#0d1b2a", borderRadius: 12, padding: "28px 24px", border: "1px solid #1e3a5f" }}>
-            <h2 style={{ margin: "0 0 6px", fontSize: 18, color: "#fff" }}>Pedidos Mais Frequentes</h2>
-            <p style={{ margin: "0 0 24px", fontSize: 13, color: "#8ecae6" }}>
-              % de processos contendo cada tipo de pedido (um processo pode ter múltiplos pedidos)
-            </p>
-            <div style={{ display: "flex", gap: 32, flexWrap: "wrap" }}>
-              <div style={{ flex: 1, minWidth: 280 }}>
-                {pedidos.map((p, i) => (
-                  <div key={i} style={{ marginBottom: 18 }}>
-                    <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 6 }}>
-                      <span style={{ fontSize: 14, color: "#e8e8e8" }}>{p.tema}</span>
-                      <span style={{ fontSize: 14, fontWeight: 700, color: p.cor }}>{p.pct}%</span>
+              {/* KPIs */}
+              <div style={{ maxWidth: 960, margin: "24px auto 0", padding: "0 40px" }}>
+                <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: 16, marginBottom: 28 }}>
+                  {[
+                    { label: "Processos em 2025", valor: "2,47M", delta: "+8,5% vs 2024", cor: "#e63946" },
+                    { label: "Queda pós-reforma", valor: "−31,2%", delta: "maior queda histórica", cor: "#2a9d8f" },
+                    { label: "Pago às partes 2025", valor: "R$ 50,7bi", delta: "recorde histórico", cor: "#f4a261" },
+                    { label: "Tempo médio", valor: "197 dias", delta: "−8,4% desde 2020", cor: "#8ecae6" },
+                  ].map((k, i) => (
+                    <div key={i} style={{
+                      background: "#0d1b2a",
+                      border: `1px solid ${k.cor}33`,
+                      borderTop: `3px solid ${k.cor}`,
+                      borderRadius: 10,
+                      padding: "16px 18px",
+                    }}>
+                      <p style={{ margin: 0, fontSize: 11, color: "#8ecae6", letterSpacing: 1, textTransform: "uppercase" }}>{k.label}</p>
+                      <p style={{ margin: "6px 0 4px", fontSize: 22, fontWeight: 700, color: "#fff" }}>{k.valor}</p>
+                      <p style={{ margin: 0, fontSize: 11, color: k.cor }}>{k.delta}</p>
                     </div>
-                    <div style={{ background: "#1e3a5f", borderRadius: 4, height: 8, overflow: "hidden" }}>
-                      <div style={{
-                        width: `${(p.pct / 35) * 100}%`, height: "100%",
-                        background: p.cor, borderRadius: 4,
-                        transition: "width 1s ease",
-                      }} />
+                  ))}
+                </div>
+
+                {/* Tabs */}
+                <div style={{ display: "flex", gap: 4, marginBottom: 24, borderBottom: "1px solid #1e3a5f", overflowX: "auto" }}>
+                  {TABS.map((t, i) => (
+                    <button key={i} onClick={() => setTab(i)} style={{
+                      background: tab === i ? "#2a9d8f" : "transparent",
+                      color: tab === i ? "#fff" : "#8ecae6",
+                      border: "none",
+                      borderRadius: "8px 8px 0 0",
+                      padding: "10px 18px",
+                      fontSize: 13,
+                      cursor: "pointer",
+                      fontFamily: "Georgia, serif",
+                      whiteSpace: "nowrap",
+                      fontWeight: tab === i ? 700 : 400,
+                    }}>{t}</button>
+                  ))}
+                </div>
+
+                {/* Conteúdo das Tabs seguindo sua lógica */}
+                {tab === 0 && (
+                  <div style={{ background: "#0d1b2a", borderRadius: 12, padding: "28px 24px", border: "1px solid #1e3a5f" }}>
+                    <h2 style={{ margin: "0 0 6px", fontSize: 18, color: "#fff" }}>Novos Processos por Ano (em milhões)</h2>
+                    <ResponsiveContainer width="100%" height={320}>
+                      <LineChart data={evolucao}>
+                        <CartesianGrid strokeDasharray="3 3" stroke="#1e3a5f" />
+                        <XAxis dataKey="ano" stroke="#8ecae6" />
+                        <YAxis stroke="#8ecae6" domain={[1.2, 3.0]} tickFormatter={v => `${v}M`} />
+                        <Tooltip content={<CustomTooltipLine />} />
+                        <Line type="monotone" dataKey="processos" stroke="#2a9d8f" strokeWidth={2.5} dot={<ReformaDot />} />
+                      </LineChart>
+                    </ResponsiveContainer>
+                  </div>
+                )}
+
+                {tab === 1 && (
+                  <div style={{ background: "#0d1b2a", borderRadius: 12, padding: "28px 24px", border: "1px solid #1e3a5f" }}>
+                    <h2 style={{ margin: "0 0 6px", fontSize: 18, color: "#fff" }}>Pedidos Mais Frequentes</h2>
+                    {pedidos.map((p, i) => (
+                      <div key={i} style={{ marginBottom: 18 }}>
+                        <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 6 }}>
+                          <span style={{ fontSize: 14 }}>{p.tema}</span>
+                          <span style={{ fontWeight: 700, color: p.cor }}>{p.pct}%</span>
+                        </div>
+                        <div style={{ background: "#1e3a5f", borderRadius: 4, height: 8 }}>
+                          <div style={{ width: `${(p.pct / 35) * 100}%`, height: "100%", background: p.cor, borderRadius: 4 }} />
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+
+                {tab === 2 && (
+                  <div style={{ background: "#0d1b2a", borderRadius: 12, padding: "28px 24px", border: "1px solid #1e3a5f" }}>
+                    <h2 style={{ margin: "0 0 6px", fontSize: 18, color: "#fff" }}>Processos por TRT</h2>
+                    <ResponsiveContainer width="100%" height={280}>
+                      <BarChart data={regioes}>
+                        <CartesianGrid strokeDasharray="3 3" stroke="#1e3a5f" />
+                        <XAxis dataKey="trt" stroke="#8ecae6" angle={-20} textAnchor="end" height={60} />
+                        <YAxis yAxisId="left" stroke="#2a9d8f" />
+                        <YAxis yAxisId="right" orientation="right" stroke="#f4a261" />
+                        <Tooltip />
+                        <Bar yAxisId="left" dataKey="processos" fill="#2a9d8f" />
+                        <Bar yAxisId="right" dataKey="valor" fill="#f4a261" />
+                      </BarChart>
+                    </ResponsiveContainer>
+                  </div>
+                )}
+
+                {tab === 3 && (
+                  <div style={{ background: "#0d1b2a", borderRadius: 12, padding: "28px 24px", border: "1px solid #1e3a5f" }}>
+                    <h2 style={{ margin: "0 0 6px", fontSize: 18, color: "#fff" }}>Maiores Litigantes</h2>
+                    <div style={{ overflowX: "auto" }}>
+                      <table style={{ width: "100%", borderCollapse: "collapse" }}>
+                        <thead>
+                          <tr style={{ borderBottom: "2px solid #2a9d8f", color: "#8ecae6", textAlign: "left" }}>
+                            <th style={{ padding: 10 }}>Empresa</th>
+                            <th style={{ padding: 10 }}>Setor</th>
+                            <th style={{ padding: 10 }}>Processos</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {empresas.map((e, i) => (
+                            <tr key={i} style={{ borderBottom: "1px solid #1e3a5f" }}>
+                              <td style={{ padding: 10 }}>{e.nome}</td>
+                              <td style={{ padding: 10 }}>{e.setor}</td>
+                              <td style={{ padding: 10 }}>{e.processos.toLocaleString()}</td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
                     </div>
                   </div>
-                ))}
-              </div>
-              <div style={{ flex: 1, minWidth: 260 }}>
-                <div style={{ background: "#0a1628", borderRadius: 10, padding: 20, border: "1px solid #1e3a5f" }}>
-                  <p style={{ margin: "0 0 12px", color: "#f4a261", fontSize: 12, textTransform: "uppercase", letterSpacing: 1 }}>
-                    Temas que desapareceram pós-reforma
-                  </p>
-                  {[
-                    { tema: "Terceirização ilegal", queda: "−99%", de: "2017", ate: "2024" },
-                    { tema: "Norma coletiva", queda: "−94%", de: "25mil casos", ate: "1.500 casos" },
-                  ].map((t, i) => (
-                    <div key={i} style={{ marginBottom: 14, paddingBottom: 14, borderBottom: i === 0 ? "1px solid #1e3a5f" : "none" }}>
-                      <p style={{ margin: "0 0 4px", color: "#fff", fontSize: 14 }}>{t.tema}</p>
-                      <p style={{ margin: 0, color: "#2a9d8f", fontSize: 20, fontWeight: 700 }}>{t.queda}</p>
-                      <p style={{ margin: 0, color: "#8ecae6", fontSize: 11 }}>{t.de} → {t.ate}</p>
-                    </div>
-                  ))}
-                </div>
+                )}
               </div>
             </div>
-          </div>
-        )}
+          );
+        }
 
-        {/* Tab 2 — Regiões */}
-        {tab === 2 && (
-          <div style={{ background: "#0d1b2a", borderRadius: 12, padding: "28px 24px", border: "1px solid #1e3a5f" }}>
-            <h2 style={{ margin: "0 0 6px", fontSize: 18, color: "#fff" }}>Processos por Tribunal Regional (2024–2025)</h2>
-            <p style={{ margin: "0 0 24px", fontSize: 13, color: "#8ecae6" }}>
-              Novos processos na 1ª instância e valores pagos a reclamantes (R$ bilhões)
-            </p>
-            <ResponsiveContainer width="100%" height={280}>
-              <BarChart data={regioes} margin={{ top: 10, right: 20, bottom: 40, left: 0 }}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#1e3a5f" />
-                <XAxis dataKey="trt" stroke="#8ecae6" tick={{ fontSize: 10, fill: "#8ecae6" }} angle={-20} textAnchor="end" />
-                <YAxis yAxisId="left" stroke="#2a9d8f" tick={{ fontSize: 11 }} tickFormatter={v => `${(v/1000).toFixed(0)}k`} />
-                <YAxis yAxisId="right" orientation="right" stroke="#f4a261" tick={{ fontSize: 11 }} tickFormatter={v => `R$${v}bi`} />
-                <Tooltip
-                  contentStyle={{ background: "#0a1628", border: "1px solid #2a9d8f", borderRadius: 8, color: "#fff" }}
-                  formatter={(value, name) => name === "processos" ? [`${value.toLocaleString("pt-BR")}`, "Novos processos"] : [`R$ ${value}bi`, "Valor pago"]}
-                />
-                <Legend wrapperStyle={{ color: "#8ecae6", fontSize: 12 }} />
-                <Bar yAxisId="left" dataKey="processos" name="Novos processos" fill="#2a9d8f" radius={[4, 4, 0, 0]} />
-                <Bar yAxisId="right" dataKey="valor" name="Valor pago (R$ bi)" fill="#f4a261" radius={[4, 4, 0, 0]} />
-              </BarChart>
-            </ResponsiveContainer>
-            <div style={{ marginTop: 20, display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
-              <div style={{ background: "#0a1628", borderRadius: 8, padding: 14, border: "1px solid #1e3a5f" }}>
-                <p style={{ margin: "0 0 4px", color: "#8ecae6", fontSize: 11, textTransform: "uppercase", letterSpacing: 1 }}>Maior volume Sul</p>
-                <p style={{ margin: 0, color: "#fff", fontSize: 15, fontWeight: 700 }}>TRT-4 (RS): +15,3% em 2025</p>
-                <p style={{ margin: 0, color: "#2a9d8f", fontSize: 12 }}>maior número desde a reforma de 2017</p>
-              </div>
-              <div style={{ background: "#0a1628", borderRadius: 8, padding: 14, border: "1px solid #1e3a5f" }}>
-                <p style={{ margin: "0 0 4px", color: "#8ecae6", fontSize: 11, textTransform: "uppercase", letterSpacing: 1 }}>Maior crescimento NE</p>
-                <p style={{ margin: 0, color: "#fff", fontSize: 15, fontWeight: 700 }}>TRT-5 (BA): +52,6% desde 2020</p>
-                <p style={{ margin: 0, color: "#f4a261", fontSize: 12 }}>maior número desde a reforma</p>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* Tab 3 — Empresas */}
-        {tab === 3 && (
-          <div style={{ background: "#0d1b2a", borderRadius: 12, padding: "28px 24px", border: "1px solid #1e3a5f" }}>
-            <h2 style={{ margin: "0 0 6px", fontSize: 18, color: "#fff" }}>Maiores Litigantes na Justiça do Trabalho</h2>
-            <p style={{ margin: "0 0 24px", fontSize: 13, color: "#8ecae6" }}>
-              Processos no TST (instância de recurso) — Dados do ranking TST dez/2025 e CNJ
-            </p>
-            <div style={{ overflowX: "auto" }}>
-              <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 13 }}>
-                <thead>
-                  <tr style={{ borderBottom: "2px solid #2a9d8f" }}>
-                    {["#", "Empresa / Órgão", "Setor", "Processos (TST)", "Perfil"].map((h, i) => (
-                      <th key={i} style={{ padding: "10px 12px", textAlign: i === 0 ? "center" : "left", color: "#8ecae6", fontWeight: 600, fontSize: 11, textTransform: "uppercase", letterSpacing: 1 }}>{h}</th>
-                    ))}
-                  </tr>
-                </thead>
-                <tbody>
-                  {empresas.map((e, i) => (
-                    <tr key={i} style={{ borderBottom: "1px solid #1e3a5f", background: i % 2 === 0 ? "#0a1628" : "transparent" }}>
-                      <td style={{ padding: "12px", textAlign: "center", color: "#8ecae6", fontWeight: 700 }}>{i + 1}</td>
-                      <td style={{ padding: "12px", color: "#fff", fontWeight: 600 }}>{e.nome}</td>
-                      <td style={{ padding: "12px", color: "#8ecae6" }}>{e.setor}</td>
-                      <td style={{ padding: "12px" }}>
-                        <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-                          <div style={{ flex: 1, background: "#1e3a5f", borderRadius: 3, height: 6, maxWidth: 120 }}>
-                            <div style={{ width: `${(e.processos / 9660) * 100}%`, height: "100%", background: corTipo[e.tipo], borderRadius: 3 }} />
-                          </div>
-                          <span style={{ color: "#fff", fontSize: 12, minWidth: 40 }}>{e.processos.toLocaleString("pt-BR")}</span>
-                        </div>
-                      </td>
-                      <td style={{ padding: "12px" }}>
-                        <span style={{
-                          background: `${corTipo[e.tipo]}22`,
-                          color: corTipo[e.tipo],
-                          border: `1px solid ${corTipo[e.tipo]}55`,
-                          borderRadius: 20,
-                          padding: "2px 10px",
-                          fontSize: 11,
-                          fontWeight: 600,
-                        }}>{e.tipo}</span>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-            <div style={{ marginTop: 20, padding: 14, background: "#0a1628", borderRadius: 8, border: "1px solid #1e3a5f" }}>
-              <p style={{ margin: 0, color: "#8ecae6", fontSize: 12 }}>
-                ⚠️ <strong style={{ color: "#f4a261" }}>Contexto importante:</strong> os 100 maiores litigantes da Justiça do Trabalho respondem por apenas 12% do total de processos — diferente da Justiça Federal, onde esse percentual chega a 91%. A litigiosidade trabalhista é muito mais capilarizada, com a maioria dos casos envolvendo pequenas e médias empresas.
-              </p>
-            </div>
-          </div>
-        )}
-      </div>
-    </div>
-  );
-}
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<Dashboard />);
+    </script>
+</body>
+</html>
